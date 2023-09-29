@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AccountDbContext>(x => x.UseSqlServer(accountConne
 
 builder.Services.AddDefaultIdentity<GameNight2User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AccountDbContext>();
 
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -35,5 +37,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();
