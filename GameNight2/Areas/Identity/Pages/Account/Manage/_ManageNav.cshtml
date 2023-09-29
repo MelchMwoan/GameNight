@@ -10,6 +10,29 @@
     {
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+    <li class="nav-item">
+		<button type="button" class="nav-link text-danger w-100 text-start" data-bs-toggle="modal" data-bs-target="#logoutModal">
+		    Logout
+	    </button>
+    </li>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="Logout" aria-hidden="true">
+	    <div class="modal-dialog">
+		    <div class="modal-content">
+			    <div class="modal-header">
+				    <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to logout?</h1>
+				    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			    </div>
+			    <div class="modal-footer">
+				    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+						<button type="submit" class="btn btn-danger">Confirm</button>
+					</form>
+			    </div>
+		    </div>
+	    </div>
+    </div>
 </ul>
