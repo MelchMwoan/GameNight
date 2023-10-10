@@ -1,7 +1,8 @@
-using GameNight2.Areas.Identity.Data;
-using GameNight2.Data;
+using Domain;
+using DomainServices;
+using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using SQLData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,15 @@ builder.Services.AddDbContext<GameNightDbContext>(x => x.UseSqlServer(connection
 var accountConnectionString = builder.Configuration.GetConnectionString("AccountDbContextConnection");
 builder.Services.AddDbContext<AccountDbContext>(x => x.UseSqlServer(accountConnectionString));
 
-builder.Services.AddDefaultIdentity<GameNight2User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AccountDbContext>();
+builder.Services.AddDefaultIdentity<GameNight2User>(options =>
+{
+	options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<AccountDbContext>();
+
+builder.Services.AddScoped<INightRepository, NightEFRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountEFRepository>();
+
+//builder.Services.AddAuthentication().AddIdentityServerJwt();
 
 builder.Services.AddRazorPages();
 
