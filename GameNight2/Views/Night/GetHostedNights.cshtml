@@ -1,0 +1,51 @@
+﻿@using Domain
+@model dynamic
+
+@{
+	ViewBag.Title = "Hosted Nights";
+}
+
+<h2>@ViewBag.Title</h2>
+@{
+   if (Model.Count == 0)
+   {
+   <h3>You don't have any hosted nights</h3>
+   }
+   else
+   {
+   <h3>You have @Model.Count hosted nights</h3>
+   }
+	foreach (Night night in Model)
+	{
+		// <h5>Id: @night.Id, Maxplayers: @night.MaxPlayers, Date: @night.DateTime</h5>
+
+		<div class="col-lg-4">
+			<div class="card">
+				<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
+				<div class="card-body">
+					<h5 class="card-title">
+						@night.Title
+					</h5>
+					<p class="card-text placeholder-wave">
+						<span class="placeholder col-7"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-8"></span>
+						@{
+							if (@night.Players == null)
+							{
+								<span> 0 / @night.MaxPlayers </span>
+							}
+							else
+							{
+								<span> @night.Players.Count / @night.MaxPlayers </span>
+							}
+						}
+					</p>
+					<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
+				</div>
+			</div>
+		</div>
+	}
+}

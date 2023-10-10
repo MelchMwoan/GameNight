@@ -2,23 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
+using Domain;
+using DomainServices;
+using GameNight2.Controllers;
+using GameNight2.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using GameNight2.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 
 namespace GameNight2.Areas.Identity.Pages.Account
 {
@@ -30,13 +26,15 @@ namespace GameNight2.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<GameNight2User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private IAccountRepository _accountRepository;
 
-        public RegisterModel(
+
+		public RegisterModel(
             UserManager<GameNight2User> userManager,
             IUserStore<GameNight2User> userStore,
             SignInManager<GameNight2User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IAccountRepository accountRepository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +42,7 @@ namespace GameNight2.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _accountRepository = accountRepository;
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace GameNight2.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public NewUserModel Input { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -123,7 +122,26 @@ namespace GameNight2.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
+                    var gameNightUser = new Person
+                    {
+	                    Name = Input.UserName,
+	                    RealName = $"{Input.FirstName} {Input.LastName}",
+	                    Email = Input.Email,
+	                    Gender = Input.Gender,
+	                    BirthDate = Input.BirthDate,
+	                    Address = new Address
+	                    {
+		                    City = Input.City,
+		                    Street = Input.Street,
+		                    HouseNumber = Input.HouseNumber,
+	                    }
+                    };
+
+                    //_controller.Register(gameNightUser);
+                    _accountRepository.createAccount(gameNightUser);
+
+
+					var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

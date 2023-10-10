@@ -1,0 +1,114 @@
+﻿@using Domain
+@model List<Night>
+
+@{
+	ViewBag.Title = "Search Nights";
+}
+
+<div class="row">
+	<section id="filters" class="col-12 col-lg-3">
+		<h3>
+			Filters
+		</h3>
+		<div>
+			<input class="form-control me-2" type="search" placeholder="Search..." />
+		</div>
+		<div class="w-100">
+			<button class="btn btn-primary">Apply</button>
+			<button class="btn btn-outline-secondary">Reset</button>
+		</div>
+	</section>
+	<section id="nights" class="col-lg-9 row gx-2 gy-2">
+		<h3>Nights</h3>
+		<div class="col-lg-4">
+			<div class="card">
+				<img src="https://htmlcolorcodes.com/assets/images/colors/dark-gray-color-solid-background-1920x1080.png" class="card-img-top placeholder placeholder-wave" alt="...">
+				<div class="card-body">
+					<h5 class="card-title placeholder-wave">
+						<span class="placeholder col-8"></span>
+					</h5>
+					<p class="card-text placeholder-wave">
+						<span class="placeholder col-7"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-8"></span>
+					</p>
+					<a href="#" class="btn btn-secondary disabled placeholder placeholder-wave col-6"></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card">
+				<img src="https://htmlcolorcodes.com/assets/images/colors/dark-gray-color-solid-background-1920x1080.png" class="card-img-top placeholder placeholder-wave" alt="...">
+				<div class="card-body">
+					<h5 class="card-title placeholder-wave">
+						<span class="placeholder col-8"></span>
+					</h5>
+					<p class="card-text placeholder-wave">
+						<span class="placeholder col-7"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-8"></span>
+					</p>
+					<a href="#" class="btn btn-secondary disabled placeholder placeholder-wave col-6"></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card">
+				<img src="https://htmlcolorcodes.com/assets/images/colors/dark-gray-color-solid-background-1920x1080.png" class="card-img-top placeholder placeholder-wave" alt="...">
+				<div class="card-body">
+					<h5 class="card-title placeholder-wave">
+						<span class="placeholder col-8"></span>
+					</h5>
+					<p class="card-text placeholder-wave">
+						<span class="placeholder col-7"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-4"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-8"></span>
+					</p>
+					<a href="#" class="btn btn-secondary disabled placeholder placeholder-wave col-6"></a>
+				</div>
+			</div>
+		</div>
+		@{
+			foreach (Night night in Model)
+			{
+				// <h5>Id: @night.Id, Maxplayers: @night.MaxPlayers, Date: @night.DateTime</h5>
+
+				<div class="col-lg-4">
+					<div class="card">
+						<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
+						<div class="card-body">
+							<h5 class="card-title">
+								@night.Title
+							</h5>
+							<p class="card-text placeholder-wave">
+								<span class="placeholder col-7"></span>
+								<span class="placeholder col-4"></span>
+								<span class="placeholder col-4"></span>
+								<span class="placeholder col-6"></span>
+								<span class="placeholder col-8"></span>
+								@{
+									night.Players.ForEach(Console.WriteLine);
+									if (@night.Players.Count == 0)
+									{
+										<span> 0 / @night.MaxPlayers </span>
+									}
+									else
+									{
+										<span> @night.Players.Count / @night.MaxPlayers </span>
+									}
+								}
+							</p>
+							<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</section>
+</div>

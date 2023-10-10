@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@using Domain
+@model dynamic
+
+@{
+	ViewBag.Title = "Night Details";
+}
+
+<h2>@Model.Night.Title</h2>
+@{
+	var user = this.User;
+	<span>@Model.Night.Organisator?.Email</span>
+	foreach (Person player in @Model.Night.Players)
+	{
+		<span>@player</span>
+	}
+
+
+	@if (@User.Identity.Name != null)
+	{
+		<span>Hello @User.Identity.Name</span>
+		<button id="joinNightBtn">Join Night</button>
+	}
+	else
+	{
+		<span>Login bitch</span>
+	}
+}
+<script>
+	document.getElementById("joinNightBtn").addEventListener("click", function () {
+		var nightPersonJoinResult = @Html.Raw(Json.Serialize(@Model))
+			fetch("/Night/JoinNight", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(nightPersonJoinResult)
+			})
+				.then(response => {
+					Console.Log(response)
+				})
+				.catch(error => {
+					Console.Log(error)
+				})
+	})
+</script>

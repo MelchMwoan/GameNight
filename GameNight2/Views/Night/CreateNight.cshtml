@@ -1,0 +1,42 @@
+﻿@model GameNight2.Models.NewNightModel
+
+@{
+	ViewBag.Title = "Create Night";
+}
+<partial name="_Validation"/>
+<h2>@ViewBag.Title</h2>
+<div>
+	@* <div asp-validation-summary="All"></div> *@
+	
+	<div>
+		<form asp-action="CreateNight" method="post">
+			<div class="form-group">
+				<label asp-for="Title">Titel:</label>
+				<input class="form-control" asp-for="Title"/>
+				<span asp-validation-for="Title" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="ThumbnailUrl">Thumbnail:</label>
+				<input class="form-control" asp-for="ThumbnailUrl" />
+				<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="DateTime">Date and Time:</label>
+				<input class="form-control" asp-for="DateTime" />
+				<span asp-validation-for="DateTime" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="MaxPlayers">Max Players:</label>
+				<input class="form-control" asp-for="MaxPlayers" />
+				<span asp-validation-for="MaxPlayers" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group row">
+				<button class="btn btn-primary col-sm-4 text-center">Add Night</button>
+			</div>
+		</form>
+	</div>
+</div>

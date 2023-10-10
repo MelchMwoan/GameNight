@@ -1,4 +1,7 @@
-﻿@inject SignInManager<GameNight2User> SignInManager
+﻿@using Microsoft.AspNetCore.Identity
+@using Domain
+@using GameNight2.Areas.Identity.Pages.Account.Manage
+@inject SignInManager<GameNight2User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
@@ -17,8 +20,6 @@
 	    </button>
     </li>
 
-
-    <!-- Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="Logout" aria-hidden="true">
 	    <div class="modal-dialog">
 		    <div class="modal-content">
