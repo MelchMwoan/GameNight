@@ -60,12 +60,12 @@ namespace GameNight2.Controllers
 
 			var night = new Night
 			{
-				Title = newNight.Title, 
-				DateTime = newNight.DateTime, 
-				MaxPlayers = newNight.MaxPlayers, 
+				Title = newNight.Title,
+				DateTime = newNight.DateTime,
+				MaxPlayers = newNight.MaxPlayers,
 				ThumbnailUrl = newNight.ThumbnailUrl,
 				PersonId = _accountRepository.getAccount(User.Identity.Name).Id
-		};
+			};
 			_nightRepository.addNight(night);
 			return RedirectToAction("NightDetails");
 		}
@@ -91,6 +91,12 @@ namespace GameNight2.Controllers
 				_nightRepository.joinNight(nightId, _accountRepository.getAccount(User.Identity.Name));
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
+			else
+			{
+				var returnUrl = Url.Action("NightDetails", "Night", new { id = nightId });
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
+
+			}
 
 			return NotFound();
 		}
@@ -104,6 +110,11 @@ namespace GameNight2.Controllers
 			{
 				_nightRepository.leaveNight(nightId, _accountRepository.getAccount(User.Identity.Name));
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
+			}
+			else
+			{
+				var returnUrl = Url.Action("NightDetails", "Night", new { id = nightId });
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
 
 			return NotFound();

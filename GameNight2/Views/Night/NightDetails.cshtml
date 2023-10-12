@@ -18,9 +18,6 @@
 	<br/>
 	<br/>
 
-	@if (@User.Identity.Name != null)
-	{
-		<span>Hello @User.Identity.Name</span>
 		if (@Model.Night.Organisator.Email == @User.Identity.Name)
 		{
 			<br/>
@@ -31,7 +28,6 @@
 			if (players.FindAll(person => person.Email == @User.Identity.Name).Any())
 			{
 				<br/>
-				<span>Joined night</span>
 				<form method="post" asp-controller="Night" asp-action="LeaveNight">
 					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
 					<button id="leaveNightBtn">Leave Night</button>
@@ -40,16 +36,10 @@
 			else
 			{
 				<br/>
-				<span>@Model.Night</span>
 				<form method="post" asp-controller="Night" asp-action="JoinNight">
 					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
 					<button id="joinNightBtn">Join Night</button>
 				</form>
 			}
 		}
-	}
-	else
-	{
-		<span>Login bitch</span>
-	}
 }
