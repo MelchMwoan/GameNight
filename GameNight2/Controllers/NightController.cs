@@ -90,6 +90,15 @@ namespace GameNight2.Controllers
 			}
 			return View(_nightRepository.getHostedNights(person.Id));
 		}
+		public IActionResult GetJoinedNights()
+		{
+			Person person = _accountRepository.getAccount(User.Identity.Name);
+			if (person == null)
+			{
+				return RedirectToPage("/Account/Login", new { area = "Identity" });
+			}
+			return View(_nightRepository.getJoinedNights(person.Id));
+		}
 
 		[HttpPost]
 		public IActionResult JoinNight(int nightId)

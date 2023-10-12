@@ -53,7 +53,7 @@ namespace Infrastructure.EF
 
 		public List<Night> getJoinedNights(int userId)
 		{
-			throw new NotImplementedException();
+			return _dbContext.Nights.Include(night => night.Players).Where(night => night.Players.Any(x => x.Id == userId)).ToList();
 		}
 
 		public void addNight(Night night)
