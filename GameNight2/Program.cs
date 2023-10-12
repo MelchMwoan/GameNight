@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAccountRepository, AccountEFRepository>();
 //builder.Services.AddAuthentication().AddIdentityServerJwt();
 
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

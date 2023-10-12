@@ -28,6 +28,7 @@ namespace Infrastructure.EF
 		{
 			return _dbContext.Nights
 				.Include(night => night.Players)
+				.Include(night => night.Organisator)
 				.Join(
 					_dbContext.Persons,
 					night => night.PersonId,
@@ -63,14 +64,14 @@ namespace Infrastructure.EF
 
 		public void joinNight(int nightId, Person person)
 		{
-			Night night = _dbContext.Nights.SingleOrDefault(x => x.Id == nightId);
+			Night night = getNightById(nightId).Night;
 			night.AddPlayer(person);
 			_dbContext.SaveChanges();
 		}
 
 		public void leaveNight(int nightId, Person person)
 		{
-			Night night = _dbContext.Nights.SingleOrDefault(x => x.Id == nightId);
+			Night night = getNightById(nightId).Night;
 			night.RemovePlayer(person);
 			_dbContext.SaveChanges();
 		}

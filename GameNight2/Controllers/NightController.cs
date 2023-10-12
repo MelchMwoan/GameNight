@@ -81,12 +81,32 @@ namespace GameNight2.Controllers
 			return View(_nightRepository.getHostedNights(person.Id));
 		}
 
-		public void JoinNight([FromBody] NightPersonJoinResult nightPersonJoinResult)
+		[HttpPost]
+		public IActionResult JoinNight(int nightId)
 		{
+			Console.WriteLine("Join Night Called");
+			Console.WriteLine(nightId);
 			if (User.Identity.Name != null)
 			{
-				_nightRepository.joinNight(nightPersonJoinResult.Night.Id, _accountRepository.getAccount(User.Identity.Name));
+				_nightRepository.joinNight(nightId, _accountRepository.getAccount(User.Identity.Name));
+				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
+
+			return NotFound();
+		}
+
+		[HttpPost]
+		public IActionResult LeaveNight(int nightId)
+		{
+			Console.WriteLine("Leave Night Called");
+			Console.WriteLine(nightId);
+			if (User.Identity.Name != null)
+			{
+				_nightRepository.leaveNight(nightId, _accountRepository.getAccount(User.Identity.Name));
+				return RedirectToAction("NightDetails", "Night", new { id = nightId });
+			}
+
+			return NotFound();
 		}
 	}
 }
