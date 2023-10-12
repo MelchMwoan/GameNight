@@ -21,6 +21,7 @@ namespace Domain
 		public void AddPlayer(Person player)
 		{
 			if (Organisator.Email.Equals(player.Email)) throw new Exception("Can't join your own night");
+			if(Players.Count >= MaxPlayers) throw new Exception("The Night is already full");
 			Players.Add(player);
 		}
 
