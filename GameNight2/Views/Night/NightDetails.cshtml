@@ -1,6 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Components.Authorization
+﻿@inject HttpClient HttpClient
 @using Domain
+@using Infrastructure.EF
+@using System.Text
+@using System.Text.Json
+@using System.Net.Http
 @model dynamic
 
 @{
@@ -12,28 +15,36 @@
 	var user = this.User;
 	List<Person> players = Model.Night.Players;
 	<span>@Model.Night.Organisator?.Email</span>
-	<br />
-	<br />
+	<br/>
+	<br/>
 
 	@if (@User.Identity.Name != null)
 	{
 		<span>Hello @User.Identity.Name</span>
 		if (@Model.Night.Organisator.Email == @User.Identity.Name)
 		{
-			<br />
+			<br/>
 			<span>Own night</span>
 		}
 		else
 		{
 			if (players.FindAll(person => person.Email == @User.Identity.Name).Any())
 			{
-				<br />
+				<br/>
 				<span>Joined night</span>
+				<form method="post" asp-controller="Night" asp-action="LeaveNight">
+					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
+					<button id="leaveNightBtn">Leave Night</button>
+				</form>
 			}
 			else
 			{
-				<br />
-				<button id="joinNightBtn">Join Night</button>
+				<br/>
+				<span>@Model.Night</span>
+				<form method="post" asp-controller="Night" asp-action="JoinNight">
+					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
+					<button id="joinNightBtn">Join Night</button>
+				</form>
 			}
 		}
 	}
@@ -42,21 +53,3 @@
 		<span>Login bitch</span>
 	}
 }
-<script>
-	   	document.getElementById("joinNightBtn").addEventListener("click", function () {
-	   		var nightPersonJoinResult = @Html.Raw(Json.Serialize(@Model))
-	   			fetch("/Night/JoinNight", {
-	   				method: "POST",
-	   				headers: {
-	   					"Content-Type": "application/json"
-	   				},
-	   				body: JSON.stringify(nightPersonJoinResult)
-	   			})
-	   				.then(response => {
-	   					Console.Log(response)
-	   				})
-	   				.catch(error => {
-	   					Console.Log(error)
-	   				})
-	   	})
-	   </script>
