@@ -32,10 +32,7 @@ namespace Domain
 
 		public void RemovePlayer(Person person)
 		{
-			Console.WriteLine("Listing players");
-			Players.ForEach(x => Console.WriteLine(x.Email));
 			Players.Remove(person);
-			Players.ForEach(x => Console.WriteLine(x.Email));
 		}
 	}
 }

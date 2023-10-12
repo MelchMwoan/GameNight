@@ -33,7 +33,6 @@ namespace GameNight2.Controllers
 		public IActionResult NightDetails(int Id)
 		{
 			var user = _userManager.GetUserAsync(User);
-			Console.WriteLine(user);
 			NightPersonJoinResult? night = _nightRepository.getNightById(Id);
 			if (night == null)
 			{
@@ -89,15 +88,12 @@ namespace GameNight2.Controllers
 			{
 				return RedirectToPage("/Account/Login", new { area = "Identity" });
 			}
-			Console.WriteLine(person.Id);
 			return View(_nightRepository.getHostedNights(person.Id));
 		}
 
 		[HttpPost]
 		public IActionResult JoinNight(int nightId)
 		{
-			Console.WriteLine("Join Night Called");
-			Console.WriteLine(nightId);
 			if (User.Identity.Name != null)
 			{
 				_nightRepository.joinNight(nightId, _accountRepository.getAccount(User.Identity.Name));
@@ -116,8 +112,6 @@ namespace GameNight2.Controllers
 		[HttpPost]
 		public IActionResult LeaveNight(int nightId)
 		{
-			Console.WriteLine("Leave Night Called");
-			Console.WriteLine(nightId);
 			if (User.Identity.Name != null)
 			{
 				_nightRepository.leaveNight(nightId, _accountRepository.getAccount(User.Identity.Name));
