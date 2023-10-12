@@ -10,13 +10,12 @@
 		<h3>
 			Filters
 		</h3>
-		<div>
-			<input class="form-control me-2" type="search" placeholder="Search..." />
-		</div>
-		<div class="w-100">
-			<button class="btn btn-primary">Apply</button>
-			<button class="btn btn-outline-secondary">Reset</button>
-		</div>
+
+		@{
+			var filterModel = new GameNight2.Models.NightsFilterModel();
+		}
+
+		@{ Html.RenderPartial("_FilterPartial", filterModel); }
 	</section>
 	<section id="nights" class="col-lg-9 row gx-2 gy-2">
 		<h3>Nights</h3>
@@ -75,40 +74,47 @@
 			</div>
 		</div>
 		@{
-			foreach (Night night in Model)
+			if (Model == null || Model.Count == 0)
 			{
-				// <h5>Id: @night.Id, Maxplayers: @night.MaxPlayers, Date: @night.DateTime</h5>
+				<h3>No nights found</h3>
+			}
+			else
+	{
+		foreach (Night night in Model)
+		{
+			// <h5>Id: @night.Id, Maxplayers: @night.MaxPlayers, Date: @night.DateTime</h5>
 
-				<div class="col-lg-4">
-					<div class="card">
-						<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
-						<div class="card-body">
-							<h5 class="card-title">
-								@night.Title
-							</h5>
-							<p class="card-text placeholder-wave">
-								<span class="placeholder col-7"></span>
-								<span class="placeholder col-4"></span>
-								<span class="placeholder col-4"></span>
-								<span class="placeholder col-6"></span>
-								<span class="placeholder col-8"></span>
-								@{
-									night.Players.ForEach(Console.WriteLine);
-									if (@night.Players.Count == 0)
-									{
-										<span> 0 / @night.MaxPlayers </span>
-									}
-									else
-									{
-										<span> @night.Players.Count / @night.MaxPlayers </span>
-									}
+			<div class="col-lg-4">
+				<div class="card">
+					<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
+					<div class="card-body">
+						<h5 class="card-title">
+							@night.Title
+						</h5>
+						<p class="card-text placeholder-wave">
+							<span class="placeholder col-7"></span>
+							<span class="placeholder col-4"></span>
+							<span class="placeholder col-4"></span>
+							<span class="placeholder col-6"></span>
+							<span class="placeholder col-8"></span>
+							@{
+								night.Players.ForEach(Console.WriteLine);
+								if (@night.Players.Count == 0)
+								{
+									<span> 0 / @night.MaxPlayers </span>
 								}
-							</p>
-							<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
-						</div>
+								else
+								{
+									<span> @night.Players.Count / @night.MaxPlayers </span>
+								}
+							}
+						</p>
+						<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
 					</div>
 				</div>
-			}
+			</div>
+		}
+	}
 		}
 	</section>
 </div>

@@ -1,0 +1,12 @@
+﻿@model GameNight2.Models.NightsFilterModel
+
+<form asp-controller="Night" asp-action="FilterNights" method="post">
+	<div class="form-group">
+		<label asp-for="Name">Titel:</label>
+		<input class="form-control" asp-for="Name" type="search" placeholder="Search..." />
+	</div>
+	<div class="w-100">
+		<button class="btn btn-primary">Apply</button>
+		<button class="btn btn-outline-secondary" asp-controller="Night" asp-action="Nights">Reset</button>
+	</div>
+</form>

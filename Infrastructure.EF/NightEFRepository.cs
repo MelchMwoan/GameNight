@@ -24,6 +24,11 @@ namespace Infrastructure.EF
 			return _dbContext.Nights.Include(night => night.Players).ToList();
 		}
 
+		public List<Night> filterNights(NightFilter filter)
+		{
+			return _dbContext.Nights.Where(x => x.Title.Contains(filter.Name)).ToList();
+		}
+
 		public NightPersonJoinResult? getNightById(int id)
 		{
 			return _dbContext.Nights

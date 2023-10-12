@@ -11,6 +11,7 @@ namespace DomainServices
 	public interface INightRepository
 	{
 		List<Night> getNights();
+		List<Night> filterNights(NightFilter filter);
 		NightPersonJoinResult? getNightById(int id);
 		List<Night> getHostedNights(int userId);
 		List<Night> getJoinedNights(int userId);

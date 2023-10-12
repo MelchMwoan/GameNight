@@ -70,6 +70,18 @@ namespace GameNight2.Controllers
 			return RedirectToAction("NightDetails");
 		}
 
+		[HttpPost]
+		public IActionResult FilterNights(NightsFilterModel filter)
+		{
+			if(!ModelState.IsValid) return View("Nights", _nightRepository.getNights());
+			var nightFilter = new NightFilter
+			{
+				Name = filter.Name
+			};
+			var filteredNights = _nightRepository.filterNights(nightFilter);
+			return View("Nights", filteredNights);
+		}
+
 		public IActionResult GetHostedNights()
 		{
 			Person person = _accountRepository.getAccount(User.Identity.Name);
