@@ -10,17 +10,32 @@
 <h2>@Model.Night.Title</h2>
 @{
 	var user = this.User;
+	List<Person> players = Model.Night.Players;
 	<span>@Model.Night.Organisator?.Email</span>
-	foreach (Person player in @Model.Night.Players)
-	{
-		<span>@player</span>
-	}
-
+	<br />
+	<br />
 
 	@if (@User.Identity.Name != null)
 	{
 		<span>Hello @User.Identity.Name</span>
-		<button id="joinNightBtn">Join Night</button>
+		if (@Model.Night.Organisator.Email == @User.Identity.Name)
+		{
+			<br />
+			<span>Own night</span>
+		}
+		else
+		{
+			if (players.FindAll(person => person.Email == @User.Identity.Name).Any())
+			{
+				<br />
+				<span>Joined night</span>
+			}
+			else
+			{
+				<br />
+				<button id="joinNightBtn">Join Night</button>
+			}
+		}
 	}
 	else
 	{
@@ -28,20 +43,20 @@
 	}
 }
 <script>
-	document.getElementById("joinNightBtn").addEventListener("click", function () {
-		var nightPersonJoinResult = @Html.Raw(Json.Serialize(@Model))
-			fetch("/Night/JoinNight", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(nightPersonJoinResult)
-			})
-				.then(response => {
-					Console.Log(response)
-				})
-				.catch(error => {
-					Console.Log(error)
-				})
-	})
-</script>
+	   	document.getElementById("joinNightBtn").addEventListener("click", function () {
+	   		var nightPersonJoinResult = @Html.Raw(Json.Serialize(@Model))
+	   			fetch("/Night/JoinNight", {
+	   				method: "POST",
+	   				headers: {
+	   					"Content-Type": "application/json"
+	   				},
+	   				body: JSON.stringify(nightPersonJoinResult)
+	   			})
+	   				.then(response => {
+	   					Console.Log(response)
+	   				})
+	   				.catch(error => {
+	   					Console.Log(error)
+	   				})
+	   	})
+	   </script>

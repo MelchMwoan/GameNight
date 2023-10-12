@@ -21,12 +21,13 @@ namespace Infrastructure.EF
 
 		public List<Night> getNights()
 		{
-			return _dbContext.Nights.ToList();
+			return _dbContext.Nights.Include(night => night.Players).ToList();
 		}
 
 		public NightPersonJoinResult? getNightById(int id)
 		{
 			return _dbContext.Nights
+				.Include(night => night.Players)
 				.Join(
 					_dbContext.Persons,
 					night => night.PersonId,
@@ -41,7 +42,7 @@ namespace Infrastructure.EF
 
 		public List<Night> getHostedNights(int userId)
 		{
-			return _dbContext.Nights.Where(night => night.PersonId == userId).ToList();
+			return _dbContext.Nights.Where(night => night.PersonId == userId).Include(night => night.Players).ToList();
 		}
 
 		public List<Night> getJoinedNights(int userId)
@@ -64,14 +65,14 @@ namespace Infrastructure.EF
 		{
 			Night night = _dbContext.Nights.SingleOrDefault(x => x.Id == nightId);
 			night.AddPlayer(person);
-			Console.WriteLine(night == null);
-			Console.WriteLine(person == null);
 			_dbContext.SaveChanges();
 		}
 
 		public void leaveNight(int nightId, Person person)
 		{
-			throw new NotImplementedException();
+			Night night = _dbContext.Nights.SingleOrDefault(x => x.Id == nightId);
+			night.RemovePlayer(person);
+			_dbContext.SaveChanges();
 		}
 	}
 }

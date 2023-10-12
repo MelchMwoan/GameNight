@@ -17,19 +17,6 @@ namespace GameNight2.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet]
-		public IActionResult Register()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Register(Person newUser)
-		{
-			_accountRepository.createAccount(newUser);
-			return View();
-		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
