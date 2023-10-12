@@ -30,31 +30,40 @@
 			{
 				foreach (Night night in Model)
 				{
-					<div class="col-lg-4">
-						<div class="card">
-							<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
-							<div class="card-body">
-								<h5 class="card-title">
-									@night.Title
-								</h5>
-								<p class="card-text placeholder-wave">
-									<span class="placeholder col-7"></span>
-									<span class="placeholder col-4"></span>
-									<span class="placeholder col-4"></span>
-									<span class="placeholder col-6"></span>
-									<span class="placeholder col-8"></span>
-									@{
-										if (@night.Players.Count == 0)
-										{
-											<span> 0 / @night.MaxPlayers </span>
-										}
-										else
-										{
-											<span> @night.Players.Count / @night.MaxPlayers </span>
-										}
-									}
-								</p>
-								<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
+					// <div class="col-lg-4">
+					// 	<div class="card">
+					// 		<img src="@night.ThumbnailUrl" class="card-img-top" alt="@night.Title Image">
+					// 		<div class="card-body">
+					// 			<h5 class="card-title">
+					// 				@night.Title
+					// 			</h5>
+					// 			<p class="card-text placeholder-wave">
+					// 				<span> Participants: @night.Players.Count / @night.MaxPlayers <i class="fa-solid fa-clipboard-user"></i></span><br/>
+					// 				<span> Date: @night.DateTime.ToLocalTime().ToString("g") <i class="fa-solid fa-calendar"></i></span>
+					// 			</p>
+					// 			<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary col-6" asp-route-id=@night.Id>More Info</a>
+					// 		</div>
+					// 	</div>
+					// </div>
+
+					<div class="card pe-0">
+						<div class="row g-0">
+							<div class="col-md-8">
+								<div class="card-body p-3">
+									<h3 class="card-title">
+										@night.Title
+									</h3>
+									<p class="card-text placeholder-wave">
+										<span> Participants: @night.Players.Count / @night.MaxPlayers <i class="fa-solid fa-clipboard-user"></i></span><br />
+										<span> Date: @night.DateTime.ToLocalTime().ToString("f") <i class="fa-solid fa-calendar"></i></span>
+									</p>
+									<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id>More Info</a>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="ratio ratio-16x9 h-100">
+									<img src="@night.ThumbnailUrl" class="rounded" alt="@night.Title Image">
+								</div>
 							</div>
 						</div>
 					</div>
