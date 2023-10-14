@@ -7,6 +7,7 @@ namespace Domain
 	public class Night
 	{
 		public string Title { get; set; } = "Game Night";
+		public string? Description { get; set; }
 		public int Id { get; set; }
 		public DateTime DateTime { get; set; }
 		public int MaxPlayers { get; set; }
