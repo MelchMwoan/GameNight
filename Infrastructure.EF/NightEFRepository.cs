@@ -66,7 +66,8 @@ namespace Infrastructure.EF
 
 		public void removeNight(Night night)
 		{
-			throw new NotImplementedException();
+			_dbContext.Nights.Remove(night);
+			_dbContext.SaveChanges();
 		}
 
 		public void updateNight(Night newNight)

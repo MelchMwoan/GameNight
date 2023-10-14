@@ -96,6 +96,15 @@ namespace GameNight2.Controllers
 			return RedirectToAction("NightDetails", "Night", new { id = nightModel.Id});
 		}
 
+		public IActionResult RemoveNight(int Id)
+		{
+			Night? night = _nightRepository.getNightById(Id).Night;
+			if (night == null) throw new Exception("Night doesn't exist");
+			if (night.Players.Count > 0) throw new Exception("Can't edit the night while there are attendees");
+			_nightRepository.removeNight(night);
+			return RedirectToAction("Nights", "Night");
+		}
+
 		[HttpPost]
 		public IActionResult CreateNight(NewNightModel newNight)
 		{
