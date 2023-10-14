@@ -43,8 +43,9 @@
 										@night.Title
 									</h3>
 									<p class="card-text placeholder-wave">
-										<span> Participants: @night.Players.Count / @night.MaxPlayers <i class="fa-solid fa-clipboard-user"></i></span><br />
-										<span> Date: @night.DateTime.ToLocalTime().ToString("f") <i class="fa-solid fa-calendar"></i></span>
+										<i class="fa-solid fa-clipboard-user"></i><span> Participants: @night.Players.Count / @night.MaxPlayers </span><br />
+										<i class="fa-solid fa-calendar"></i><span> Date: @night.DateTime.ToLocalTime().ToString("f") </span><br />
+										<i class="fa-solid fa-beer-mug-empty"></i><span> Adult Only: @(night.AdultOnly ? "Yes" : "No")</span>
 									</p>
 									<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id>More Info</a>
 								</div>
