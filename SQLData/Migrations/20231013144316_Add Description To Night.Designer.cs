@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SQLData;
 
@@ -11,9 +12,11 @@ using SQLData;
 namespace SQLData.Migrations
 {
     [DbContext(typeof(GameNightDbContext))]
-    partial class GameNightDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231013144316_Add Description To Night")]
+    partial class AddDescriptionToNight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,10 +194,6 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("pfpUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -210,8 +209,7 @@ namespace SQLData.Migrations
                             Email = "henk@mail.nl",
                             Gender = 77,
                             Name = "Henk",
-                            RealName = "Henk Man",
-                            pfpUrl = "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg"
+                            RealName = "Henk Man"
                         },
                         new
                         {
@@ -221,8 +219,7 @@ namespace SQLData.Migrations
                             Email = "jan@mail.nl",
                             Gender = 88,
                             Name = "Jan",
-                            RealName = "Jan Man",
-                            pfpUrl = "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg"
+                            RealName = "Jan Man"
                         });
                 });
 

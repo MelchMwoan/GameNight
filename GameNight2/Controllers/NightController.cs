@@ -51,6 +51,37 @@ namespace GameNight2.Controllers
 			}
 			return View();
 		}
+		[HttpPost]
+		public IActionResult EditNight(int nightId)
+		{
+			Night night = _nightRepository.getNightById(nightId)?.Night;
+			Person person = _accountRepository.getAccount(User.Identity.Name);
+			if (person == null)
+			{
+				return RedirectToPage("/Account/Login", new { area = "Identity" });
+			}
+
+			EditNightModel editNightModel = new EditNightModel
+			{
+				Id = nightId,
+				DateTime = night.DateTime,
+				MaxPlayers = night.MaxPlayers,
+				ThumbnailUrl = night.ThumbnailUrl,
+				Title = night.Title
+			};
+			return View(editNightModel);
+		}
+		[HttpPost]
+		public IActionResult UpdateNight(EditNightModel nightModel)
+		{
+			if (!ModelState.IsValid) return View("EditNight", nightModel);
+			Person person = _accountRepository.getAccount(User.Identity.Name);
+			if (person == null)
+			{
+				return RedirectToPage("/Account/Login", new { area = "Identity" });
+			}
+			return RedirectToAction("NightDetails", "Night", new { id = nightModel.Id});
+		}
 
 		[HttpPost]
 		public IActionResult CreateNight(NewNightModel newNight)

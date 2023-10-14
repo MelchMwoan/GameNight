@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SQLData;
 
@@ -11,9 +12,11 @@ using SQLData;
 namespace SQLData.Migrations
 {
     [DbContext(typeof(GameNightDbContext))]
-    partial class GameNightDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231012163741_Added AdultOnly to nights")]
+    partial class AddedAdultOnlytonights
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,9 +120,6 @@ namespace SQLData.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MaxPlayers")
                         .HasColumnType("int");
 
@@ -145,7 +145,7 @@ namespace SQLData.Migrations
                         {
                             Id = 1,
                             AdultOnly = false,
-                            DateTime = new DateTime(2023, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateTime = new DateTime(2023, 10, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             MaxPlayers = 3,
                             PersonId = 1,
                             ThumbnailUrl = "https://s.yimg.com/ny/api/res/1.2/GjwW45jyFilXfDhM3Pl5rQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU-/https://media.zenfs.com/en/gobankingrates_644/4464a542bd2bf3c1300d1ae8de26441b",
@@ -155,7 +155,7 @@ namespace SQLData.Migrations
                         {
                             Id = 2,
                             AdultOnly = false,
-                            DateTime = new DateTime(2023, 10, 16, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateTime = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local),
                             MaxPlayers = 8,
                             PersonId = 2,
                             ThumbnailUrl = "https://s.yimg.com/ny/api/res/1.2/GjwW45jyFilXfDhM3Pl5rQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU-/https://media.zenfs.com/en/gobankingrates_644/4464a542bd2bf3c1300d1ae8de26441b",
@@ -191,10 +191,6 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("pfpUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -206,23 +202,21 @@ namespace SQLData.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-                            BirthDate = new DateTime(2005, 10, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            BirthDate = new DateTime(2005, 10, 12, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "henk@mail.nl",
                             Gender = 77,
                             Name = "Henk",
-                            RealName = "Henk Man",
-                            pfpUrl = "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg"
+                            RealName = "Henk Man"
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 1,
-                            BirthDate = new DateTime(2000, 10, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            BirthDate = new DateTime(2000, 10, 12, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "jan@mail.nl",
                             Gender = 88,
                             Name = "Jan",
-                            RealName = "Jan Man",
-                            pfpUrl = "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg"
+                            RealName = "Jan Man"
                         });
                 });
 

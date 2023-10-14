@@ -10,36 +10,139 @@
 	ViewBag.Title = "Night Details";
 }
 
-<h2>@Model.Night.Title</h2>
-@{
-	var user = this.User;
-	List<Person> players = Model.Night.Players;
-	<span>@Model.Night.Organisator?.Email</span>
-	<br/>
-	<br/>
+<div class="row">
+	<section class="col-9">
+		<h2>@Model.Night.Title</h2>
+		<h6>@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@Model.Night.DateTime.ToString("f"))</h6>
+		<h6>Address: @Model.Night.Organisator.Address.Street @Model.Night.Organisator.Address.HouseNumber, @Model.Night.Organisator.Address.City</h6>
+		<p>
+			@Model.Night.Description
+		</p>
 
-		if (@Model.Night.Organisator.Email == @User.Identity.Name)
-		{
-			<br/>
-			<span>Own night</span>
-		}
-		else
-		{
-			if (players.FindAll(person => person.Email == @User.Identity.Name).Any())
+		@{
+			List<Person> players = Model.Night.Players;
+
+			if (@Model.Night.Organisator.Email == @User.Identity.Name)
 			{
-				<br/>
-				<form method="post" asp-controller="Night" asp-action="LeaveNight">
-					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
-					<button id="leaveNightBtn">Leave Night</button>
+				<br />
+				<form method="post" asp-controller="Night" asp-action="EditNight">
+					<input type="hidden" name="nightId" value="@Model.Night.Id" />
+					<button id="editNightBtn" type="button" class="btn btn-warning" disabled="@(players.Count > 0)">Edit Night</button>
 				</form>
 			}
 			else
 			{
-				<br/>
-				<form method="post" asp-controller="Night" asp-action="JoinNight">
-					<input type="hidden" name="nightId" value="@Model.Night.Id"/>
-					<button id="joinNightBtn">Join Night</button>
-				</form>
+				if (players.FindAll(person => person.Email == @User.Identity.Name).Any())
+				{
+					<br />
+					<form method="post" asp-controller="Night" asp-action="LeaveNight">
+						<input type="hidden" name="nightId" value="@Model.Night.Id" />
+						<button id="leaveNightBtn" class="btn btn-danger">Leave Night</button>
+					</form>
+				}
+				else
+				{
+					<br />
+					<form method="post" asp-controller="Night" asp-action="JoinNight">
+						<input type="hidden" name="nightId" value="@Model.Night.Id" />
+						<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
+					</form>
+				}
 			}
 		}
-}
+	</section>
+
+	<section class="col-3">
+		<h2>Host: @Model.Night.Organisator.RealName</h2>
+		<img src="@Model.Night.Organisator.pfpUrl" class="img-thumbnail" />
+		<div>
+			<span>Rating: 3.5<i class="fa-solid fa-star text-warning"></i></span>
+		</div>
+	</section>
+</div>
+<div class="row">
+	<section class="col">
+		<h3>Games</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Game Title</th>
+					<th>More Info</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					if (@Model.Night.Games.Count == 0)
+					{
+						<tr><td>No games</td><td></td></tr>
+					}
+					foreach (Game game in @Model.Night.Games)
+					{
+						<tr>
+							<td>@game.Name</td>
+							<td>
+								<button></button>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</section>
+	<section class="col">
+		<h3>Snacks</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Snack</th>
+					<th>More Info</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					if (@Model.Night.Games.Count == 0)
+					{
+						<tr><td>No snacks</td><td></td></tr>
+					}
+					foreach (Game game in @Model.Night.Games)
+					{
+						<tr>
+							<td>@game.Name</td>
+							<td>
+								<button></button>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</section>
+	<section class="col">
+		<h3>Attendees</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Attendee name</th>
+					<th>More Info</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					if (@Model.Night.Players.Count == 0)
+					{
+						<tr><td>No attendees</td><td></td></tr>
+					}
+					foreach (Person person in @Model.Night.Players)
+					{
+						<tr>
+							<td>@person.Email</td>
+							<td>
+								<button></button>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</section>
+</div>
