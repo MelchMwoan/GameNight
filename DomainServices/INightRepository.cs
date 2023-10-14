@@ -17,6 +17,7 @@ namespace DomainServices
 		List<Night> getJoinedNights(int userId);
 		void addNight(Night night);
 		void removeNight(Night night);
+		void updateNight(Night night);
 
 		void joinNight(int nightId, Person person);
 		void leaveNight(int nightId, Person person);

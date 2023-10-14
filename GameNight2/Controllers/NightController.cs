@@ -76,9 +76,22 @@ namespace GameNight2.Controllers
 		{
 			if (!ModelState.IsValid) return View("EditNight", nightModel);
 			Person person = _accountRepository.getAccount(User.Identity.Name);
-			if (person == null)
+			if (person == null) return RedirectToPage("/Account/Login", new { area = "Identity" });
+			Night? night = _nightRepository.getNightById(nightModel.Id)?.Night;
+			if (night == null) throw new Exception("Night doesn't exist");
+			if (night.Players.Count > 0) throw new Exception("Can't edit the night while there are attendees");
+
+			int changed = 0;
+			foreach (var propertyInfo in nightModel.GetType().GetProperties())
 			{
-				return RedirectToPage("/Account/Login", new { area = "Identity" });
+				var modelVal = propertyInfo.GetValue(nightModel);
+				var nightVal = night.GetType().GetProperty(propertyInfo.Name).GetValue(night);
+				if (!nightVal.Equals(modelVal))
+				{
+					changed++;
+					propertyInfo.SetValue(nightModel, modelVal);
+				}
+				if (changed > 0) _nightRepository.updateNight(nightModel.getNight());
 			}
 			return RedirectToAction("NightDetails", "Night", new { id = nightModel.Id});
 		}

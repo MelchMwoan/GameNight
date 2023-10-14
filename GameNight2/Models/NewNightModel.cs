@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain;
 
 namespace GameNight2.Models
 {
@@ -10,5 +11,16 @@ namespace GameNight2.Models
 		public int MaxPlayers { get; set; }
 		[Url]
 		public string ThumbnailUrl { get; set; }
+
+		public Night getNight()
+		{
+			return new Night
+			{
+				Title = this.Title,
+				DateTime = this.DateTime,
+				MaxPlayers = this.MaxPlayers,
+				ThumbnailUrl = this.ThumbnailUrl
+			};
+		}
 	}
 }

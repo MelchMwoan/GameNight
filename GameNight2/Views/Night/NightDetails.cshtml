@@ -27,7 +27,7 @@
 				<br />
 				<form method="post" asp-controller="Night" asp-action="EditNight">
 					<input type="hidden" name="nightId" value="@Model.Night.Id" />
-					<button id="editNightBtn" type="button" class="btn btn-warning" disabled="@(players.Count > 0)">Edit Night</button>
+					<button id="editNightBtn" class="btn btn-warning" disabled="@(players.Count > 0)">Edit Night</button>
 				</form>
 			}
 			else

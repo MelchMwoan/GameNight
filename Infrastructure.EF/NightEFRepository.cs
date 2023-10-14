@@ -69,6 +69,16 @@ namespace Infrastructure.EF
 			throw new NotImplementedException();
 		}
 
+		public void updateNight(Night newNight)
+		{
+			Night dbNight = getNightById(newNight.Id).Night;
+			dbNight.Title = newNight.Title;
+			dbNight.ThumbnailUrl = newNight.ThumbnailUrl;
+			dbNight.DateTime = newNight.DateTime;
+			dbNight.MaxPlayers = newNight.MaxPlayers;
+			_dbContext.SaveChanges();
+		}
+
 		public void joinNight(int nightId, Person person)
 		{
 			Night night = getNightById(nightId).Night;
