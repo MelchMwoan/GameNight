@@ -99,23 +99,27 @@
 				</tr>
 			</thead>
 			<tbody>
-				@{
-					if (@Model.Night.Games.Count == 0)
-					{
-						<tr><td>No snacks</td><td></td></tr>
-					}
-					foreach (Game game in @Model.Night.Games)
-					{
-						<tr>
-							<td>@game.Name</td>
-							<td>
-								<button></button>
-							</td>
-						</tr>
-					}
+			@{
+				if (@Model.Night.Games.Count == 0)
+				{
+					<tr><td>No snacks</td><td></td></tr>
 				}
+				foreach (Game game in @Model.Night.Games)
+				{
+					<tr>
+						<td>@game.Name</td>
+						<td>
+							<button></button>
+						</td>
+					</tr>
+				}
+			}
 			</tbody>
 		</table>
+		@if (@Model.Night.TakeOwnSnacks)
+		{
+			<button class="btn btn-primary">Add Snack</button>
+		}
 	</section>
 	<section class="col">
 		<h3>Attendees</h3>
