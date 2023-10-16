@@ -6,6 +6,7 @@ using GameNight2.Models;
 using Infrastructure.EF;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using SQLData;
 
 namespace GameNight2.Controllers
@@ -16,13 +17,15 @@ namespace GameNight2.Controllers
 		private INightRepository _nightRepository;
 		private UserManager<GameNight2User> _userManager;
 		private IAccountRepository _accountRepository;
+		private IGameRepository _gameRepository;
 
-		public NightController(ILogger<NightController> logger, INightRepository nightRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository)
+		public NightController(ILogger<NightController> logger, INightRepository nightRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository, IGameRepository gameRepository)
 		{
 			_nightRepository = nightRepository;
 			_logger = logger;
 			_userManager = userManager;
 			_accountRepository = accountRepository;
+			_gameRepository = gameRepository;
 		}
 
 		public IActionResult Nights()
@@ -61,7 +64,7 @@ namespace GameNight2.Controllers
 				return RedirectToPage("/Account/Login", new { area = "Identity" });
 			}
 
-			EditNightModel editNightModel = new EditNightModel
+			EditNightModel editNightModel = new EditNightModel()
 			{
 				Id = nightId,
 				DateTime = night.DateTime,
@@ -109,7 +112,6 @@ namespace GameNight2.Controllers
 		public IActionResult CreateNight(NewNightModel newNight)
 		{
 			if (!ModelState.IsValid) return View(newNight);
-
 			var night = new Night
 			{
 				Title = newNight.Title,
@@ -117,7 +119,8 @@ namespace GameNight2.Controllers
 				MaxPlayers = newNight.MaxPlayers,
 				ThumbnailUrl = newNight.ThumbnailUrl,
 				AdultOnly = newNight.AdultOnly,
-				PersonId = _accountRepository.getAccount(User.Identity.Name).Id
+				PersonId = _accountRepository.getAccount(User.Identity.Name).Id,
+				Games = _gameRepository.getGames().Where(x => newNight.SelectedGames.Contains(x.Id)).ToList()
 			};
 			_nightRepository.addNight(night);
 			return RedirectToAction("NightDetails");

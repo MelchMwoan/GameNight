@@ -1,8 +1,23 @@
-﻿@model GameNight2.Models.NewNightModel
+﻿@using Domain
+@using DomainServices
+@using GameNight2.Models
+@using Microsoft.CodeAnalysis
+@model GameNight2.Models.NewNightModel
+@inject IGameRepository _gameRepository
+
 
 @{
 	ViewBag.Title = "Create Night";
 }
+
+<style>
+	.list-group {
+		max-height: 300px;
+		margin-bottom: 10px;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+</style>
 <partial name="_Validation" />
 <h2>@ViewBag.Title</h2>
 <div>
@@ -24,7 +39,7 @@
 				</div>
 				<div class="form-group">
 					<label asp-for="ThumbnailUrl">Thumbnail:</label>
-					<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput"/>
+					<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput" />
 					<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
 				</div>
 
@@ -48,9 +63,38 @@
 			</div>
 			<div class="col-4">
 				<h4>Thumbnail Preview:</h4>
-				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview"/>
+				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview" />
 			</div>
 
+			@* Add Snacks list *@
+
+			@* Add Games List *@
+			<div class="col-6">
+				<h4>Games:</h4>
+				@* <form>
+					<input type="search"/>
+				</form> *@
+				<span asp-validation-for="SelectedGames" class="text-danger"></span>
+				<ul class="list-group" id="gameList">
+					@{
+						foreach (Game game in _gameRepository.getGames())
+						{
+									<li class="list-group-item">
+										<div class="form-group">
+											<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id">
+											<label class="form-check-label" for="@game.Id">@game.Name</label>
+										</div>
+									</li>
+						}
+					}
+				</ul>
+				<button id="refreshGames" type="button" class="btn btn-secondary" >
+					Refresh Games
+				</button>
+				<a type="button" class="btn btn-success" asp-controller="Game" asp-action="CreateGame" target="_blank">
+					Add Game
+				</a>
+			</div>
 
 			<div class="form-group col-8">
 				<button class="btn btn-primary col-sm-4 text-center mt-3">Add Night</button>
@@ -60,6 +104,22 @@
 	</div>
 </div>
 <script>
+	document.getElementById('refreshGames').addEventListener('click', saveFormData);
+	function saveFormData() {
+		const form = document.forms[0]; // Assuming it's the first form on the page
+		const formData = new FormData(form);
+		const formDataObject = Object.fromEntries(formData);
+
+		// Handle checkboxes separately by converting them to arrays
+		const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach((checkbox) => {
+			formDataObject[checkbox.name] = Array.from(formData.getAll(checkbox.name));
+		});
+
+		localStorage.setItem('formData', JSON.stringify(formDataObject));
+		location.reload();
+	}
+
 	function updateThumbnail() {
 		const imageUrl = document.getElementById('thumbnailInput').value;
 		document.getElementById('thumbnailImg').src = imageUrl;
@@ -68,6 +128,33 @@
 		};
 	}
 	document.getElementById('thumbnailInput').addEventListener('input', updateThumbnail);
-	updateThumbnail();
+
+	function loadFormData() {
+		const formData = localStorage.getItem('formData');
+		if (formData) {
+			const form = document.forms[0]; // Assuming it's the first form on the page
+			const formDataObject = JSON.parse(formData);
+
+			// Populate form fields with data from localStorage
+			for (const key in formDataObject) {
+				const input = form.querySelector(`[name="${key}"]`);
+				if (input) {
+					if (input.type === 'checkbox') {
+						const checkboxValues = formDataObject[key];
+						checkboxValues.forEach((value) => {
+							const checkbox = form.querySelector(`[name="${key}"][value="${value}"]`);
+							if (checkbox) {
+								checkbox.checked = true;
+							}
+						});
+					} else {
+						input.value = formDataObject[key];
+					}
+				}
+			}
+			updateThumbnail();
+		}
+	}
+	window.addEventListener('load', loadFormData);
 
 </script>

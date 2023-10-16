@@ -19,11 +19,6 @@ namespace SQLData
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			//modelBuilder.Entity<Organisator>()
-			//	.HasOne(e => e.Address)
-			//	.WithMany()
-			//	.HasForeignKey(e => e.AddressId)
-			//	.IsRequired();
 
 			modelBuilder.Entity<Address>()
 				.HasData(

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain;
+using DomainServices;
 
 namespace GameNight2.Models
 {
@@ -14,16 +15,7 @@ namespace GameNight2.Models
 		public string ThumbnailUrl { get; set; }
 
 		public Boolean AdultOnly { get; set; }
-
-		public Night getNight()
-		{
-			return new Night
-			{
-				Title = this.Title,
-				DateTime = this.DateTime,
-				MaxPlayers = this.MaxPlayers,
-				ThumbnailUrl = this.ThumbnailUrl
-			};
-		}
+		[Required(ErrorMessage = "Select at least 1 game")]
+		public List<int> SelectedGames { get; set; }
 	}
 }

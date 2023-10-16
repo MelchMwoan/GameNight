@@ -1,5 +1,6 @@
 ﻿using Domain;
 using System.ComponentModel.DataAnnotations;
+using DomainServices;
 
 namespace GameNight2.Models
 {
