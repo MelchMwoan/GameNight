@@ -116,6 +116,7 @@ namespace GameNight2.Controllers
 				DateTime = newNight.DateTime,
 				MaxPlayers = newNight.MaxPlayers,
 				ThumbnailUrl = newNight.ThumbnailUrl,
+				AdultOnly = newNight.AdultOnly,
 				PersonId = _accountRepository.getAccount(User.Identity.Name).Id
 			};
 			_nightRepository.addNight(night);

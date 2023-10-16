@@ -6,11 +6,14 @@ namespace GameNight2.Models
 	public class NewNightModel
 	{
 		public string Title { get; set; }
+		public string? Description { get; set; }
 		public DateTime DateTime { get; set; }
 		[Range(2, 100, ErrorMessage = "MaxPlayers should be at least 2")]
 		public int MaxPlayers { get; set; }
 		[Url]
 		public string ThumbnailUrl { get; set; }
+
+		public Boolean AdultOnly { get; set; }
 
 		public Night getNight()
 		{

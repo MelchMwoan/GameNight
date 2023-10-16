@@ -3,40 +3,71 @@
 @{
 	ViewBag.Title = "Create Night";
 }
-<partial name="_Validation"/>
+<partial name="_Validation" />
 <h2>@ViewBag.Title</h2>
 <div>
 	@* <div asp-validation-summary="All"></div> *@
-	
+
 	<div>
-		<form asp-action="CreateNight" method="post">
-			<div class="form-group">
-				<label asp-for="Title">Titel:</label>
-				<input class="form-control" asp-for="Title"/>
-				<span asp-validation-for="Title" class="text-danger"></span>
+		<form asp-action="CreateNight" method="post" class="row">
+			<div class="col-8">
+				<div class="form-group">
+					<label asp-for="Title">Title:</label>
+					<input class="form-control" asp-for="Title" />
+					<span asp-validation-for="Title" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Description">Description:</label>
+					<textarea class="form-control" asp-for="Description" rows="5"></textarea>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ThumbnailUrl">Thumbnail:</label>
+					<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput"/>
+					<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="DateTime">Date and Time:</label>
+					<input class="form-control" asp-for="DateTime" />
+					<span asp-validation-for="DateTime" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="MaxPlayers">Max Players:</label>
+					<input class="form-control" asp-for="MaxPlayers" />
+					<span asp-validation-for="MaxPlayers" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="AdultOnly">Adult Only:</label>
+					<input asp-for="AdultOnly" class="form-check-input" />
+					<span asp-validation-for="AdultOnly" class="text-danger"></span>
+				</div>
 			</div>
-			
-			<div class="form-group">
-				<label asp-for="ThumbnailUrl">Thumbnail:</label>
-				<input class="form-control" asp-for="ThumbnailUrl" />
-				<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
+			<div class="col-4">
+				<h4>Thumbnail Preview:</h4>
+				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview"/>
 			</div>
-			
-			<div class="form-group">
-				<label asp-for="DateTime">Date and Time:</label>
-				<input class="form-control" asp-for="DateTime" />
-				<span asp-validation-for="DateTime" class="text-danger"></span>
-			</div>
-			
-			<div class="form-group">
-				<label asp-for="MaxPlayers">Max Players:</label>
-				<input class="form-control" asp-for="MaxPlayers" />
-				<span asp-validation-for="MaxPlayers" class="text-danger"></span>
-			</div>
-			
-			<div class="form-group row">
-				<button class="btn btn-primary col-sm-4 text-center">Add Night</button>
+
+
+			<div class="form-group col-8">
+				<button class="btn btn-primary col-sm-4 text-center mt-3">Add Night</button>
+				<a class="btn btn-danger col-sm-4 text-center mt-3 float-end" asp-action="Index" asp-controller="Home">Cancel</a>
 			</div>
 		</form>
 	</div>
 </div>
+<script>
+	function updateThumbnail() {
+		const imageUrl = document.getElementById('thumbnailInput').value;
+		document.getElementById('thumbnailImg').src = imageUrl;
+		document.getElementById('thumbnailImg').onerror = function () {
+			document.getElementById('thumbnailImg').src = "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+		};
+	}
+	document.getElementById('thumbnailInput').addEventListener('input', updateThumbnail);
+	updateThumbnail();
+
+</script>
