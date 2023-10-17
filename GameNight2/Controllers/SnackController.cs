@@ -56,12 +56,18 @@ namespace GameNight2.Controllers
 			{
 				return BadRequest(new
 				{
-					success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+					success = false,
+					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
 				});
 			}
 
 			Snack snack = snackModel.getSnack();
 			snack.person = _accountRepository.getAccount(User.Identity.Name);
+			if (snackModel.nightId != null)
+			{
+				snack.SetNight(_nightRepository.getNightById((int)snackModel.nightId).Night);
+			}
+
 			_snackRepository.addSnack(snack);
 			return Ok();
 
@@ -70,7 +76,7 @@ namespace GameNight2.Controllers
 		public IActionResult SnackDetails(int Id)
 		{
 			Snack snack = _snackRepository.getSnackById(Id);
-			if(snack != null) return View(snack);
+			if (snack != null) return View(snack);
 			return RedirectToAction("Index", "Home");
 		}
 	}

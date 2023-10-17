@@ -6,6 +6,15 @@ namespace GameNight2.Models
 {
 	public class NewSnackModel
 	{
+		public NewSnackModel(int nightId)
+		{
+			this.nightId = nightId;
+		}
+		public NewSnackModel()
+		{
+			this.nightId = nightId;
+		}
+		public int? nightId { get; set; }
 		public string Name { get; set; }
 		public Boolean isVegan { get; set; }
 		public Boolean isAlcoholFree { get; set; }

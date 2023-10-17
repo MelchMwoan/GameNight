@@ -2,6 +2,7 @@
 @using Domain
 @using System.Net.Http
 @using DomainServices
+@using GameNight2.Models
 @model dynamic
 
 @inject IGameRepository _gameRepository;
@@ -65,40 +66,40 @@
 		<h3>Games</h3>
 		<table class="table table-striped">
 			<thead>
-				<tr>
-					<th>Game Title</th>
-					<th>More Info</th>
-				</tr>
+			<tr>
+				<th>Game Title</th>
+				<th>More Info</th>
+			</tr>
 			</thead>
 			<tbody>
-				@{
-					if (@Model.Night.Games.Count == 0)
-					{
-						<tr><td>No games</td><td></td></tr>
-					}
-					foreach (Game game in @Model.Night.Games)
-					{
-						<tr>
-							<td>@game.Name</td>
-							<td>
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal_@game.Id">More Info</button>
-								<div class="modal fade" id="gameModal_@game.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog modal-lg">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">@game.Name</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												@await Html.PartialAsync("~/Views/Game/GameDetails.cshtml", _gameRepository.GetGameById(@game.Id))
-											</div>
+			@{
+				if (@Model.Night.Games.Count == 0)
+				{
+					<tr><td>No games</td><td></td></tr>
+				}
+				foreach (Game game in @Model.Night.Games)
+				{
+					<tr>
+						<td>@game.Name</td>
+						<td>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal_@game.Id">More Info</button>
+							<div class="modal fade" id="gameModal_@game.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">@game.Name</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											@await Html.PartialAsync("~/Views/Game/GameDetails.cshtml", _gameRepository.GetGameById(@game.Id))
 										</div>
 									</div>
 								</div>
-							</td>
-						</tr>
-					}
+							</div>
+						</td>
+					</tr>
 				}
+			}
 			</tbody>
 		</table>
 	</section>
@@ -106,58 +107,60 @@
 		<h3>Snacks</h3>
 		<table class="table table-striped">
 			<thead>
-				<tr>
-					<th>Snack</th>
-					<th>Allergies</th>
-				</tr>
+			<tr>
+				<th>Snack</th>
+				<th>Allergies</th>
+			</tr>
 			</thead>
 			<tbody>
-				@{
-					if (@Model.Night.Snacks.Count == 0)
-					{
-						<tr><td>No snacks</td><td></td></tr>
-					}
-					foreach (Snack snack in @Model.Night.Snacks)
-					{
-						<tr>
-							<td>@snack.Name</td>
-							<td>
-								<i class="fa-solid fa-leaf @(snack.isVegan ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isVegan ? "Vegan" : "Not Vegan")"></i>
-								<i class="fa-solid fa-seedling @(snack.isVegatarian ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isVegatarian ? "Vegetarian" : "Not Vegetarian")"></i>
-								<i class="fa-solid fa-wine-glass @(snack.isAlcoholFree ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isAlcoholFree ? "Alcohol Free" : "Not Alcohol Free")"></i>
-								<i class="fa-solid fa-wheat-awn @(snack.isGlutenFree ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isGlutenFree ? "Gluten Free" : "Not Gluten Free")"></i>
-								<i class="fa-solid fa-cow @(snack.isLactoseFree ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isLactoseFree ? "Lactose Free" : "Not Lactose Free")"></i>
-								<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
-								   data-toggle="tooltip"
-								   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
-
-							</td>
-						</tr>
-					}
+			@{
+				if (@Model.Night.Snacks.Count == 0)
+				{
+					<tr><td>No snacks</td><td></td></tr>
 				}
+				foreach (Snack snack in @Model.Night.Snacks)
+				{
+					<tr>
+						<td>@snack.Name</td>
+						<td>
+							<i class="fa-solid fa-leaf @(snack.isVegan ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isVegan ? "Vegan" : "Not Vegan")"></i>
+							<i class="fa-solid fa-seedling @(snack.isVegatarian ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isVegatarian ? "Vegetarian" : "Not Vegetarian")"></i>
+							<i class="fa-solid fa-wine-glass @(snack.isAlcoholFree ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isAlcoholFree ? "Alcohol Free" : "Not Alcohol Free")"></i>
+							<i class="fa-solid fa-wheat-awn @(snack.isGlutenFree ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isGlutenFree ? "Gluten Free" : "Not Gluten Free")"></i>
+							<i class="fa-solid fa-cow @(snack.isLactoseFree ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isLactoseFree ? "Lactose Free" : "Not Lactose Free")"></i>
+							<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
+							   data-toggle="tooltip"
+							   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
+
+						</td>
+					</tr>
+				}
+			}
 			</tbody>
 		</table>
 		<a type="button" class="" data-bs-toggle="modal" data-bs-target="#allergyModal">Icons declaration</a>
 		@if (@Model.Night.TakeOwnSnacks)
 		{
-			<button class="btn btn-primary float-end">Add Snack</button>
+			<button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+				Add Snack
+			</button>
 		}
 
 		<div class="modal fade" id="allergyModal" tabindex="-1" aria-labelledby="allergyModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="allergyModalLabel">Allergy Icons Explanation</h1>
+						<h1 class="modal-title fs-5" id="allergyModalLabel">Allergy Icons</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -171,33 +174,69 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" id="addSnackModal" tabindex="-1" aria-labelledby="addSnackModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						@await Html.PartialAsync("~/Views/Snack/CreateSnack.cshtml", new NewSnackModel(@Model.Night.Id))
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveSnackBtn">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 	<section class="col">
 		<h3>Attendees</h3>
 		<table class="table table-striped">
 			<thead>
-				<tr>
-					<th>Attendee name</th>
-					<th>More Info</th>
-				</tr>
+			<tr>
+				<th>Attendee name</th>
+				<th>More Info</th>
+			</tr>
 			</thead>
 			<tbody>
-				@{
-					if (@Model.Night.Players.Count == 0)
-					{
-						<tr><td>No attendees</td><td></td></tr>
-					}
-					foreach (Person person in @Model.Night.Players)
-					{
-						<tr>
-							<td>@person.Email</td>
-							<td>
-								<button></button>
-							</td>
-						</tr>
-					}
+			@{
+				if (@Model.Night.Players.Count == 0)
+				{
+					<tr><td>No attendees</td><td></td></tr>
 				}
+				foreach (Person person in @Model.Night.Players)
+				{
+					<tr>
+						<td>@person.Email</td>
+						<td>
+							<button></button>
+						</td>
+					</tr>
+				}
+			}
 			</tbody>
 		</table>
 	</section>
 </div>
+<script>
+	document.getElementById('saveSnackBtn').addEventListener('click', async function () {
+		const addSnackForm = document.getElementById('createSnack');
+		const addSnackBtn = addSnackForm.querySelector('#addSnackBtn');
+		try {
+			const response = await fetch('/Snack/CreateSnack', {
+				method: 'POST',
+				body: new FormData(addSnackForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addSnackBtn.click();
+			} else {
+				$('#addSnackBtn').modal('hide');
+				location.reload();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+</script>
