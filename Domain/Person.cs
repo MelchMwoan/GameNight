@@ -17,6 +17,12 @@ namespace Domain
 		public Address Address { get; set; }
 		public List<Game>? Games { get; set; }
 		public List<Night>? Nights { get; set; }
+		public Boolean isVegan { get; set; }
+		public Boolean isAlcoholFree { get; set; }
+		public Boolean isVegatarian { get; set; }
+		public Boolean isGlutenFree { get; set; }
+		public Boolean isLactoseFree { get; set; }
+		public Boolean isNutsFree { get; set; }
 
 
 		public void addGame(Game game) { Games.Add(game); }

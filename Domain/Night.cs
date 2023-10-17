@@ -16,7 +16,7 @@ namespace Domain
 		public int PersonId { get; set; }
 		public Person Organisator { get; set; }
 		public List<Review> Reviews { get; set; }
-		public List<Snack> Snacks { get; set; }
+		public List<Snack> Snacks { get; set; } = new List<Snack>();
 		public bool TakeOwnSnacks { get; set; } = true;
 		public bool AdultOnly { get; set; } = false;
 		public string ThumbnailUrl { get; set; } = "https://s.yimg.com/ny/api/res/1.2/GjwW45jyFilXfDhM3Pl5rQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU-/https://media.zenfs.com/en/gobankingrates_644/4464a542bd2bf3c1300d1ae8de26441b";
