@@ -75,6 +75,37 @@
 				<label asp-for="Input.HouseNumber">HouseNumber</label>
 				<span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
 			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isVegan">Vegan</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isVegan"/>
+				<span asp-validation-for="Input.isVegan" class="text-danger"></span>
+			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isVegatarian">Vegetarian</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isVegatarian" />
+				<span asp-validation-for="Input.isVegatarian" class="text-danger"></span>
+			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isAlcoholFree">Alcohol Free</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isAlcoholFree" />
+				<span asp-validation-for="Input.isAlcoholFree" class="text-danger"></span>
+			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isGlutenFree">Gluten Free</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isGlutenFree" />
+				<span asp-validation-for="Input.isGlutenFree" class="text-danger"></span>
+			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isLactoseFree">Lactose Free</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isLactoseFree" />
+				<span asp-validation-for="Input.isLactoseFree" class="text-danger"></span>
+			</div>
+			<div class="form-check form-switch">
+				<label class="form-check-label" asp-for="Input.isNutsFree">Nuts Free</label>
+				<input class="form-check-input" type="checkbox" asp-for="Input.isNutsFree" />
+				<span asp-validation-for="Input.isNutsFree" class="text-danger"></span>
+			</div>
+			<br/>
 			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
 		</form>
 	</div>

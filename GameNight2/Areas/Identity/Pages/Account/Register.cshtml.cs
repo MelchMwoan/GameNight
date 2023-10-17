@@ -134,7 +134,13 @@ namespace GameNight2.Areas.Identity.Pages.Account
 		                    City = Input.City,
 		                    Street = Input.Street,
 		                    HouseNumber = Input.HouseNumber,
-	                    }
+	                    },
+                        isAlcoholFree = Input.isAlcoholFree,
+                        isGlutenFree = Input.isGlutenFree,
+                        isLactoseFree = Input.isLactoseFree,
+                        isNutsFree = Input.isNutsFree,
+                        isVegan = Input.isVegan,
+                        isVegatarian = Input.isVegatarian
                     };
 
                     //_controller.Register(gameNightUser);

@@ -30,5 +30,11 @@ namespace GameNight2.Models
 		public string City { get; set; }
 		public string Street { get; set; }
 		public int HouseNumber { get; set; }
+		public Boolean isVegan { get; set; }
+		public Boolean isAlcoholFree { get; set; }
+		public Boolean isVegatarian { get; set; }
+		public Boolean isGlutenFree { get; set; }
+		public Boolean isLactoseFree { get; set; }
+		public Boolean isNutsFree { get; set; }
 	}
 }
