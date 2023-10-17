@@ -6,6 +6,7 @@
 @model dynamic
 
 @inject IGameRepository _gameRepository;
+@inject IAccountRepository _accountRepository;
 
 @{
 	ViewBag.Title = "Night Details";
@@ -44,13 +45,41 @@
 				else
 				{
 					<br />
-					<form method="post" asp-controller="Night" asp-action="JoinNight">
-						<input type="hidden" name="nightId" value="@Model.Night.Id" />
-						<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
-					</form>
+					var person = _accountRepository.getAccount(User.Identity.Name);
+					List<Snack> snacks = Model.Night.Snacks;
+					if((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree))  || (person.isNutsFree && !snacks.Any(x => x.isNutsFree))  || (person.isVegan && !snacks.Any(x => x.isVegan))  || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
+					{
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
+							Join Night
+						</button>
+					}
+					else
+					{
+						<form method="post" asp-controller="Night" asp-action="JoinNight">
+							<input type="hidden" name="nightId" value="@Model.Night.Id" />
+							<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
+						</form>
+					}
 				}
 			}
 		}
+		<div class="modal fade" id="confirmJoinModal" tabindex="-1" aria-labelledby="confirmJoinModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="confirmJoinModalLabel">Confirm Participation</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>It looks like there won't be any snacks that will fit your preferences. Are you sure you want to join this night?</p>
+						<form method="post" asp-controller="Night" asp-action="JoinNight">
+							<input type="hidden" name="nightId" value="@Model.Night.Id" />
+							<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
 	<section class="col-3">
