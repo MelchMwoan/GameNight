@@ -108,31 +108,69 @@
 			<thead>
 				<tr>
 					<th>Snack</th>
-					<th>More Info</th>
+					<th>Allergies</th>
 				</tr>
 			</thead>
 			<tbody>
-			@{
-				if (@Model.Night.Snacks.Count == 0)
-				{
-					<tr><td>No snacks</td><td></td></tr>
+				@{
+					if (@Model.Night.Snacks.Count == 0)
+					{
+						<tr><td>No snacks</td><td></td></tr>
+					}
+					foreach (Snack snack in @Model.Night.Snacks)
+					{
+						<tr>
+							<td>@snack.Name</td>
+							<td>
+								<i class="fa-solid fa-leaf @(snack.isVegan ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isVegan ? "Vegan" : "Not Vegan")"></i>
+								<i class="fa-solid fa-seedling @(snack.isVegatarian ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isVegatarian ? "Vegetarian" : "Not Vegetarian")"></i>
+								<i class="fa-solid fa-wine-glass @(snack.isAlcoholFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isAlcoholFree ? "Alcohol Free" : "Not Alcohol Free")"></i>
+								<i class="fa-solid fa-wheat-awn @(snack.isGlutenFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isGlutenFree ? "Gluten Free" : "Not Gluten Free")"></i>
+								<i class="fa-solid fa-cow @(snack.isLactoseFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isLactoseFree ? "Lactose Free" : "Not Lactose Free")"></i>
+								<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
+
+							</td>
+						</tr>
+					}
 				}
-				foreach (Snack snack in @Model.Night.Snacks)
-				{
-					<tr>
-						<td>@snack.Name</td>
-						<td>
-							<button></button>
-						</td>
-					</tr>
-				}
-			}
 			</tbody>
 		</table>
+		<a type="button" class="" data-bs-toggle="modal" data-bs-target="#allergyModal">Icons declaration</a>
 		@if (@Model.Night.TakeOwnSnacks)
 		{
-			<button class="btn btn-primary">Add Snack</button>
+			<button class="btn btn-primary float-end">Add Snack</button>
 		}
+
+		<div class="modal fade" id="allergyModal" tabindex="-1" aria-labelledby="allergyModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="allergyModalLabel">Allergy Icons Explanation</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						Vegan: <i class='fa-solid fa-leaf'></i> <br />
+						Vegetarian: <i class='fa-solid fa-seedling'></i> <br />
+						Alcohol Free: <i class='fa-solid fa-wine-glass'></i> <br />
+						Gluten Free: <i class='fa-solid fa-wheat-awn'></i> <br />
+						Lactose Free: <i class='fa-solid fa-cow'></i> <br />
+						Nuts Free: <i class='fa-solid fa-cookie'></i> <br />
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 	<section class="col">
 		<h3>Attendees</h3>
