@@ -166,7 +166,13 @@ namespace GameNight2.Controllers
 		{
 			if (User.Identity.Name != null)
 			{
-				_nightRepository.joinNight(nightId, _accountRepository.getAccount(User.Identity.Name));
+				Person person = _accountRepository.getAccount(User.Identity.Name);
+				Night night = _nightRepository.getNightById(nightId).Night;
+				List<Night> joinedNights = _nightRepository.getJoinedNights(person.Id);
+				if (joinedNights.Any(x => x.DateTime.Date == night.DateTime.Date))
+					throw new Exception("Can't join 2 nights on the same day");
+				//TODO: error handling
+				_nightRepository.joinNight(nightId, person);
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
 			else

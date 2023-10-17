@@ -26,6 +26,7 @@ namespace Domain
 			if (Organisator.Email.Equals(player.Email)) throw new Exception("Can't join your own night");
 			if(Players.Count >= MaxPlayers) throw new Exception("The Night is already full");
 			if(AdultOnly && (DateTime.Now.Year - player.BirthDate.Year - (player.BirthDate.DayOfYear > DateTime.Now.DayOfYear ? 1 : 0)) < 18) throw new Exception("The Night is for adults only");
+			//TODO: error handling
 			Players.Add(player);
 		}
 
