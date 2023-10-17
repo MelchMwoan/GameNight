@@ -1,0 +1,17 @@
+﻿@model Domain.Snack
+
+@{
+	ViewBag.Title = "Snack Details";
+}
+
+<div class="row">
+	<div class="col-12">
+		<h2 class="mb-0">@Model.Name</h2>
+		Vegan: @(Model.isVegan ? "Yes" : "No")
+		Vegetarian: @(Model.isVegatarian ? "Yes" : "No")
+		Alcohol free: @(Model.isAlcoholFree ? "Yes" : "No")
+		Gluten free: @(Model.isGlutenFree ? "Yes" : "No")
+		Lactose free: @(Model.isLactoseFree ? "Yes" : "No")
+		Nuts free: @(Model.isNutsFree ? "Yes" : "No")
+	</div>
+</div>

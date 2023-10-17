@@ -1,0 +1,57 @@
+﻿@using Domain
+@model GameNight2.Models.NewSnackModel
+
+@{
+	ViewBag.Title = "Create Snack";
+}
+
+<partial name="_Validation" />
+<h2>@ViewBag.Title</h2>
+<div>
+	<div>
+		<form asp-action="CreateSnack" asp-controller="Snack" id="createSnack" method="post" class="row">
+			<h6>
+				<div class="form-group">
+					<label asp-for="Name">Name:</label>
+					<input class="form-control" asp-for="Name" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isVegan">Vegan</label>
+					<input class="form-check-input" type="checkbox" asp-for="isVegan" />
+					<span asp-validation-for="isVegan" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isVegatarian">Vegetarian</label>
+					<input class="form-check-input" type="checkbox" asp-for="isVegatarian" />
+					<span asp-validation-for="isVegatarian" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isAlcoholFree">Alcohol Free</label>
+					<input class="form-check-input" type="checkbox" asp-for="isAlcoholFree" />
+					<span asp-validation-for="isAlcoholFree" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isGlutenFree">Gluten Free</label>
+					<input class="form-check-input" type="checkbox" asp-for="isGlutenFree" />
+					<span asp-validation-for="isGlutenFree" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isLactoseFree">Lactose Free</label>
+					<input class="form-check-input" type="checkbox" asp-for="isLactoseFree" />
+					<span asp-validation-for="isLactoseFree" class="text-danger"></span>
+				</div>
+				<div class="form-check form-switch">
+					<label class="form-check-label" asp-for="isNutsFree">Nuts Free</label>
+					<input class="form-check-input" type="checkbox" asp-for="isNutsFree" />
+					<span asp-validation-for="isNutsFree" class="text-danger"></span>
+				</div>
+
+			</h6>
+
+			<div class="form-group col-8">
+				<button class="btn btn-primary col-sm-4 text-center mt-3 d-none" id="addSnackBtn">Add Snack</button>
+			</div>
+		</form>
+	</div>
+</div>
