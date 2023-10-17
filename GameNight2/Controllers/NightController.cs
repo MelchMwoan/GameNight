@@ -119,6 +119,7 @@ namespace GameNight2.Controllers
 				MaxPlayers = newNight.MaxPlayers,
 				ThumbnailUrl = newNight.ThumbnailUrl,
 				AdultOnly = newNight.AdultOnly,
+				TakeOwnSnacks = newNight.TakeOwnSnacks,
 				PersonId = _accountRepository.getAccount(User.Identity.Name).Id,
 				Games = _gameRepository.getGames().Where(x => newNight.SelectedGames.Contains(x.Id)).ToList()
 			};

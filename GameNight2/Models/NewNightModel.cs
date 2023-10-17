@@ -17,5 +17,7 @@ namespace GameNight2.Models
 		public Boolean AdultOnly { get; set; }
 		[Required(ErrorMessage = "Select at least 1 game")]
 		public List<int> SelectedGames { get; set; }
+
+		public Boolean TakeOwnSnacks { get; set; }
 	}
 }

@@ -60,6 +60,12 @@
 					<input asp-for="AdultOnly" class="form-check-input" />
 					<span asp-validation-for="AdultOnly" class="text-danger"></span>
 				</div>
+
+				<div class="form-group">
+					<label asp-for="TakeOwnSnacks">Guests bring snacks:</label>
+					<input asp-for="TakeOwnSnacks" class="form-check-input" checked />
+					<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
+				</div>
 			</div>
 			<div class="col-4">
 				<h4>Thumbnail Preview:</h4>
