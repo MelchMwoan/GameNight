@@ -23,6 +23,7 @@ builder.Services.AddDefaultIdentity<GameNight2User>(options =>
 builder.Services.AddScoped<INightRepository, NightEFRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountEFRepository>();
 builder.Services.AddScoped<IGameRepository, GameEFRepository>();
+builder.Services.AddScoped<ISnackRepository, SnackEFRepository>();
 
 //builder.Services.AddAuthentication().AddIdentityServerJwt();
 
