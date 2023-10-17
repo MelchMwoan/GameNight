@@ -1,7 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using DomainServices
+@using Domain
+@inject IAccountRepository _accountRepository;
+@inject INightRepository _nightRepository;
+@{
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-	<h1 class="display-4">Welcome</h1>
-</div>
+<section class="row mb-5">
+	<div class="col-7">
+		@if (User.Identity.Name != null)
+		{
+			<h1>Welcome back @_accountRepository.getAccount(User.Identity.Name).RealName.Split(" ")[0]</h1>
+		}
+		else
+		{
+			<h1>Welcome</h1>
+		}
+		<p>
+			Welcome to GameNight, an initiative by Avans Hogeschool and TaalSchool Nederland. Our goal is to help immigrants who want to learn the Dutch language by making the learning process enjoyable through game nights. During these nights, you'll be speaking Dutch while playing fun "gezelligheidsspelletjes."
+
+			On this website, you can either host one of these game nights or join an existing one. So, what are we waiting for?
+		</p>
+		<button asp-action="Nights" asp-controller="Night" class="btn btn-warning">Let's search a GameNight!</button>
+	</div>
+	<div class="col-5 d-flex">
+		<img class="img img-fluid my-auto" src="images/GameNightWidePng.png" />
+	</div>
+</section>
+<hr />
+
+<section class="row mt-4">
+	<h2>Upcoming Nights</h2>
+	<div class="col">
+		<table class="table table-striped" id="nightList">
+			<thead>
+			<tr>
+				<th scope="col">Title</th>
+				<th scope="col">Date</th>
+				<th scope="col">Host</th>
+				<th scope="col">More Info</th>
+			</tr>
+			</thead>
+			<tbody>
+			@{
+				foreach (Night night in _nightRepository.getNights().Where(x => x.DateTime > DateTime.Now).OrderBy(x => x.DateTime).Take(10))
+				{
+					<tr>
+						<th>@night.Title</th>
+							<td>@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@night.DateTime.ToString("f"))
+
+						</td>
+						<td>@night.Organisator?.RealName</td>
+						<td><a class="btn btn-primary" asp-controller="Night" asp-action="NightDetails" asp-route-Id="@night.Id">More Info</a></td>
+					</tr>
+				}
+			}
+			</tbody>
+		</table>
+	</div>
+</section>
