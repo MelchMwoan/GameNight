@@ -12,6 +12,9 @@ namespace DomainServices
 	{
 		List<Snack> getSnacks();
 		Snack? getSnackById(int id);
+		List<Snack> getSnackByNight(int nightId);
+		List<Snack> getSnackByPerson(int personId);
+		void setSnackNight(int snackId, Night night);
 		void addSnack(Snack snack);
 		void removeSnack(Snack snack);
 	}

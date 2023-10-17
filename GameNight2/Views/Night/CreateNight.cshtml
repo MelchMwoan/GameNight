@@ -4,6 +4,8 @@
 @using Microsoft.CodeAnalysis
 @model GameNight2.Models.NewNightModel
 @inject IGameRepository _gameRepository
+@inject ISnackRepository _snackRepository
+@inject IAccountRepository _accountRepository
 
 
 @{
@@ -73,6 +75,27 @@
 			</div>
 
 			@* Add Snacks list *@
+			<div class="col-6">
+				<h4>Snacks:</h4>
+
+				<span asp-validation-for="SelectedSnacks" class="text-danger"></span>
+				<ul class="list-group h-100" id="snackList">
+					@{
+						foreach (Snack snack in _snackRepository.getSnackByPerson(_accountRepository.getAccount(User.Identity.Name).Id))
+						{
+							<li class="list-group-item">
+								<div class="form-group">
+									<input class="form-check-input me-1" type="checkbox" name="SelectedSnacks" value="@snack.Id">
+									<label class="form-check-label" for="@snack.Id">@snack.Name</label>
+								</div>
+							</li>
+						}
+					}
+				</ul>
+				<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+					Add Snack
+				</button>
+			</div>
 
 			@* Add Games List *@
 			<div class="col-6">
@@ -113,6 +136,19 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" id="saveGameBtn">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addSnackModal" tabindex="-1" aria-labelledby="addSnackModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						@await Html.PartialAsync("~/Views/Snack/CreateSnack.cshtml", new NewSnackModel())
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveSnackBtn">Save changes</button>
 					</div>
 				</div>
 			</div>
@@ -183,6 +219,26 @@
 				addNightBtn.click();
 			} else {
 				$('#addGameModal').modal('hide');
+				saveFormData();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+	document.getElementById('saveSnackBtn').addEventListener('click', async function () {
+		const addSnackForm = document.getElementById('createSnack');
+		const addSnackBtn = addSnackForm.querySelector('#addSnackBtn');
+		try {
+			const response = await fetch('/Snack/CreateSnack', {
+				method: 'POST',
+				body: new FormData(addSnackForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addSnackBtn.click();
+			} else {
+				$('#addSnackBtn').modal('hide');
 				saveFormData();
 			}
 

@@ -29,6 +29,23 @@ namespace Infrastructure.EF
 			return _dbContext.Snacks.FirstOrDefault(x => x.Id == id);
 		}
 
+		public List<Snack> getSnackByNight(int nightId)
+		{
+			return _dbContext.Snacks.Where(x => x.night.Id == nightId).ToList();
+		}
+
+		public List<Snack> getSnackByPerson(int personId)
+		{
+			return _dbContext.Snacks.Where(x => x.personId == personId && x.nightId == null).ToList();
+		}
+
+		public void setSnackNight(int snackId, Night night)
+		{
+			Snack snack = getSnackById(snackId);
+			snack.SetNight(night);
+			_dbContext.SaveChanges();
+		}
+
 		public void addSnack(Snack snack)
 		{
 			_dbContext.Snacks.Add(snack);

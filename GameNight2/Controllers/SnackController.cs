@@ -16,13 +16,15 @@ namespace GameNight2.Controllers
 		private ISnackRepository _snackRepository;
 		private UserManager<GameNight2User> _userManager;
 		private IAccountRepository _accountRepository;
+		private INightRepository _nightRepository;
 
-		public SnackController(ILogger<SnackController> logger, ISnackRepository snackRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository)
+		public SnackController(ILogger<SnackController> logger, ISnackRepository snackRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository, INightRepository nightRepository)
 		{
 			_snackRepository = snackRepository;
 			_logger = logger;
 			_userManager = userManager;
 			_accountRepository = accountRepository;
+			_nightRepository = nightRepository;
 		}
 
 		public List<Snack> GetSnacks()
@@ -47,6 +49,23 @@ namespace GameNight2.Controllers
 		//	_gameRepository.addGame(game);
 		//	return Ok();
 		//}
+		[HttpPost]
+		public IActionResult CreateSnack(NewSnackModel snackModel)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(new
+				{
+					success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+				});
+			}
+
+			Snack snack = snackModel.getSnack();
+			snack.person = _accountRepository.getAccount(User.Identity.Name);
+			_snackRepository.addSnack(snack);
+			return Ok();
+
+		}
 
 		public IActionResult SnackDetails(int Id)
 		{

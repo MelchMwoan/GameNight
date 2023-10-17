@@ -113,14 +113,14 @@
 			</thead>
 			<tbody>
 			@{
-				if (@Model.Night.Games.Count == 0)
+				if (@Model.Night.Snacks.Count == 0)
 				{
 					<tr><td>No snacks</td><td></td></tr>
 				}
-				foreach (Game game in @Model.Night.Games)
+				foreach (Snack snack in @Model.Night.Snacks)
 				{
 					<tr>
-						<td>@game.Name</td>
+						<td>@snack.Name</td>
 						<td>
 							<button></button>
 						</td>

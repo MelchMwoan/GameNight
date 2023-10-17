@@ -18,14 +18,16 @@ namespace GameNight2.Controllers
 		private UserManager<GameNight2User> _userManager;
 		private IAccountRepository _accountRepository;
 		private IGameRepository _gameRepository;
+		private ISnackRepository _snackRepository;
 
-		public NightController(ILogger<NightController> logger, INightRepository nightRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository, IGameRepository gameRepository)
+		public NightController(ILogger<NightController> logger, INightRepository nightRepository, UserManager<GameNight2User> userManager, IAccountRepository accountRepository, IGameRepository gameRepository, ISnackRepository snackRepository)
 		{
 			_nightRepository = nightRepository;
 			_logger = logger;
 			_userManager = userManager;
 			_accountRepository = accountRepository;
 			_gameRepository = gameRepository;
+			_snackRepository = snackRepository;
 		}
 
 		public IActionResult Nights()
@@ -126,7 +128,15 @@ namespace GameNight2.Controllers
 			{
 				night.AddGame(game);
 			});
+			_snackRepository.getSnacks().Where(x => newNight.SelectedSnacks.Contains(x.Id)).ToList().ForEach(snack =>
+			{
+				night.AddSnack(snack);
+			});
 			_nightRepository.addNight(night);
+			newNight.SelectedSnacks.ForEach(snackId =>
+			{
+				_snackRepository.setSnackNight(snackId, night);
+			});
 			return RedirectToAction("NightDetails");
 		}
 

@@ -13,5 +13,19 @@ namespace GameNight2.Models
 		public Boolean isGlutenFree { get; set; }
 		public Boolean isLactoseFree { get; set; }
 		public Boolean isNutsFree { get; set; }
+
+		public Snack getSnack()
+		{
+			return new Snack()
+			{
+				Name = this.Name,
+				isVegan = this.isVegan,
+				isAlcoholFree = this.isAlcoholFree,
+				isVegatarian = this.isVegatarian,
+				isGlutenFree = this.isGlutenFree,
+				isLactoseFree = this.isLactoseFree,
+				isNutsFree = this.isNutsFree
+			};
+		}
 	}
 }

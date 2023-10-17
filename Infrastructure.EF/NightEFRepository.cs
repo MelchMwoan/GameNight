@@ -34,6 +34,7 @@ namespace Infrastructure.EF
 			return _dbContext.Nights
 				.Include(night => night.Players)
 				.Include(night => night.Games)
+				.Include(night => night.Snacks)
 				.Include(night => night.Organisator)
 				.ThenInclude(person => person.Address)
 				.Join(
