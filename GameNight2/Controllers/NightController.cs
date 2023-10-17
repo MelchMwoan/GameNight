@@ -120,9 +120,12 @@ namespace GameNight2.Controllers
 				ThumbnailUrl = newNight.ThumbnailUrl,
 				AdultOnly = newNight.AdultOnly,
 				TakeOwnSnacks = newNight.TakeOwnSnacks,
-				PersonId = _accountRepository.getAccount(User.Identity.Name).Id,
-				Games = _gameRepository.getGames().Where(x => newNight.SelectedGames.Contains(x.Id)).ToList()
+				PersonId = _accountRepository.getAccount(User.Identity.Name).Id
 			};
+			_gameRepository.getGames().Where(x => newNight.SelectedGames.Contains(x.Id)).ToList().ForEach(game =>
+			{
+				night.AddGame(game);
+			});
 			_nightRepository.addNight(night);
 			return RedirectToAction("NightDetails");
 		}

@@ -11,7 +11,7 @@ namespace Domain
 		public int Id { get; set; }
 		public DateTime DateTime { get; set; }
 		public int MaxPlayers { get; set; }
-		public List<Game> Games { get; set; }
+		public List<Game> Games { get; set; } = new List<Game>();
 		public List<Person> Players { get; set; } = new List<Person>();
 		public int PersonId { get; set; }
 		public Person Organisator { get; set; }
@@ -29,7 +29,11 @@ namespace Domain
 			Players.Add(player);
 		}
 
-		public void AddGame(Game game) { Games.Add(game); }
+		public void AddGame(Game game)
+		{
+			Games.Add(game);
+			if(game.Is18Plus) AdultOnly = true;
+		}
 
 		public void AddReview(Review review) { Reviews.Add(review); }
 
