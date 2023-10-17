@@ -71,46 +71,53 @@
 			@* Add Games List *@
 			<div class="col-6">
 				<h4>Games:</h4>
-				@* <form>
-					<input type="search"/>
-				</form> *@
+
 				<span asp-validation-for="SelectedGames" class="text-danger"></span>
 				<ul class="list-group" id="gameList">
 					@{
 						foreach (Game game in _gameRepository.getGames())
 						{
-									<li class="list-group-item">
-										<div class="form-group">
-											<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id">
-											<label class="form-check-label" for="@game.Id">@game.Name</label>
-										</div>
-									</li>
+							<li class="list-group-item">
+								<div class="form-group">
+									<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id">
+									<label class="form-check-label" for="@game.Id">@game.Name</label>
+								</div>
+							</li>
 						}
 					}
 				</ul>
-				<button id="refreshGames" type="button" class="btn btn-secondary" >
-					Refresh Games
-				</button>
-				<a type="button" class="btn btn-success" asp-controller="Game" asp-action="CreateGame" target="_blank">
+				<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGameModal">
 					Add Game
-				</a>
+				</button>
 			</div>
+
+
 
 			<div class="form-group col-8">
 				<button class="btn btn-primary col-sm-4 text-center mt-3">Add Night</button>
-				<a class="btn btn-danger col-sm-4 text-center mt-3 float-end" asp-action="Index" asp-controller="Home">Cancel</a>
+				<a class="btn btn-danger col-sm-4 text-center mt-3 float-end" href="javascript:history.go(-1)">Cancel</a>
 			</div>
 		</form>
+		<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						@await Html.PartialAsync("~/Views/Game/CreateGame.cshtml", new NewGameModel())
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveGameBtn">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <script>
-	document.getElementById('refreshGames').addEventListener('click', saveFormData);
 	function saveFormData() {
-		const form = document.forms[0]; // Assuming it's the first form on the page
+		const form = document.forms[0];
 		const formData = new FormData(form);
 		const formDataObject = Object.fromEntries(formData);
-
-		// Handle checkboxes separately by converting them to arrays
 		const checkboxes = form.querySelectorAll('input[type="checkbox"]');
 		checkboxes.forEach((checkbox) => {
 			formDataObject[checkbox.name] = Array.from(formData.getAll(checkbox.name));
@@ -132,10 +139,9 @@
 	function loadFormData() {
 		const formData = localStorage.getItem('formData');
 		if (formData) {
-			const form = document.forms[0]; // Assuming it's the first form on the page
+			const form = document.forms[0];
 			const formDataObject = JSON.parse(formData);
 
-			// Populate form fields with data from localStorage
 			for (const key in formDataObject) {
 				const input = form.querySelector(`[name="${key}"]`);
 				if (input) {
@@ -152,9 +158,33 @@
 					}
 				}
 			}
+			localStorage.removeItem('formData');
 			updateThumbnail();
+
 		}
 	}
-	window.addEventListener('load', loadFormData);
 
+	document.getElementById('saveGameBtn').addEventListener('click', async function () {
+		const addGameForm = document.getElementById('createGame');
+		const addNightBtn = addGameForm.querySelector('#addGameBtn');
+		try {
+			const response = await fetch('/Game/CreateGame', {
+				method: 'POST',
+				body: new FormData(addGameForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addNightBtn.click();
+			} else {
+				$('#addGameModal').modal('hide');
+				saveFormData();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+
+	window.addEventListener('load', loadFormData);
+	updateThumbnail();
 </script>

@@ -38,13 +38,15 @@ namespace GameNight2.Controllers
 		}
 
 		[HttpPost]
-		public void CreateGame(NewGameModel gameModel)
+		public IActionResult CreateGame(NewGameModel gameModel)
 		{
-			if(!ModelState.IsValid) View(gameModel);
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+			};
 			Game game = gameModel.getGame();
-
 			_gameRepository.addGame(game);
-			View();
+			return Ok();
 		}
 	}
 }
