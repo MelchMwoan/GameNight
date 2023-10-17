@@ -38,17 +38,6 @@ namespace GameNight2.Controllers
 			return View();
 		}
 
-		//[HttpPost]
-		//public IActionResult CreateGame(NewGameModel gameModel)
-		//{
-		//	if (!ModelState.IsValid)
-		//	{
-		//		return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
-		//	};
-		//	Game game = gameModel.getGame();
-		//	_gameRepository.addGame(game);
-		//	return Ok();
-		//}
 		[HttpPost]
 		public IActionResult CreateSnack(NewSnackModel snackModel)
 		{
@@ -78,6 +67,12 @@ namespace GameNight2.Controllers
 			Snack snack = _snackRepository.getSnackById(Id);
 			if (snack != null) return View(snack);
 			return RedirectToAction("Index", "Home");
+		}
+		public IActionResult RemoveSnack(int snackId)
+		{
+			Snack snack =_snackRepository.getSnackById(snackId);
+			_snackRepository.removeSnack(snack);
+			return RedirectToAction("NightDetails", "Night", new { id = snack.nightId});
 		}
 	}
 }

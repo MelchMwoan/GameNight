@@ -47,7 +47,12 @@
 					<br />
 					var person = _accountRepository.getAccount(User.Identity.Name);
 					List<Snack> snacks = Model.Night.Snacks;
-					if((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree))  || (person.isNutsFree && !snacks.Any(x => x.isNutsFree))  || (person.isVegan && !snacks.Any(x => x.isVegan))  || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
+					if (@Model.Night.TakeOwnSnacks && !snacks.Any(x => x.personId == person.Id))
+					{
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
+							Join Night
+						</button>
+					} else if((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree))  || (person.isNutsFree && !snacks.Any(x => x.isNutsFree))  || (person.isVegan && !snacks.Any(x => x.isVegan))  || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
 					{
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
 							Join Night
@@ -71,11 +76,27 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>It looks like there won't be any snacks that will fit your preferences. Are you sure you want to join this night?</p>
+						<p>It looks like there won't be any snacks that will fit your snack preferences. Are you sure you want to join this night?</p>
 						<form method="post" asp-controller="Night" asp-action="JoinNight">
 							<input type="hidden" name="nightId" value="@Model.Night.Id" />
 							<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
 						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addMealJoinModal" tabindex="-1" aria-labelledby="addMealJoinModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="addMealJoinModalLabel">Confirm Participation</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>The host of this night wants every attendee to bring his own snack and you haven't submitted any snack yet.</p>
+						<button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+							Add Snack
+						</button>
 					</div>
 				</div>
 			</div>
@@ -170,7 +191,16 @@
 							<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
 							   data-toggle="tooltip"
 							   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
-
+							@{
+								var person = _accountRepository.getAccount(User.Identity.Name);
+								if (snack.personId == person.Id)
+								{
+									<form method="post" class="d-inline" asp-controller="Snack" asp-action="RemoveSnack">
+										<input type="hidden" name="snackId" value="@snack.Id" />
+										<button class="btn btn-danger btn-sm float-end"><i class="fa-solid fa-trash"></i></button>
+									</form>
+								}
+							   }
 						</td>
 					</tr>
 				}
