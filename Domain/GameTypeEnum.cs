@@ -2,8 +2,13 @@
 {
 	public enum GameTypeEnum
 	{
-		CardGame,
-		BoardGame,
-		DigitalGame
+		Card,
+		Board,
+		Dice,
+		Video,
+		Sport,
+		Tabletop,
+		Arcade,
+		Digital
 	}
 }
