@@ -1,0 +1,19 @@
+﻿@model Domain.Game
+
+@{
+	ViewBag.Title = "title";
+}
+
+<div class="row">
+	<div class="col-12 col-md-8">
+		<h2 class="mb-0">@Model.Name</h2>
+		<p class="mb-2">Version: @Model.Version</p>
+		<h6>Genre: @Model.Genre<br /> Game Type: @Model.Type<br />Adult Only: @(Model.Is18Plus ? "Yes" : "No")</h6>
+		<p>@Model.Description</p>
+	</div>
+	<div class="col-12 col-md-4 ">
+		<div class="">
+			<img src="@Model.ImageUrl" class="img img-thumbnail img-fluid" alt="ThumbnailGame_@Model.Id" />
+		</div>
+	</div>
+</div>

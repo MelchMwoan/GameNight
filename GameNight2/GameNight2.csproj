@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Game\GameDetails.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\Nights.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Night\GetHostedNights.cshtml" />
   </ItemGroup>
@@ -41,6 +42,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Night\GetHostedNights.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Game\GameDetails.cshtml" />
   </ItemGroup>
 
 </Project>

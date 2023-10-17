@@ -48,5 +48,12 @@ namespace GameNight2.Controllers
 			_gameRepository.addGame(game);
 			return Ok();
 		}
+
+		public IActionResult GameDetails(int Id)
+		{
+			Game game = _gameRepository.GetGameById(Id);
+			if(game != null) return View(game);
+			return RedirectToAction("Index", "Home");
+		}
 	}
 }
