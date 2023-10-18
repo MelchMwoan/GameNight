@@ -43,14 +43,16 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+        
+      - name: List files in workspace
+        run: ls $GITHUB_WORKSPACE/SQLData
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-      - name: List files in workspace
-        run: ls $GITHUB_WORKSPACE
 
       - name: Publish SQL Script
         uses: actions/upload-artifact@v2
