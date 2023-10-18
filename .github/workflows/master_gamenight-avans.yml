@@ -47,19 +47,12 @@ jobs:
         
       - name: List files in workspace
         run: ls $GITHUB_WORKSPACE/SQLData
-
-      - name: Print Current Directory
-        run: pwd
-
-      - name: Debug SQLData Contents
-        run: ls -R $GITHUB_WORKSPACE/SQLData
-
         
       - name: Publish SQL Script
         uses: actions/upload-artifact@v2
         with:
           name: SQLScripts
-          path: $GITHUB_WORKSPACE/SQLData/db.sql
+          path: ${{github.workspace}}/SQLData/db.sql
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
