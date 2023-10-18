@@ -45,21 +45,19 @@ jobs:
         
       - name: List files in workspace
         run: ls $GITHUB_WORKSPACE/SQLData
+        
+      - name: Publish SQL Script
+        uses: actions/upload-artifact@v2
+        with:
+          name: SQLScripts
+          path: $GITHUB_WORKSPACE/SQLData/db.sql
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-
-      - uses: actions/checkout@v2
-
-
-      - name: Publish SQL Script
-        uses: actions/upload-artifact@v2
-        with:
-          name: SQLScripts
-          path: $GITHUB_WORKSPACE/SQLData/db.sql
+          
   # publish pipeline artifact: 
   # file path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
   # artifact name: SQLScripts
