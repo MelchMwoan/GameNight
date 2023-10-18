@@ -78,8 +78,9 @@ jobs:
       - name: Deploy db
         uses: azure/sql-action@v2.2
         with:
-          connection-string: Server=tcp:gamenightavans.database.windows.net,1433;Initial Catalog=GameNightDb;Persist Security Info=False;User ID=GameNight;Password=Admin123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-          path: $(System.DefaultWorkingDirectory)/_app/SQLData/db.sql
+          connection-string: ${{secrets.CONNECTIONSTRINGDB}}
+          path: ${{github.workspace}}/SQLData/db.sql
+          # /home/runner/work/GameNight/GameNight/SQLData/db.sql
   
   # dazure SQL Database deployment
   # Azure Service Connection Type: Azure Resource Manager
