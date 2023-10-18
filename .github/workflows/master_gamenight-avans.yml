@@ -42,7 +42,6 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
         
       - name: List files in workspace
         run: ls $GITHUB_WORKSPACE/SQLData
@@ -52,6 +51,8 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+
+      - uses: actions/checkout@v2
 
 
       - name: Publish SQL Script
