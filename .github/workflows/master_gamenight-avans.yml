@@ -36,8 +36,7 @@ jobs:
 
       - name: Create SQL scripts
         run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
-        # custom command: dotnet-ef migrations script --project $(Build.SourcesDirectory)/GameNight2/GameNight2/GameNight2.csproj --output $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql --idempotent --context GameNightDbContext
-
+       
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
         
@@ -91,13 +90,3 @@ jobs:
         with:
           connection-string: ${{secrets.CONNECTIONSTRINGDB}}
           path: ${{github.workspace}}/db.sql
-          # /home/runner/work/GameNight/GameNight/SQLData/db.sql
-  
-  # dazure SQL Database deployment
-  # Azure Service Connection Type: Azure Resource Manager
-  # Azure Subscription: <SubscriptionId>
-  # Authentication Type: Connection String
-  # Connection String: <Connectino string>
-  # Deployment Package:
-  #     Deploy Type: Sql Script File
-  #     Sql Script: $(System.DefaultWorkingDirecotry)/_app/SQLData/db.sql
