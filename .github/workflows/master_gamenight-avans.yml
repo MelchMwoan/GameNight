@@ -35,6 +35,8 @@ jobs:
         run: dotnet build --configuration Release
 
         #tests
+      - name: List files in workspace
+        run: ls $GITHUB_WORKSPACE/SQLData
 
       - name: Create SQL scripts
         run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
