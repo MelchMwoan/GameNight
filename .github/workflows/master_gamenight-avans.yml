@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: SQLScripts
-          path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
+          path: $GITHUB_WORKSPACE/SQLData/db.sql
   # publish pipeline artifact: 
   # file path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
   # artifact name: SQLScripts
