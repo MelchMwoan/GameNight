@@ -19,7 +19,6 @@ jobs:
   
       - name: Create Manifest File
         run: dotnet new tool-manifest
-        # custom command: dotnet new tool-manifest
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -29,14 +28,11 @@ jobs:
 
       - name: Install EF Tool
         run: dotnet tool install --global dotnet-ef
-        # custom command: tool install dotnet-ef
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
         #tests
-      - name: List files in workspace
-        run: ls $GITHUB_WORKSPACE/SQLData
 
       - name: Create SQL scripts
         run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
@@ -44,9 +40,6 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-        
-      - name: List files in workspace
-        run: ls $GITHUB_WORKSPACE/SQLData
         
       - name: Publish SQL Script
         uses: actions/upload-artifact@v2
@@ -59,11 +52,6 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-          
-  # publish pipeline artifact: 
-  # file path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
-  # artifact name: SQLScripts
-  # Artifact publish location: Azure Pipelines
 
   deploy:
     runs-on: ubuntu-latest
