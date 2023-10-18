@@ -37,7 +37,7 @@ jobs:
         #tests
 
       - name: Create SQL scripts
-        run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/GameNight2/SQLData/db.sql --idempotent --context GameNightDbContext
+        run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
         # custom command: dotnet-ef migrations script --project $(Build.SourcesDirectory)/GameNight2/GameNight2/GameNight2.csproj --output $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql --idempotent --context GameNightDbContext
 
       - name: dotnet publish
