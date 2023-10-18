@@ -49,6 +49,9 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
+      - name: List files in workspace
+        run: ls $GITHUB_WORKSPACE
+
       - name: Publish SQL Script
         uses: actions/upload-artifact@v2
         with:
