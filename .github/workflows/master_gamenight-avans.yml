@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - PipeLine
   workflow_dispatch:
 
 jobs:
@@ -15,6 +16,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+  
+      - name: Create Manifest File
+        run: dotnet new tool-manifest
+        # custom command: dotnet new tool-manifest
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -22,8 +27,18 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
+      - name: Install EF Tool
+        run: dotnet tool install --global dotnet-ef
+        # custom command: tool install dotnet-ef
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
+
+        #tests
+
+      - name: Create SQL scripts
+        run: dotnet-ef migrations script --project $(Build.SourcesDirectory)/GameNight2/GameNight2/GameNight2.csproj --output $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql --idempotent --context GameNightDbContext
+        # custom command: dotnet-ef migrations script --project $(Build.SourcesDirectory)/GameNight2/GameNight2/GameNight2.csproj --output $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql --idempotent --context GameNightDbContext
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -33,6 +48,16 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Publish SQL Script
+        uses: actions/upload-artifact@v2
+        with:
+          name: SQLScripts
+          path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
+  # publish pipeline artifact: 
+  # file path: $(Build.SourcesDirectory)/GameNight2/SQLData/db.sql
+  # artifact name: SQLScripts
+  # Artifact publish location: Azure Pipelines
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,3 +80,18 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
           package: .
+
+      - name: Deploy db
+        uses: azure/sql-action@v2.2
+        with:
+          connection-string: Server=tcp:gamenightavans.database.windows.net,1433;Initial Catalog=GameNightDb;Persist Security Info=False;User ID=GameNight;Password=Admin123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+          path: $(System.DefaultWorkingDirectory)/_app/SQLData/db.sql
+  
+  # dazure SQL Database deployment
+  # Azure Service Connection Type: Azure Resource Manager
+  # Azure Subscription: <SubscriptionId>
+  # Authentication Type: Connection String
+  # Connection String: <Connectino string>
+  # Deployment Package:
+  #     Deploy Type: Sql Script File
+  #     Sql Script: $(System.DefaultWorkingDirecotry)/_app/SQLData/db.sql
