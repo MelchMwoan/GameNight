@@ -36,6 +36,9 @@ jobs:
 
       - name: Create SQL scripts
         run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
+
+      - name: Create SQL script Security
+        run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/dbSecurity.sql --idempotent --context AccountDbContext
        
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -45,6 +48,12 @@ jobs:
         with:
           name: SQLScripts
           path: ${{github.workspace}}/SQLData/db.sql
+
+      - name: Publish SQL Script Security
+        uses: actions/upload-artifact@v2
+        with:
+          name: SQLScripts
+          path: ${{github.workspace}}/SQLData/dbSecurity.sql
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -74,19 +83,19 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
           package: .
 
-      - name: Debug SQLData Contents
-        run: ls -R $GITHUB_WORKSPACE
-
       - name: Download artifact from SQLScript
         uses: actions/download-artifact@v2
         with:
           name: SQLScripts
-
-      - name: Debug SQLData Contents
-        run: ls -R $GITHUB_WORKSPACE
 
       - name: Deploy db
         uses: azure/sql-action@v2.2
         with:
           connection-string: ${{secrets.CONNECTIONSTRINGDB}}
           path: ${{github.workspace}}/db.sql
+          
+      - name: Deploy db
+        uses: azure/sql-action@v2.2
+        with:
+          connection-string: ${{secrets.CONNECTIONSTRINGDBSECURITY}}
+          path: ${{github.workspace}}/dbSecurity.sql
