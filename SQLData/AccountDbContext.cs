@@ -24,6 +24,7 @@ public class AccountDbContext : IdentityDbContext<GameNight2User>
 		var configuration = new ConfigurationBuilder()
 			.SetBasePath(Directory.GetCurrentDirectory())
 			.AddJsonFile("appsettings.json")
+			.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
 			.Build();
 		var connectionString = configuration.GetConnectionString("AccountDbContextConnection");
 		//optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=GameNightAccounts;Trusted_Connection=True;");
