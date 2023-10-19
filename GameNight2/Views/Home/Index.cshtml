@@ -55,7 +55,17 @@
 						<td><a class="btn btn-primary" asp-controller="Night" asp-action="NightDetails" asp-route-Id="@night.Id">More Info</a></td>
 					</tr>
 				}
+				if (!_nightRepository.getNights().Any(x => x.DateTime > DateTime.Now))
+				{
+					<tr>
+						<td>There aren't any upcoming nights</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				}
 			}
+
 			</tbody>
 		</table>
 	</div>
