@@ -28,7 +28,7 @@ namespace Domain.Tests
 
 			//Assert
 			Exception exception = Assert.Throws<Exception>(act);
-			Assert.Equal("Can't join you own night", exception.Message);
+			Assert.Equal("Can't join your own night", exception.Message);
 		}
 	}
 }
