@@ -6,9 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - GameNight-Avans
 on:
   push:
     branches:
-      - master
-      - PipeLine
-      - TestBranch
+      - "*"
   workflow_dispatch:
 
 jobs:
