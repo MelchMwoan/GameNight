@@ -8,12 +8,25 @@ on:
     branches:
       - master
       - PipeLine
+      - TestBranch
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build
+      - name: Run tests
+        run: dotnet test
+
   build:
     runs-on: ubuntu-latest
-
+    needs: test
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
   
@@ -31,8 +44,6 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
-
-        #tests
 
       - name: Create SQL scripts
         run: dotnet-ef migrations script --project $GITHUB_WORKSPACE/GameNight2/GameNight2.csproj --output $GITHUB_WORKSPACE/SQLData/db.sql --idempotent --context GameNightDbContext
