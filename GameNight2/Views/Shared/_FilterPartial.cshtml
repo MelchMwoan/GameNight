@@ -5,8 +5,12 @@
 		<label asp-for="Name">Titel:</label>
 		<input class="form-control" asp-for="Name" type="search" placeholder="Search..." />
 	</div>
-	<div class="w-100">
-		<button class="btn btn-primary">Apply</button>
-		<button class="btn btn-outline-secondary" asp-controller="Night" asp-action="Nights">Reset</button>
+	<div class="form-group row mt-1">
+			<div class="col-6 pe-1">
+				<button class="btn btn-primary w-100">Apply</button>
+			</div>
+			<div class="col-6 ps-1">
+				<button class="btn btn-outline-secondary w-100" asp-controller="Night" asp-action="Nights">Reset</button>
+			</div>
 	</div>
 </form>
