@@ -117,6 +117,7 @@ namespace GameNight2.Controllers
 			var night = new Night
 			{
 				Title = newNight.Title,
+				Description = newNight.Description,
 				DateTime = newNight.DateTime,
 				MaxPlayers = newNight.MaxPlayers,
 				ThumbnailUrl = newNight.ThumbnailUrl,
