@@ -1,13 +1,19 @@
 :root {
-    --bs-body-bg: #ffeeb2;
+    --bs-body-bg: #feeeb3;
+    /*FFF4B3*/
 }
 
 .btn-primary {
-    background-color: #ff0f00;
-    border-color: #ff0f00;
+    background-color: #273DFF;
+    border-color: #273DFF;
 }
 
-.btn-primary:hover {
-    background-color: #8c0800;
-    border-color: #8c0800;
+    .btn-primary:hover {
+        background-color: #ff0f00;
+        border-color: #ff0f00;
+    }
+
+h1, h2 {
+    color: #273DFF;
+    /*text-shadow: 3px 3px 1px #8c0700, 2px 2px 2px #8c0700;*/
 }
