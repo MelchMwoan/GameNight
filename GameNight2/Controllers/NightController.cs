@@ -72,7 +72,12 @@ namespace GameNight2.Controllers
 				DateTime = night.DateTime,
 				MaxPlayers = night.MaxPlayers,
 				ThumbnailUrl = night.ThumbnailUrl,
-				Title = night.Title
+				Title = night.Title,
+				Description = night.Description,
+				SelectedGames = night.Games.Select(x => x.Id).ToList(),
+				SelectedSnacks = night.Snacks.Select(x => x.Id).ToList(),
+				AdultOnly = night.AdultOnly,
+				TakeOwnSnacks = night.TakeOwnSnacks,
 			};
 			return View(editNightModel);
 		}
@@ -90,14 +95,15 @@ namespace GameNight2.Controllers
 			foreach (var propertyInfo in nightModel.GetType().GetProperties())
 			{
 				var modelVal = propertyInfo.GetValue(nightModel);
-				var nightVal = night.GetType().GetProperty(propertyInfo.Name).GetValue(night);
-				if (!nightVal.Equals(modelVal))
+				Console.WriteLine(propertyInfo.Name);
+				var nightVal = night.GetType().GetProperty(propertyInfo.Name)?.GetValue(night);
+				if (nightVal != null && !nightVal.Equals(modelVal))
 				{
 					changed++;
 					propertyInfo.SetValue(nightModel, modelVal);
 				}
-				if (changed > 0) _nightRepository.updateNight(nightModel.getNight());
 			}
+			if (changed > 0) _nightRepository.updateNight(nightModel.getNight());
 			return RedirectToAction("NightDetails", "Night", new { id = nightModel.Id});
 		}
 

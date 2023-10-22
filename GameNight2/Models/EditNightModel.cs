@@ -17,7 +17,10 @@ namespace GameNight2.Models
 				Title = this.Title,
 				DateTime = this.DateTime,
 				MaxPlayers = this.MaxPlayers,
-				ThumbnailUrl = this.ThumbnailUrl
+				ThumbnailUrl = this.ThumbnailUrl,
+				AdultOnly = this.AdultOnly,
+				Description = this.Description,
+				TakeOwnSnacks = this.TakeOwnSnacks
 			};
 		}
 	}

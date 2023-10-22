@@ -78,6 +78,9 @@ namespace Infrastructure.EF
 			dbNight.ThumbnailUrl = newNight.ThumbnailUrl;
 			dbNight.DateTime = newNight.DateTime;
 			dbNight.MaxPlayers = newNight.MaxPlayers;
+			dbNight.AdultOnly = newNight.AdultOnly;
+			dbNight.Description = newNight.Description;
+			dbNight.TakeOwnSnacks = newNight.TakeOwnSnacks;
 			_dbContext.SaveChanges();
 		}
 

@@ -1,4 +1,10 @@
-﻿@model GameNight2.Models.EditNightModel
+﻿@using Domain
+@using DomainServices
+@using GameNight2.Models
+@model GameNight2.Models.EditNightModel
+@inject IGameRepository _gameRepository
+@inject ISnackRepository _snackRepository
+@inject IAccountRepository _accountRepository
 
 @{
 	ViewBag.Title = "Edit Night";
@@ -9,36 +15,236 @@
 	@* <div asp-validation-summary="All"></div> *@
 	
 	<div>
-		<form asp-action="UpdateNight" method="post">
+		<form asp-action="UpdateNight" method="post" class="row">
 			<input type="hidden" asp-for="Id" value="@Model.Id" />
-			<div class="form-group">
-				<label asp-for="Title">Titel:</label>
-				<input class="form-control" asp-for="Title"/>
-				<span asp-validation-for="Title" class="text-danger"></span>
+			<div class="col-8">
+				<div class="form-group">
+					<label asp-for="Title">Title:</label>
+					<input class="form-control" asp-for="Title" />
+					<span asp-validation-for="Title" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Description">Description:</label>
+					<textarea class="form-control" asp-for="Description" rows="5"></textarea>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ThumbnailUrl">Thumbnail:</label>
+					<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput" />
+					<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="DateTime">Date and Time:</label>
+					<input class="form-control" asp-for="DateTime" />
+					<span asp-validation-for="DateTime" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="MaxPlayers">Max Players:</label>
+					<input class="form-control" asp-for="MaxPlayers" />
+					<span asp-validation-for="MaxPlayers" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="AdultOnly">Adult Only:</label>
+					<input asp-for="AdultOnly" class="form-check-input" asp-checked="@Model.AdultOnly"/>
+					<span asp-validation-for="AdultOnly" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="TakeOwnSnacks">Guests bring snacks:</label>
+					<input asp-for="TakeOwnSnacks" class="form-check-input" asp-checked="@Model.TakeOwnSnacks"/>
+					<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<h4>Thumbnail Preview:</h4>
+				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview" />
 			</div>
 			
-			<div class="form-group">
-				<label asp-for="ThumbnailUrl">Thumbnail:</label>
-				<input class="form-control" asp-for="ThumbnailUrl" />
-				<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
-			</div>
 			
-			<div class="form-group">
-				<label asp-for="DateTime">Date and Time:</label>
-				<input class="form-control" asp-for="DateTime" />
-				<span asp-validation-for="DateTime" class="text-danger"></span>
+			<div class="row mb-2">
+				@* Add Snacks list *@
+				<div class="col-6 position-relative">
+					<h4>Snacks:</h4>
+
+					<div class="pb-5">
+						<span asp-validation-for="SelectedSnacks" class="text-danger"></span>
+						<ul class="list-group" id="snackList">
+							@{
+								foreach (Snack snack in _snackRepository.getSnackByNight(Model.Id))
+								{
+									<li class="list-group-item">
+										<div class="form-group">
+											<input class="form-check-input me-1" type="checkbox" name="SelectedSnacks" value="@snack.Id" @(Model.SelectedSnacks.Any(x => x == snack.Id) ? "checked" : null)>
+											<label class="form-check-label" for="@snack.Id">@snack.Name</label>
+										</div>
+									</li>
+								}
+							}
+						</ul>
+					</div>
+					<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+						<i class="fa-solid fa-plus pe-2"></i>Add Snack
+					</button>
+				</div>
+
+				@* Add Games List *@
+				<div class="col-6 position-relative">
+					<h4>Games:</h4>
+
+					<span asp-validation-for="SelectedGames" class="text-danger"></span>
+					<div class="pb-5">
+						<ul class="list-group" id="gameList">
+							@{
+								foreach (Game game in _gameRepository.getGames())
+								{
+									<li class="list-group-item">
+										<div class="form-group">
+											<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id" @(Model.SelectedGames.Any(x => x == game.Id) ? "checked" : null)>
+											<label class="form-check-label" for="@game.Id">@game.Name</label>
+										</div>
+									</li>
+								}
+							}
+						</ul>
+					</div>
+					<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addGameModal">
+						<i class="fa-solid fa-plus pe-2"></i>Add Game
+					</button>
+				</div>
 			</div>
-			
-			<div class="form-group">
-				<label asp-for="MaxPlayers">Max Players:</label>
-				<input class="form-control" asp-for="MaxPlayers" />
-				<span asp-validation-for="MaxPlayers" class="text-danger"></span>
-			</div>
-			
-			<div class="form-group row">
-				<button class="btn btn-primary col-sm-4 text-center">Update Night</button>
-				<button class="btn btn-danger col-sm-4 text-center" asp-action="RemoveNight">Delete Night</button>
+
+
+
+			<div class="form-group col-12">
+				<button class="btn btn-warning col-sm-3 text-center"><i class="fa-solid fa-floppy-disk pe-2"></i>Update Night</button>
+				<button class="btn btn-danger col-sm-3 text-center" asp-action="RemoveNight"><i class="fa-solid fa-trash pe-2"></i>Delete Night</button>
+				<a class="btn btn-success col-sm-3 text-center" href="javascript:history.go(-1)">Cancel</a>
 			</div>
 		</form>
+		<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						@await Html.PartialAsync("~/Views/Game/CreateGame.cshtml", new NewGameModel())
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveGameBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addSnackModal" tabindex="-1" aria-labelledby="addSnackModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						@await Html.PartialAsync("~/Views/Snack/CreateSnack.cshtml", new NewSnackModel())
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveSnackBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+<script>
+	function saveFormData() {
+		const form = document.forms[0];
+		const formData = new FormData(form);
+		const formDataObject = Object.fromEntries(formData);
+		const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach((checkbox) => {
+			formDataObject[checkbox.name] = Array.from(formData.getAll(checkbox.name));
+		});
+
+		localStorage.setItem('formData', JSON.stringify(formDataObject));
+		location.reload();
+	}
+
+	function updateThumbnail() {
+		const imageUrl = document.getElementById('thumbnailInput').value;
+		document.getElementById('thumbnailImg').src = imageUrl;
+		document.getElementById('thumbnailImg').onerror = function () {
+			document.getElementById('thumbnailImg').src = "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+		};
+	}
+	document.getElementById('thumbnailInput').addEventListener('input', updateThumbnail);
+
+	function loadFormData() {
+		const formData = localStorage.getItem('formData');
+		if (formData) {
+			const form = document.forms[0];
+			const formDataObject = JSON.parse(formData);
+
+			for (const key in formDataObject) {
+				const input = form.querySelector(`[name="${key}"]`);
+				if (input) {
+					if (input.type === 'checkbox') {
+						const checkboxValues = formDataObject[key];
+						checkboxValues.forEach((value) => {
+							const checkbox = form.querySelector(`[name="${key}"][value="${value}"]`);
+							if (checkbox) {
+								checkbox.checked = true;
+							}
+						});
+					} else {
+						input.value = formDataObject[key];
+					}
+				}
+			}
+			localStorage.removeItem('formData');
+			updateThumbnail();
+
+		}
+	}
+
+	document.getElementById('saveGameBtn').addEventListener('click', async function () {
+		const addGameForm = document.getElementById('createGame');
+		const addNightBtn = addGameForm.querySelector('#addGameBtn');
+		try {
+			const response = await fetch('/Game/CreateGame', {
+				method: 'POST',
+				body: new FormData(addGameForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addNightBtn.click();
+			} else {
+				$('#addGameModal').modal('hide');
+				saveFormData();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+	document.getElementById('saveSnackBtn').addEventListener('click', async function () {
+		const addSnackForm = document.getElementById('createSnack');
+		const addSnackBtn = addSnackForm.querySelector('#addSnackBtn');
+		try {
+			const response = await fetch('/Snack/CreateSnack', {
+				method: 'POST',
+				body: new FormData(addSnackForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addSnackBtn.click();
+			} else {
+				$('#addSnackBtn').modal('hide');
+				saveFormData();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+
+	window.addEventListener('load', loadFormData);
+	updateThumbnail();
+</script>
