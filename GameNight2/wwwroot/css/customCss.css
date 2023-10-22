@@ -1,11 +1,13 @@
+@import url(https://db.onlinewebfonts.com/c/3ea76ccdd385bc613ec38099d5097410?family=HP+Simplified+Bold);
+
 :root {
     --bs-body-bg: #feeeb3;
     /*FFF4B3*/
 }
 
 .btn-primary {
-    background-color: #273DFF !important;
-    border-color: #273DFF !important;
+    background-color: #FF0F00 !important;
+    border-color: #FF0F00 !important;
 }
 
     .btn-primary:hover {
@@ -13,7 +15,11 @@
         border-color: #ff0f00;
     }
 
-h1, h2 {
-    color: #273DFF;
-    /*text-shadow: 3px 3px 1px #8c0700, 2px 2px 2px #8c0700;*/
+h1, h2 , h3{
+    text-shadow: 3px 3px 1px #8c0700, 2px 2px 2px #8c0700;
+}
+h1, h2, h3, h4, h5 {
+    font-family: Britannic, 'Sans Serif Collection';
+    color: #FF0F00;
+    text-shadow: 2px 2px 1px #8c0700;
 }
