@@ -52,7 +52,8 @@
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
 							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
 						</button>
-					} else if((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree))  || (person.isNutsFree && !snacks.Any(x => x.isNutsFree))  || (person.isVegan && !snacks.Any(x => x.isVegan))  || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
+					}
+					else if ((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree)) || (person.isNutsFree && !snacks.Any(x => x.isNutsFree)) || (person.isVegan && !snacks.Any(x => x.isVegan)) || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
 					{
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
 							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
@@ -110,12 +111,12 @@
 				<span>Age: @(DateTime.Now.Year - Model.Night.Organisator.BirthDate.Year)</span>
 				<br />
 				<span>Rating: 3.5<i class="fa-solid fa-star text-warning"></i></span>
-				<br/>
+				<br />
 				<span>Hosted 7 nights before</span>
 				<br />
 				<span>Joined 16 nights before</span>
 			</div>
-			<img src="@Model.Night.Organisator.pfpUrl" class="img-thumbnail col-4"/>
+			<img src="@Model.Night.Organisator.pfpUrl" class="img-thumbnail col-4" />
 		</div>
 	</section>
 </div>
@@ -124,40 +125,40 @@
 		<h3>Games</h3>
 		<table class="table table-striped">
 			<thead>
-			<tr>
-				<th>Game Title</th>
-				<th>More Info</th>
-			</tr>
+				<tr>
+					<th>Game Title</th>
+					<th>More Info</th>
+				</tr>
 			</thead>
 			<tbody>
-			@{
-				if (@Model.Night.Games.Count == 0)
-				{
-					<tr><td>No games</td><td></td></tr>
-				}
-				foreach (Game game in @Model.Night.Games)
-				{
-					<tr>
-						<td>@game.Name</td>
-						<td>
+				@{
+					if (@Model.Night.Games.Count == 0)
+					{
+						<tr><td>No games</td><td></td></tr>
+					}
+					foreach (Game game in @Model.Night.Games)
+					{
+						<tr>
+							<td>@game.Name</td>
+							<td>
 								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal_@game.Id"><i class="fa-solid fa-info pe-2"></i>More Info</button>
-							<div class="modal fade" id="gameModal_@game.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h1 class="modal-title fs-5" id="exampleModalLabel">@game.Name</h1>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											@await Html.PartialAsync("~/Views/Game/GameDetails.cshtml", _gameRepository.GetGameById(@game.Id))
+								<div class="modal fade" id="gameModal_@game.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">@game.Name</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												@await Html.PartialAsync("~/Views/Game/GameDetails.cshtml", _gameRepository.GetGameById(@game.Id))
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</td>
-					</tr>
+							</td>
+						</tr>
+					}
 				}
-			}
 			</tbody>
 		</table>
 	</section>
@@ -165,54 +166,54 @@
 		<h3>Snacks</h3>
 		<table class="table table-striped">
 			<thead>
-			<tr>
-				<th>Snack</th>
-				<th>Allergies</th>
-			</tr>
+				<tr>
+					<th>Snack</th>
+					<th>Allergies</th>
+				</tr>
 			</thead>
 			<tbody>
-			@{
-				if (@Model.Night.Snacks.Count == 0)
-				{
-					<tr><td>No snacks</td><td></td></tr>
-				}
-				foreach (Snack snack in @Model.Night.Snacks)
-				{
-					<tr>
-						<td>@snack.Name</td>
-						<td>
-							<i class="fa-solid fa-leaf @(snack.isVegan ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isVegan ? "Vegan" : "Not Vegan")"></i>
-							<i class="fa-solid fa-seedling @(snack.isVegatarian ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isVegatarian ? "Vegetarian" : "Not Vegetarian")"></i>
-							<i class="fa-solid fa-wine-glass @(snack.isAlcoholFree ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isAlcoholFree ? "Alcohol Free" : "Not Alcohol Free")"></i>
-							<i class="fa-solid fa-wheat-awn @(snack.isGlutenFree ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isGlutenFree ? "Gluten Free" : "Not Gluten Free")"></i>
-							<i class="fa-solid fa-cow @(snack.isLactoseFree ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isLactoseFree ? "Lactose Free" : "Not Lactose Free")"></i>
-							<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
-							   data-toggle="tooltip"
-							   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
-							@{
-								var person = _accountRepository.getAccount(User.Identity.Name);
-								if (snack.personId == person.Id)
-								{
-									<form method="post" class="d-inline" asp-controller="Snack" asp-action="RemoveSnack">
-										<input type="hidden" name="snackId" value="@snack.Id" />
-										<button class="btn btn-danger btn-sm float-end"><i class="fa-solid fa-trash"></i></button>
-									</form>
+				@{
+					if (@Model.Night.Snacks.Count == 0)
+					{
+						<tr><td>No snacks</td><td></td></tr>
+					}
+					foreach (Snack snack in @Model.Night.Snacks)
+					{
+						<tr>
+							<td>@snack.Name</td>
+							<td>
+								<i class="fa-solid fa-leaf @(snack.isVegan ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isVegan ? "Vegan" : "Not Vegan")"></i>
+								<i class="fa-solid fa-seedling @(snack.isVegatarian ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isVegatarian ? "Vegetarian" : "Not Vegetarian")"></i>
+								<i class="fa-solid fa-wine-glass @(snack.isAlcoholFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isAlcoholFree ? "Alcohol Free" : "Not Alcohol Free")"></i>
+								<i class="fa-solid fa-wheat-awn @(snack.isGlutenFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isGlutenFree ? "Gluten Free" : "Not Gluten Free")"></i>
+								<i class="fa-solid fa-cow @(snack.isLactoseFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isLactoseFree ? "Lactose Free" : "Not Lactose Free")"></i>
+								<i class="fa-solid fa-cookie @(snack.isNutsFree ? "text-success" : "text-danger")"
+								   data-toggle="tooltip"
+								   title="@(snack.isNutsFree ? "Nuts Free" : "Not Nuts Free")"></i>
+								@{
+									var person = _accountRepository.getAccount(User.Identity.Name);
+									if (snack.personId == person.Id)
+									{
+										<form method="post" class="d-inline" asp-controller="Snack" asp-action="RemoveSnack">
+											<input type="hidden" name="snackId" value="@snack.Id" />
+											<button class="btn btn-danger btn-sm float-end"><i class="fa-solid fa-trash"></i></button>
+										</form>
+									}
 								}
-							   }
-						</td>
-					</tr>
+							</td>
+						</tr>
+					}
 				}
-			}
 			</tbody>
 		</table>
 		<a type="button" class="" data-bs-toggle="modal" data-bs-target="#allergyModal">Icons declaration</a>
@@ -260,25 +261,67 @@
 		<h3>Attendees</h3>
 		<table class="table table-striped">
 			<thead>
-			<tr>
-				<th>Attendee name</th>
-			</tr>
+				<tr>
+					<th>Attendee name</th>
+				</tr>
 			</thead>
 			<tbody>
-			@{
-				if (@Model.Night.Players.Count == 0)
-				{
-					<tr><td>No attendees</td><td></td></tr>
+				@{
+					if (@Model.Night.Players.Count == 0)
+					{
+						<tr><td>No attendees</td><td></td></tr>
+					}
+					foreach (Person person in @Model.Night.Players)
+					{
+						<tr>
+							<td>@person.Email</td>
+						</tr>
+					}
 				}
-				foreach (Person person in @Model.Night.Players)
-				{
-					<tr>
-						<td>@person.Email</td>
-					</tr>
-				}
-			}
 			</tbody>
 		</table>
+	</section>
+	<section>
+		<h3>Reviews:</h3>
+		<div class="row gx-2">
+			@* Take top 5 reviews *@
+			<div class="col-lg-3">
+				<div class="card h-100">
+					<div class="card-body">
+						<h5 class="card-title">Anonymous</h5>
+						<p class="card-text">Het was een leuke avond, jammer dat het zo snel voorbij ging.</p>
+						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card h-100">
+					<div class="card-body">
+						<h5 class="card-title">Anonymous</h5>
+						<p class="card-text">Geweldig!</p>
+						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card h-100">
+					<div class="card-body">
+						<h5 class="card-title">Anonymous</h5>
+						<p class="card-text">Saai.</p>
+						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card h-100">
+					<div class="card-body">
+						<h5 class="card-title">Anonymous</h5>
+						<p class="card-text">Kon beter, kon slechter.</p>
+						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 </div>
 <script>
