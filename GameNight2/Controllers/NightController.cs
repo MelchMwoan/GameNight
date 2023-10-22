@@ -37,6 +37,13 @@ namespace GameNight2.Controllers
 
 		public IActionResult NightDetails(int Id)
 		{
+
+			if (User.Identity.Name == null)
+			{
+				var returnUrl = Url.Action("NightDetails", "Night", new { id = Id });
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
+			}
+
 			var user = _userManager.GetUserAsync(User);
 			NightPersonJoinResult? night = _nightRepository.getNightById(Id);
 			if (night == null)
