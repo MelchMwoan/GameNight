@@ -9,8 +9,8 @@
 @{
    if (Model.Count == 0)
    {
-	   <h3>You haven't joined any nights yet</h3>
-	   <a class="btn btn-primary" asp-controller="Night" asp-action="Nights">Search one</a>
+	   <h4>You haven't joined any nights yet</h4>
+		<a class="btn btn-primary" asp-controller="Night" asp-action="Nights"><i class="fa-solid fa-magnifying-glass pe-2"></i>Search one</a>
    }
    else
    {
@@ -37,7 +37,7 @@
 									<i class="fa-solid fa-calendar"></i><span> Date: @night.DateTime.ToLocalTime().ToString("f") </span><br />
 									<i class="fa-solid fa-beer-mug-empty"></i><span> Adult Only: @(night.AdultOnly ? "Yes" : "No")</span>
 								</p>
-								<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id>More Info</a>
+								<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id><i class="fa-solid fa-info pe-2"></i>More Info</a>
 							</div>
 						</div>
 						<div class="col-lg-4 d-none d-lg-inline">

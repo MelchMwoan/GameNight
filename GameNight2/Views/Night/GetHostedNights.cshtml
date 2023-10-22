@@ -13,7 +13,7 @@
    }
    else
    {
-   <h3>You have @Model.Count hosted nights</h3>
+   <h4>You have @Model.Count hosted nights</h4>
    }
 	<div class="row gx-2 gy-2">
 	@foreach (Night night in Model)
@@ -36,7 +36,7 @@
 							<i class="fa-solid fa-calendar"></i><span> Date: @night.DateTime.ToLocalTime().ToString("f") </span><br />
 							<i class="fa-solid fa-beer-mug-empty"></i><span> Adult Only: @(night.AdultOnly ? "Yes" : "No")</span>
 						</p>
-						<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id>More Info</a>
+								<a asp-controller="Night" asp-action="NightDetails" class="btn btn-primary" asp-route-id=@night.Id><i class="fa-solid fa-info pe-2"></i>More Info</a>
 					</div>
 				</div>
 				<div class="col-lg-4 d-none d-lg-inline">

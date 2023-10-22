@@ -22,10 +22,10 @@
 
 			On this website, you can either host one of these game nights or join an existing one. So, what are we waiting for?
 		</p>
-		<a asp-action="Nights" asp-controller="Night" class="btn btn-primary">Let's search a GameNight!</a>
+		<a asp-action="Nights" asp-controller="Night" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass pe-2"></i>Let's search a GameNight!</a>
 	</div>
 	<div class="col-5 d-flex">
-		<img class="img img-fluid my-auto" src="images/GameNightWidePng.png" />
+		<img class="img img-fluid my-auto" src="images/GameNightWidePng.png" alt="GameNight logo"/>
 	</div>
 </section>
 <hr />
@@ -52,7 +52,7 @@
 
 						</td>
 						<td>@night.Organisator?.RealName</td>
-						<td><a class="btn btn-primary" asp-controller="Night" asp-action="NightDetails" asp-route-Id="@night.Id">More Info</a></td>
+							<td><a class="btn btn-primary" asp-controller="Night" asp-action="NightDetails" asp-route-Id="@night.Id"><i class="fa-solid fa-info pe-2"></i>More Info</a></td>
 					</tr>
 				}
 				if (!_nightRepository.getNights().Any(x => x.DateTime > DateTime.Now))

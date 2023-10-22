@@ -29,7 +29,7 @@
 				<br />
 				<form method="post" asp-controller="Night" asp-action="EditNight">
 					<input type="hidden" name="nightId" value="@Model.Night.Id" />
-					<button id="editNightBtn" class="btn btn-warning" disabled="@(players.Count > 0)">Edit Night</button>
+					<button id="editNightBtn" class="btn btn-warning" disabled="@(players.Count > 0)"><i class="fa-solid fa-pencil pe-2"></i>Edit Night</button>
 				</form>
 			}
 			else
@@ -39,7 +39,7 @@
 					<br />
 					<form method="post" asp-controller="Night" asp-action="LeaveNight">
 						<input type="hidden" name="nightId" value="@Model.Night.Id" />
-						<button id="leaveNightBtn" class="btn btn-danger">Leave Night</button>
+						<button id="leaveNightBtn" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket pe-2"></i>Leave Night</button>
 					</form>
 				}
 				else
@@ -49,20 +49,20 @@
 					List<Snack> snacks = Model.Night.Snacks;
 					if (@Model.Night.TakeOwnSnacks && !snacks.Any(x => x.personId == person.Id))
 					{
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
-							Join Night
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
+							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
 						</button>
 					} else if((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree))  || (person.isNutsFree && !snacks.Any(x => x.isNutsFree))  || (person.isVegan && !snacks.Any(x => x.isVegan))  || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
 					{
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
-							Join Night
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
+							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
 						</button>
 					}
 					else
 					{
 						<form method="post" asp-controller="Night" asp-action="JoinNight">
 							<input type="hidden" name="nightId" value="@Model.Night.Id" />
-							<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
+							<button id="joinNightBtn" class="btn btn-success"><i class="fa-solid fa-user-plus pe-2"></i>Join Night</button>
 						</form>
 					}
 				}
@@ -79,7 +79,7 @@
 						<p>It looks like there won't be any snacks that will fit your snack preferences. Are you sure you want to join this night?</p>
 						<form method="post" asp-controller="Night" asp-action="JoinNight">
 							<input type="hidden" name="nightId" value="@Model.Night.Id" />
-							<button id="joinNightBtn" class="btn btn-primary">Join Night</button>
+							<button id="joinNightBtn" class="btn btn-succes"><i class="fa-solid fa-user-plus pe-2"></i>Join Night</button>
 						</form>
 					</div>
 				</div>
@@ -94,8 +94,8 @@
 					</div>
 					<div class="modal-body">
 						<p>The host of this night wants every attendee to bring his own snack and you haven't submitted any snack yet.</p>
-						<button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
-							Add Snack
+						<button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+							<i class="fa-solid fa-plus pe-2"></i>Add Snack
 						</button>
 					</div>
 				</div>
@@ -140,7 +140,7 @@
 					<tr>
 						<td>@game.Name</td>
 						<td>
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal_@game.Id">More Info</button>
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal_@game.Id"><i class="fa-solid fa-info pe-2"></i>More Info</button>
 							<div class="modal fade" id="gameModal_@game.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
 									<div class="modal-content">
@@ -218,8 +218,8 @@
 		<a type="button" class="" data-bs-toggle="modal" data-bs-target="#allergyModal">Icons declaration</a>
 		@if (@Model.Night.TakeOwnSnacks)
 		{
-			<button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
-				Add Snack
+			<button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+				<i class="fa-solid fa-plus pe-2"></i>Add Snack
 			</button>
 		}
 
@@ -250,7 +250,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" id="saveSnackBtn">Save changes</button>
+						<button type="button" class="btn btn-primary" id="saveSnackBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
 					</div>
 				</div>
 			</div>
