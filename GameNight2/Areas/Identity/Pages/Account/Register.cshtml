@@ -7,109 +7,111 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-	<div class="col-md-6">
-		<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-			<h2>Create a new account.</h2>
-			<hr />
-			<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-				<label asp-for="Input.Email">Email</label>
-				<span asp-validation-for="Input.Email" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-				<label asp-for="Input.Password">Password</label>
-				<span asp-validation-for="Input.Password" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-				<label asp-for="Input.ConfirmPassword">Confirm Password</label>
-				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.FirstName" class="form-control" autocomplete="given-name" aria-required="true" placeholder="firstname" />
-				<label asp-for="Input.FirstName">First Name</label>
-				<span asp-validation-for="Input.FirstName" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.LastName" class="form-control" autocomplete="family-name" aria-required="true" placeholder="lastname" />
-				<label asp-for="Input.LastName">Last Name</label>
-				<span asp-validation-for="Input.LastName" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="username" />
-				<label asp-for="Input.UserName">Username</label>
-				<span asp-validation-for="Input.UserName" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" aria-required="true" placeholder="phonenumber" />
-				<label asp-for="Input.PhoneNumber">Phone Number</label>
-				<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<GenderEnum>()" aria-required="true" placeholder="gender">
-					<option selected="selected" value="">Please select</option>
-				</select>
-				<label asp-for="Input.Gender">Gender</label>
-				<span asp-validation-for="Input.Gender" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.BirthDate" class="form-control" autocomplete="bday" aria-required="true" placeholder="birthdate" type="date"/>
-				<label asp-for="Input.BirthDate">Birthdate</label>
-				<span asp-validation-for="Input.BirthDate" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.City" class="form-control" autocomplete="bday" aria-required="true" placeholder="city" />
-				<label asp-for="Input.City">City</label>
-				<span asp-validation-for="Input.City" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.Street" class="form-control" autocomplete="bday" aria-required="true" placeholder="street" />
-				<label asp-for="Input.Street">Street</label>
-				<span asp-validation-for="Input.Street" class="text-danger"></span>
-			</div>
-			<div class="form-floating mb-3">
-				<input asp-for="Input.HouseNumber" class="form-control" autocomplete="bday" aria-required="true" placeholder="housenumber" />
-				<label asp-for="Input.HouseNumber">HouseNumber</label>
-				<span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isVegan">Vegan</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isVegan"/>
-				<span asp-validation-for="Input.isVegan" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isVegatarian">Vegetarian</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isVegatarian" />
-				<span asp-validation-for="Input.isVegatarian" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isAlcoholFree">Alcohol Free</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isAlcoholFree" />
-				<span asp-validation-for="Input.isAlcoholFree" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isGlutenFree">Gluten Free</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isGlutenFree" />
-				<span asp-validation-for="Input.isGlutenFree" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isLactoseFree">Lactose Free</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isLactoseFree" />
-				<span asp-validation-for="Input.isLactoseFree" class="text-danger"></span>
-			</div>
-			<div class="form-check form-switch">
-				<label class="form-check-label" asp-for="Input.isNutsFree">Nuts Free</label>
-				<input class="form-check-input" type="checkbox" asp-for="Input.isNutsFree" />
-				<span asp-validation-for="Input.isNutsFree" class="text-danger"></span>
-			</div>
-			<br/>
-			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-		</form>
+<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row gx-1 gy-1">
+	<h3>Create a new account.</h3>
+	<hr />
+	<div class="form-floating col-md-4">
+		<input asp-for="Input.FirstName" class="form-control" autocomplete="given-name" aria-required="true" placeholder="firstname" />
+		<label asp-for="Input.FirstName">First Name</label>
+		<span asp-validation-for="Input.FirstName" class="text-danger"></span>
 	</div>
-</div>
+	<div class="form-floating col-md-4">
+		<input asp-for="Input.LastName" class="form-control" autocomplete="family-name" aria-required="true" placeholder="lastname" />
+		<label asp-for="Input.LastName">Last Name</label>
+		<span asp-validation-for="Input.LastName" class="text-danger"></span>
+	</div>
+	<div class="form-floating col-md-4">
+		<input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="username" />
+		<label asp-for="Input.UserName">Username</label>
+		<span asp-validation-for="Input.UserName" class="text-danger"></span>
+	</div>
+	<div class="form-floating col-md-6">
+		<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+		<label asp-for="Input.Password">Password</label>
+		<span asp-validation-for="Input.Password" class="text-danger"></span>
+	</div>
+	<div class="form-floating col-md-6">
+		<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+		<label asp-for="Input.ConfirmPassword">Confirm Password</label>
+		<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+	</div>
+	<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+	<div class="form-floating col-md-4">
+		<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+		<label asp-for="Input.Email">Email</label>
+		<span asp-validation-for="Input.Email" class="text-danger"></span>
+	</div>
+	<div class="form-floating col-md-4">
+		<input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" aria-required="true" placeholder="phonenumber" />
+		<label asp-for="Input.PhoneNumber">Phone Number</label>
+		<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+	</div>
+	<div class="row gx-1 gy-1">
+		<div class="form-floating col-md-3">
+			<select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<GenderEnum>()" aria-required="true" placeholder="gender">
+				<option selected="selected" value="">Please select</option>
+			</select>
+			<label asp-for="Input.Gender">Gender</label>
+			<span asp-validation-for="Input.Gender" class="text-danger"></span>
+		</div>
+		<div class="form-floating col-md-3">
+			<input asp-for="Input.BirthDate" class="form-control" autocomplete="bday" aria-required="true" placeholder="birthdate" type="date" />
+			<label asp-for="Input.BirthDate">Birthdate</label>
+			<span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row gx-1 gy-1">
+		<div class="form-floating col-md-4">
+			<input asp-for="Input.City" class="form-control" autocomplete="bday" aria-required="true" placeholder="city" />
+			<label asp-for="Input.City">City</label>
+			<span asp-validation-for="Input.City" class="text-danger"></span>
+		</div>
+		<div class="form-floating col-md-4">
+			<input asp-for="Input.Street" class="form-control" autocomplete="bday" aria-required="true" placeholder="street" />
+			<label asp-for="Input.Street">Street</label>
+			<span asp-validation-for="Input.Street" class="text-danger"></span>
+		</div>
+		<div class="form-floating col-md-2">
+			<input asp-for="Input.HouseNumber" class="form-control" autocomplete="bday" aria-required="true" placeholder="housenumber" />
+			<label asp-for="Input.HouseNumber">Number</label>
+			<span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row gx-1 gy-1 my-3">
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isVegan">Vegan</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isVegan" />
+			<span asp-validation-for="Input.isVegan" class="text-danger"></span>
+		</div>
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isVegatarian">Vegetarian</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isVegatarian" />
+			<span asp-validation-for="Input.isVegatarian" class="text-danger"></span>
+		</div>
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isAlcoholFree">Alcohol Free</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isAlcoholFree" />
+			<span asp-validation-for="Input.isAlcoholFree" class="text-danger"></span>
+		</div>
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isGlutenFree">Gluten Free</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isGlutenFree" />
+			<span asp-validation-for="Input.isGlutenFree" class="text-danger"></span>
+		</div>
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isLactoseFree">Lactose Free</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isLactoseFree" />
+			<span asp-validation-for="Input.isLactoseFree" class="text-danger"></span>
+		</div>
+		<div class="form-check form-switch col-md-2">
+			<label class="form-check-label" asp-for="Input.isNutsFree">Nuts Free</label>
+			<input class="form-check-input" type="checkbox" asp-for="Input.isNutsFree" />
+			<span asp-validation-for="Input.isNutsFree" class="text-danger"></span>
+		</div>
+	</div>
+	<br />
+	<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+</form>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
