@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace SQLData.Migrations
 {
     /// <inheritdoc />
-    public partial class ResetDatabse : Migration
+    public partial class ResetMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,9 +35,16 @@ namespace SQLData.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RealName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pfpUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false)
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    isVegan = table.Column<bool>(type: "bit", nullable: false),
+                    isAlcoholFree = table.Column<bool>(type: "bit", nullable: false),
+                    isVegatarian = table.Column<bool>(type: "bit", nullable: false),
+                    isGlutenFree = table.Column<bool>(type: "bit", nullable: false),
+                    isLactoseFree = table.Column<bool>(type: "bit", nullable: false),
+                    isNutsFree = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,9 +64,12 @@ namespace SQLData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MaxPlayers = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
+                    TakeOwnSnacks = table.Column<bool>(type: "bit", nullable: false),
+                    AdultOnly = table.Column<bool>(type: "bit", nullable: false),
                     ThumbnailUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -81,7 +89,7 @@ namespace SQLData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Version = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Is18Plus = table.Column<bool>(type: "bit", nullable: false),
                     Genre = table.Column<int>(type: "int", nullable: false),
@@ -136,22 +144,28 @@ namespace SQLData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Rating = table.Column<double>(type: "float", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WriterId = table.Column<int>(type: "int", nullable: false),
-                    NightId = table.Column<int>(type: "int", nullable: true)
+                    writerId = table.Column<int>(type: "int", nullable: false),
+                    organisatorId = table.Column<int>(type: "int", nullable: false),
+                    nightId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Nights_NightId",
-                        column: x => x.NightId,
+                        name: "FK_Reviews_Nights_nightId",
+                        column: x => x.nightId,
                         principalTable: "Nights",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Persons_organisatorId",
+                        column: x => x.organisatorId,
+                        principalTable: "Persons",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reviews_Persons_WriterId",
-                        column: x => x.WriterId,
+                        name: "FK_Reviews_Persons_writerId",
+                        column: x => x.writerId,
                         principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -164,30 +178,29 @@ namespace SQLData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NightId = table.Column<int>(type: "int", nullable: true)
+                    personId = table.Column<int>(type: "int", nullable: false),
+                    nightId = table.Column<int>(type: "int", nullable: true),
+                    isVegan = table.Column<bool>(type: "bit", nullable: false),
+                    isAlcoholFree = table.Column<bool>(type: "bit", nullable: false),
+                    isVegatarian = table.Column<bool>(type: "bit", nullable: false),
+                    isGlutenFree = table.Column<bool>(type: "bit", nullable: false),
+                    isLactoseFree = table.Column<bool>(type: "bit", nullable: false),
+                    isNutsFree = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Snacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Snacks_Nights_NightId",
-                        column: x => x.NightId,
+                        name: "FK_Snacks_Nights_nightId",
+                        column: x => x.nightId,
                         principalTable: "Nights",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.InsertData(
-                table: "Addresses",
-                columns: new[] { "Id", "City", "HouseNumber", "Street" },
-                values: new object[] { 1, "Breda", 63, "Lovensdijkstraat" });
-
-            migrationBuilder.InsertData(
-                table: "Persons",
-                columns: new[] { "Id", "AddressId", "BirthDate", "Email", "Gender", "Name", "RealName" },
-                values: new object[,]
-                {
-                    { 1, 1, new DateTime(2005, 10, 8, 0, 0, 0, 0, DateTimeKind.Local), "henk@mail.nl", 77, "Henk", "Henk Man" },
-                    { 2, 1, new DateTime(2000, 10, 8, 0, 0, 0, 0, DateTimeKind.Local), "jan@mail.nl", 88, "Jan", "Jan Man" }
+                    table.ForeignKey(
+                        name: "FK_Snacks_Persons_personId",
+                        column: x => x.personId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -216,19 +229,29 @@ namespace SQLData.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_NightId",
+                name: "IX_Reviews_nightId",
                 table: "Reviews",
-                column: "NightId");
+                column: "nightId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_WriterId",
+                name: "IX_Reviews_organisatorId",
                 table: "Reviews",
-                column: "WriterId");
+                column: "organisatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Snacks_NightId",
+                name: "IX_Reviews_writerId",
+                table: "Reviews",
+                column: "writerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Snacks_nightId",
                 table: "Snacks",
-                column: "NightId");
+                column: "nightId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Snacks_personId",
+                table: "Snacks",
+                column: "personId");
         }
 
         /// <inheritdoc />

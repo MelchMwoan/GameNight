@@ -27,6 +27,7 @@ namespace SQLData
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.IsRequired();
 
+
 			modelBuilder.Entity<Review>()
 				.HasOne(e => e.Organisator)
 				.WithMany()

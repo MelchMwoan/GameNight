@@ -12,8 +12,8 @@ using SQLData;
 namespace SQLData.Migrations
 {
     [DbContext(typeof(GameNightDbContext))]
-    [Migration("20231008125352_Reset Databse")]
-    partial class ResetDatabse
+    [Migration("20231023175909_Reset Migrations")]
+    partial class ResetMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,15 +47,6 @@ namespace SQLData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Breda",
-                            HouseNumber = 63,
-                            Street = "Lovensdijkstraat"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Game", b =>
@@ -67,7 +58,6 @@ namespace SQLData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Genre")
@@ -114,14 +104,23 @@ namespace SQLData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AdultOnly")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaxPlayers")
                         .HasColumnType("int");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TakeOwnSnacks")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ThumbnailUrl")
                         .IsRequired()
@@ -166,33 +165,33 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isAlcoholFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isGlutenFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isLactoseFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isNutsFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isVegan")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isVegatarian")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("pfpUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
                     b.ToTable("Persons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AddressId = 1,
-                            BirthDate = new DateTime(2005, 10, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            Email = "henk@mail.nl",
-                            Gender = 77,
-                            Name = "Henk",
-                            RealName = "Henk Man"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AddressId = 1,
-                            BirthDate = new DateTime(2000, 10, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            Email = "jan@mail.nl",
-                            Gender = 88,
-                            Name = "Jan",
-                            RealName = "Jan Man"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Review", b =>
@@ -207,24 +206,25 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NightId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("nightId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("WriterId")
+                    b.Property<int>("organisatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("writerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NightId");
+                    b.HasIndex("nightId");
 
-                    b.HasIndex("WriterId");
+                    b.HasIndex("organisatorId");
+
+                    b.HasIndex("writerId");
 
                     b.ToTable("Reviews");
                 });
@@ -241,12 +241,35 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NightId")
+                    b.Property<bool>("isAlcoholFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isGlutenFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isLactoseFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isNutsFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isVegan")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isVegatarian")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("nightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("personId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NightId");
+                    b.HasIndex("nightId");
+
+                    b.HasIndex("personId");
 
                     b.ToTable("Snacks");
                 });
@@ -300,24 +323,45 @@ namespace SQLData.Migrations
 
             modelBuilder.Entity("Domain.Review", b =>
                 {
-                    b.HasOne("Domain.Night", null)
+                    b.HasOne("Domain.Night", "night")
                         .WithMany("Reviews")
-                        .HasForeignKey("NightId");
-
-                    b.HasOne("Domain.Person", "Writer")
-                        .WithMany()
-                        .HasForeignKey("WriterId")
+                        .HasForeignKey("nightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Person", "Organisator")
+                        .WithMany()
+                        .HasForeignKey("organisatorId")
+                        .IsRequired();
+
+                    b.HasOne("Domain.Person", "Writer")
+                        .WithMany()
+                        .HasForeignKey("writerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organisator");
+
                     b.Navigation("Writer");
+
+                    b.Navigation("night");
                 });
 
             modelBuilder.Entity("Domain.Snack", b =>
                 {
-                    b.HasOne("Domain.Night", null)
+                    b.HasOne("Domain.Night", "night")
                         .WithMany("Snacks")
-                        .HasForeignKey("NightId");
+                        .HasForeignKey("nightId");
+
+                    b.HasOne("Domain.Person", "person")
+                        .WithMany()
+                        .HasForeignKey("personId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("night");
+
+                    b.Navigation("person");
                 });
 
             modelBuilder.Entity("NightPerson", b =>
