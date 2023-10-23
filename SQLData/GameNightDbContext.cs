@@ -20,16 +20,6 @@ namespace SQLData
 		{
 			base.OnModelCreating(modelBuilder);
 
-			//modelBuilder.Entity<Address>()
-			//	.HasData(
-			//		new Address { Id = 1, City = "Breda", Street = "Lovensdijkstraat", HouseNumber = 63 }
-			//	);
-
-			//modelBuilder.Entity<Person>()
-			//	.HasData(
-			//		new Person { Id = 1, Name = "Henk", RealName="Henk Man", Email = "henk@mail.nl", Gender = GenderEnum.Male, BirthDate = DateTime.Today.AddYears(-18), AddressId = 1 },
-			//		new Person { Id = 2, Name = "Jan", RealName = "Jan Man", Email = "jan@mail.nl", Gender = GenderEnum.Other, BirthDate = DateTime.Today.AddYears(-23), AddressId = 1 }
-			//	);
 			modelBuilder.Entity<Night>()
 				.HasOne(e => e.Organisator)
 				.WithMany()
@@ -37,11 +27,12 @@ namespace SQLData
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.IsRequired();
 
-
-			//modelBuilder.Entity<Night>().HasData(
-			//	new Night { Id = 1, DateTime = DateTime.Today.AddDays(7), PersonId = 1, MaxPlayers = 3 },
-			//	new Night { Id = 2, DateTime = DateTime.Today.AddDays(3), PersonId = 2, MaxPlayers = 8 }
-			//);
+			modelBuilder.Entity<Review>()
+				.HasOne(e => e.Organisator)
+				.WithMany()
+				.HasForeignKey(e => e.organisatorId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.IsRequired();
 
 		}
 
