@@ -12,8 +12,8 @@ using SQLData;
 namespace SQLData.Migrations
 {
     [DbContext(typeof(GameNightDbContext))]
-    [Migration("20231023103837_Added ForeingKeys")]
-    partial class AddedForeingKeys
+    [Migration("20231023111251_Review fix")]
+    partial class Reviewfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

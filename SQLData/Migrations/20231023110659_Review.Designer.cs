@@ -12,8 +12,8 @@ using SQLData;
 namespace SQLData.Migrations
 {
     [DbContext(typeof(GameNightDbContext))]
-    [Migration("20231023084100_Add Reviews")]
-    partial class AddReviews
+    [Migration("20231023110659_Review")]
+    partial class Review
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,10 +206,13 @@ namespace SQLData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("nightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("organisatorId")
                         .HasColumnType("int");
 
                     b.Property<int>("writerId")
@@ -218,6 +221,8 @@ namespace SQLData.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("nightId");
+
+                    b.HasIndex("organisatorId");
 
                     b.HasIndex("writerId");
 
@@ -324,11 +329,18 @@ namespace SQLData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Person", "Organisator")
+                        .WithMany()
+                        .HasForeignKey("organisatorId")
+                        .IsRequired();
+
                     b.HasOne("Domain.Person", "Writer")
                         .WithMany()
                         .HasForeignKey("writerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Organisator");
 
                     b.Navigation("Writer");
 
