@@ -15,7 +15,7 @@ namespace Domain
 		public List<Person> Players { get; set; } = new List<Person>();
 		public int PersonId { get; set; }
 		public Person Organisator { get; set; }
-		public List<Review> Reviews { get; set; }
+		public List<Review> Reviews { get; set; } = new List<Review>();
 		public List<Snack> Snacks { get; set; } = new List<Snack>();
 		public bool TakeOwnSnacks { get; set; } = true;
 		public bool AdultOnly { get; set; } = false;
