@@ -3,10 +3,12 @@
 @using System.Net.Http
 @using DomainServices
 @using GameNight2.Models
+@using Microsoft.IdentityModel.Tokens
 @model dynamic
 
 @inject IGameRepository _gameRepository;
 @inject IAccountRepository _accountRepository;
+@inject IReviewRepository _reviewRepository;
 
 @{
 	ViewBag.Title = "Night Details";
@@ -110,7 +112,21 @@
 				<h3>Host: @Model.Night.Organisator.RealName</h3>
 				<span>Age: @(DateTime.Now.Year - Model.Night.Organisator.BirthDate.Year)</span>
 				<br />
-				<span>Rating: 3.5<i class="fa-solid fa-star text-warning"></i></span>
+				@{
+					List<Review> reviewsOfHost = _reviewRepository.GetReviewByOrganisator(@Model.Night.Organisator.Id);
+					if (reviewsOfHost.IsNullOrEmpty())
+					{
+						<span>Rating: <br>This host doesn't have any reviews yet.</span>
+					}
+					else
+					{
+						double sum = 0;
+						reviewsOfHost.ForEach(rev => sum += rev.Rating);
+						double avg = sum / reviewsOfHost.Count;
+						<span>Rating: @avg<i class="fa-solid fa-star text-warning"></i></span>
+
+					}
+				}
 				<br />
 				<span>Hosted 7 nights before</span>
 				<br />
@@ -284,45 +300,77 @@
 	<section>
 		<h3>Reviews:</h3>
 		<div class="row gx-2">
-			@* Take top 5 reviews *@
-			<div class="col-lg-3">
-				<div class="card h-100">
-					<div class="card-body">
-						<h5 class="card-title">Anonymous</h5>
-						<p class="card-text">Het was een leuke avond, jammer dat het zo snel voorbij ging.</p>
-						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
+			@{
+				if (_reviewRepository.GetReviewByNight(@Model.Night.Id).Count == 0)
+				{
+					<b>There aren't any reviews for this night.</b>
+				}
+				foreach (Review review in _reviewRepository.GetReviewByNight(@Model.Night.Id))
+				{
+					int solidStars = (int)review.Rating;
+					bool hasHalfStar = (review.Rating - solidStars) >= 0.5;
+					int remainingStars = hasHalfStar ? 4 - solidStars : 5 - solidStars;
+
+					<div class="col-lg-3">
+						<div class="card h-100">
+							<div class="card-body">
+								<h5 class="card-title">@review.Writer.Name</h5>
+								<p class="card-text">@review.Description</p>
+								<span>
+									@for (int i = 0; i < solidStars; i++)
+									{
+										<i class="fa-solid fa-star text-warning"></i>
+									}
+									@if (hasHalfStar)
+									{
+										<i class="fa-solid fa-star-half-stroke text-warning"></i>
+									}
+									@for (int i = 0; i < remainingStars; i++)
+									{
+										<i class="fa-regular fa-star text-warning"></i>
+									}
+								</span>
+							</div>
+						</div>
 					</div>
+				}
+			}
+		</div>
+		@{
+			if (players.FindAll(person => person.Email == @User.Identity.Name).Any() && Model.Night.DateTime < DateTime.Now)
+			{
+				List<Review> reviews = Model.Night.Reviews;
+				if (reviews.FindAll(x => x.writerId == _accountRepository.getAccount(@User.Identity.Name).Id).Any())
+				{
+					<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReviewModal" disabled title="You already made a review">
+						<i class="fa-solid fa-plus pe-2"></i>Add Review
+					</button>
+					<span>You already made a review</span>
+				}
+				else
+				{
+					<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+						<i class="fa-solid fa-plus pe-2"></i>Add Review
+					</button>
+				}
+			}
+		}
+	</section>
+
+
+	<div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body">
+					@await Html.PartialAsync("~/Views/Review/CreateReview.cshtml", new NewReviewModel(@Model.Night.Id))
 				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="card h-100">
-					<div class="card-body">
-						<h5 class="card-title">Anonymous</h5>
-						<p class="card-text">Geweldig!</p>
-						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="card h-100">
-					<div class="card-body">
-						<h5 class="card-title">Anonymous</h5>
-						<p class="card-text">Saai.</p>
-						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="card h-100">
-					<div class="card-body">
-						<h5 class="card-title">Anonymous</h5>
-						<p class="card-text">Kon beter, kon slechter.</p>
-						<span><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i><i class="fa-regular fa-star text-warning"></i></span>
-					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="saveReviewBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </div>
 <script>
 	document.getElementById('saveSnackBtn').addEventListener('click', async function () {
@@ -338,6 +386,26 @@
 				addSnackBtn.click();
 			} else {
 				$('#addSnackBtn').modal('hide');
+				location.reload();
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	})
+	document.getElementById('saveReviewBtn').addEventListener('click', async function () {
+		const addReviewForm = document.getElementById('createReview');
+		const addReviewBtn = addReviewForm.querySelector('#addReviewBtn');
+		try {
+			const response = await fetch('/Review/CreateReview', {
+				method: 'POST',
+				body: new FormData(addReviewForm),
+			});
+			console.log(response)
+			if (!response.ok) {
+				addReviewBtn.click();
+			} else {
+				$('#addReviewBtn').modal('hide');
 				location.reload();
 			}
 

@@ -24,6 +24,7 @@ builder.Services.AddScoped<INightRepository, NightEFRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountEFRepository>();
 builder.Services.AddScoped<IGameRepository, GameEFRepository>();
 builder.Services.AddScoped<ISnackRepository, SnackEFRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewEFRepository>();
 
 //builder.Services.AddAuthentication().AddIdentityServerJwt();
 
