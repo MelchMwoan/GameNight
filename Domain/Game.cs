@@ -12,6 +12,6 @@ namespace Domain
 		public GenreEnum Genre { get; set; }
 		public GameTypeEnum Type { get; set; }
 		public string ImageUrl { get; set; }
-
+		public List<Night> Nights { get; set; }= new List<Night>();
 	}
 }
