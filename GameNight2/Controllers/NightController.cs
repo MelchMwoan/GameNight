@@ -98,19 +98,29 @@ namespace GameNight2.Controllers
 			if (night == null) throw new Exception("Night doesn't exist");
 			if (night.Players.Count > 0) throw new Exception("Can't edit the night while there are attendees");
 
-			int changed = 0;
 			foreach (var propertyInfo in nightModel.GetType().GetProperties())
 			{
 				var modelVal = propertyInfo.GetValue(nightModel);
-				Console.WriteLine(propertyInfo.Name);
+				if (propertyInfo.Name == "SelectedGames" || propertyInfo.Name == "SelectedGames")
+				{
+					continue;
+				}
 				var nightVal = night.GetType().GetProperty(propertyInfo.Name)?.GetValue(night);
 				if (nightVal != null && !nightVal.Equals(modelVal))
 				{
-					changed++;
 					propertyInfo.SetValue(nightModel, modelVal);
 				}
 			}
-			if (changed > 0) _nightRepository.updateNight(nightModel.getNight());
+			Night newNight = nightModel.getNight();
+			_gameRepository.getGames().Where(x => nightModel.SelectedGames.Contains(x.Id)).ToList().ForEach(game =>
+			{
+				newNight.AddGame(game);
+			});
+			_snackRepository.getSnacks().Where(x => nightModel.SelectedSnacks.Contains(x.Id)).ToList().ForEach(snack =>
+			{
+				newNight.AddSnack(snack);
+			});
+			_nightRepository.updateNight(newNight);
 			return RedirectToAction("NightDetails", "Night", new { id = nightModel.Id});
 		}
 

@@ -74,7 +74,7 @@
 						<span asp-validation-for="SelectedSnacks" class="text-danger"></span>
 						<ul class="list-group" id="snackList">
 							@{
-								foreach (Snack snack in _snackRepository.getSnackByNight(Model.Id))
+								foreach (Snack snack in _snackRepository.getSnackByNight(Model.Id).Union(_snackRepository.getSnackByPerson(_accountRepository.getAccount(@User.Identity.Name).Id)))
 								{
 									<li class="list-group-item">
 										<div class="form-group">

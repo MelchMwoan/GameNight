@@ -82,6 +82,8 @@ namespace Infrastructure.EF
 			dbNight.AdultOnly = newNight.AdultOnly;
 			dbNight.Description = newNight.Description;
 			dbNight.TakeOwnSnacks = newNight.TakeOwnSnacks;
+			dbNight.Snacks = newNight.Snacks;
+			dbNight.Games = newNight.Games;
 			_dbContext.SaveChanges();
 		}
 
