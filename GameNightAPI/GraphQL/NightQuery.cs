@@ -1,8 +1,10 @@
 using Domain;
 using DomainServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GraphQLServer.GraphQL;
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class NightQuery
 {
 	private readonly INightRepository _nightRepository;

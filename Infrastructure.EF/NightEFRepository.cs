@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain;
 using DomainServices;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SQLData;
 
@@ -89,9 +91,20 @@ namespace Infrastructure.EF
 
 		public void joinNight(int nightId, Person person)
 		{
-			Night night = getNightById(nightId).Night;
-			night.AddPlayer(person);
-			_dbContext.SaveChanges();
+			Night night = getNightById(nightId)?.Night;
+			if (night == null)
+			{
+				throw new Exception("This Night doesn't exist");
+			}
+			try
+			{
+				night.AddPlayer(person);
+				_dbContext.SaveChanges();
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
 		}
 
 		public void leaveNight(int nightId, Person person)

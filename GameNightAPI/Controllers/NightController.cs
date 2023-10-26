@@ -1,36 +1,48 @@
-using Domain;
+
 using DomainServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameNightAPI.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	public class NightController : ControllerBase
 	{
 		private readonly ILogger<NightController> _logger;
-		private INightRepository _nightRepository;
-		private IGameRepository _gameRepository;
+		private readonly INightRepository _nightRepository;
+		private readonly IAccountRepository _accountRepository;
 
-		public NightController(ILogger<NightController> logger, INightRepository nightRepository, IGameRepository gameRepository)
+		public NightController(ILogger<NightController> logger, INightRepository nightRepository, IAccountRepository accountRepository)
 		{
 			_logger = logger;
 			_nightRepository = nightRepository;
-			_gameRepository = gameRepository;
+			_accountRepository = accountRepository;
 		}
 
-		[HttpGet(Name = "GetNights")]
-		public IEnumerable<Night> GetAllNights()
+		[HttpPost("{id}/Join")]
+		public IActionResult JoinNight(int id)
 		{
-			IEnumerable<Night> nights = _nightRepository.getNights().ToArray();
-			foreach (Night night in nights)
+			var person = _accountRepository.getAccount(User.Identity.Name);
+			try
 			{
-				night.Games.ForEach(game => game.Nights = null);
-				night.Organisator.Nights = null;
-				night.Players.ForEach(player => player.Nights = null);
+				_nightRepository.joinNight(id, person);
 			}
-			return _nightRepository.getNights().ToArray();
-			//return _nightRepository.getNights().ToArray().Join(_gameRepository.getGames());
+			catch (Exception e)
+			{
+				return BadRequest(new
+				{
+					success = false,
+					message = e.Message
+				});
+			}
+			return Ok(new
+			{
+				succes = true,
+				message = $"{person.Name} succesfully joined night with id {id}"
+			});
 		}
 	}
 }
