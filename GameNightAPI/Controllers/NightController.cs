@@ -22,7 +22,7 @@ namespace GameNightAPI.Controllers
 			_accountRepository = accountRepository;
 		}
 
-		[HttpPost("{id}/Join")]
+		[HttpPost("{id}/Join"), Authorize]
 		public IActionResult JoinNight(int id)
 		{
 			var person = _accountRepository.getAccount(User.Identity.Name);
