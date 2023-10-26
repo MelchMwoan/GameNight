@@ -21,7 +21,7 @@ namespace Infrastructure.EF
 
 		public List<Night> getNights()
 		{
-			return _dbContext.Nights.Include(night => night.Players).ToList();
+			return _dbContext.Nights.Include(night => night.Players).Include(night => night.Games).ToList();
 		}
 
 		public List<Night> filterNights(NightFilter filter)
