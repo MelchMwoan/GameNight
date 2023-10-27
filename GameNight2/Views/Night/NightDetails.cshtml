@@ -16,7 +16,7 @@
 }
 
 <div class="row mb-3">
-	<section class="col-8">
+	<section class="col-12 col-lg-8">
 		<h2>@Model.Night.Title</h2>
 		<h6>@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@Model.Night.DateTime.ToString("f"))</h6>
 		<h6>Address: @Model.Night.Organisator.Address.Street @Model.Night.Organisator.Address.HouseNumber, @Model.Night.Organisator.Address.City</h6>
@@ -164,7 +164,7 @@
 		</div>
 	</section>
 
-	<section class="col-4">
+	<section class="col-12 col-lg-4">
 		<div class="row">
 			<div class="col-8">
 				<h3>Host: @Model.Night.Organisator.RealName</h3>
@@ -192,7 +192,7 @@
 	</section>
 </div>
 <div class="row">
-	<section class="col">
+	<section class="col-12 col-lg-4">
 		<h3>Games</h3>
 		<table class="table table-striped">
 			<thead>
@@ -233,7 +233,7 @@
 			</tbody>
 		</table>
 	</section>
-	<section class="col">
+	<section class="col-12 col-lg-4">
 		<h3>Snacks</h3>
 		<table class="table table-striped">
 			<thead>
@@ -328,7 +328,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="col">
+	<section class="col-12 col-lg-4">
 		<h3>Attendees</h3>
 		<table class="table table-striped">
 			<thead>

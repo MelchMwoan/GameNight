@@ -33,7 +33,7 @@ else
 
 		<div>
 			<form asp-action="CreateNight" method="post" class="row">
-				<div class="col-8">
+				<div class="col-12 col-md-8">
 					<div class="form-group">
 						<label asp-for="Title">Title:</label>
 						<input class="form-control" asp-for="Title"/>
@@ -75,14 +75,14 @@ else
 						<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
 					</div>
 				</div>
-				<div class="col-4">
+				<div class="col-12 col-md-4">
 					<h4>Thumbnail Preview:</h4>
 					<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview"/>
 				</div>
 
 				<div class="row mb-2">
 					@* Add Snacks list *@
-					<div class="col-6 position-relative">
+					<div class="col-12 col-md-6 position-relative">
 						<h4>Snacks:</h4>
 
 						<div class="pb-5">
@@ -107,7 +107,7 @@ else
 					</div>
 
 					@* Add Games List *@
-					<div class="col-6 position-relative">
+					<div class="col-12 col-md-6 position-relative">
 						<h4>Games:</h4>
 
 						<span asp-validation-for="SelectedGames" class="text-danger"></span>
@@ -134,9 +134,9 @@ else
 
 
 
-				<div class="form-group col-8">
-					<button class="btn btn-primary col-sm-4 text-center mt-3"><i class="fa-solid fa-floppy-disk pe-2"></i>Add Night</button>
-					<a class="btn btn-danger col-sm-4 text-center mt-3" href="javascript:history.go(-1)">Cancel</a>
+				<div class="form-group col-12 col-md-8">
+					<button class="btn btn-primary col-6 col-sm-4 text-center mt-3"><i class="fa-solid fa-floppy-disk pe-2"></i>Add Night</button>
+					<a class="btn btn-danger col-5 col-sm-4 text-center mt-3" href="javascript:history.go(-1)">Cancel</a>
 				</div>
 			</form>
 			<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">

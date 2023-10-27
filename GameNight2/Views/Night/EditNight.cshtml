@@ -17,7 +17,7 @@
 	<div>
 		<form asp-action="UpdateNight" method="post" class="row">
 			<input type="hidden" asp-for="Id" value="@Model.Id" />
-			<div class="col-8">
+			<div class="col-12 col-md-8">
 				<div class="form-group">
 					<label asp-for="Title">Title:</label>
 					<input class="form-control" asp-for="Title" />
@@ -59,7 +59,7 @@
 					<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
 				</div>
 			</div>
-			<div class="col-4">
+			<div class="col-12 col-md-4">
 				<h4>Thumbnail Preview:</h4>
 				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview" />
 			</div>
@@ -67,7 +67,7 @@
 			
 			<div class="row mb-2">
 				@* Add Snacks list *@
-				<div class="col-6 position-relative">
+				<div class="col-12 col-md-6 position-relative">
 					<h4>Snacks:</h4>
 
 					<div class="pb-5">
@@ -92,7 +92,7 @@
 				</div>
 
 				@* Add Games List *@
-				<div class="col-6 position-relative">
+				<div class="col-12 col-md-6 position-relative">
 					<h4>Games:</h4>
 
 					<span asp-validation-for="SelectedGames" class="text-danger"></span>
@@ -120,9 +120,9 @@
 
 
 			<div class="form-group col-12">
-				<button class="btn btn-warning col-sm-3 text-center"><i class="fa-solid fa-floppy-disk pe-2"></i>Update Night</button>
-				<button class="btn btn-danger col-sm-3 text-center" asp-action="RemoveNight"><i class="fa-solid fa-trash pe-2"></i>Delete Night</button>
-				<a class="btn btn-success col-sm-3 text-center" href="javascript:history.go(-1)">Cancel</a>
+				<button class="btn btn-warning col-4 col-sm-3 text-center"><i class="fa-solid fa-floppy-disk pe-2"></i>Update Night</button>
+				<button class="btn btn-danger col-4 col-sm-3 text-center" asp-action="RemoveNight"><i class="fa-solid fa-trash pe-2"></i>Delete Night</button>
+				<a class="btn btn-success col-4 col-sm-3 text-center" href="javascript:history.go(-1)">Cancel</a>
 			</div>
 		</form>
 		<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">

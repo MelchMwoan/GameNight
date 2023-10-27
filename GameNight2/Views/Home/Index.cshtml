@@ -7,7 +7,7 @@
 }
 
 <section class="row mb-5">
-	<div class="col-7">
+	<div class="col-12 col-md-7">
 		@if (User.Identity.Name != null)
 		{
 			<h1>Welcome back @_accountRepository.getAccount(User.Identity.Name)?.RealName.Split(" ")[0]</h1>
@@ -23,7 +23,7 @@
 		</p>
 		<a asp-action="Nights" asp-controller="Night" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass pe-2"></i>Let's search a GameNight!</a>
 	</div>
-	<div class="col-5 d-flex">
+	<div class="col-12 col-md-5 d-flex">
 		<img class="img img-fluid my-auto" src="images/GameNightWidePng.png" alt="GameNight logo"/>
 	</div>
 </section>
