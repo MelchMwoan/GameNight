@@ -27,5 +27,12 @@ namespace Domain
 
 		public void addGame(Game game) { Games.Add(game); }
 		public void addNight(Night night) { Nights.Add(night); }
+
+		public void SetBirthdate(DateTime birthdate)
+		{
+			if (birthdate > DateTime.Now) throw new Exception("Your birthdate can't be in the future");
+			if (birthdate > DateTime.Now.AddYears(-16)) throw new Exception("You need to be at least 16 years to register");
+			this.BirthDate = birthdate;
+		}
 	}
 }

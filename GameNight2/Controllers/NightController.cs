@@ -61,6 +61,8 @@ namespace GameNight2.Controllers
 				var returnUrl = Url.Action("CreateNight", "Night");
 				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
+
+			Person person = _accountRepository.getAccount(User.Identity.Name);
 			return View("CreateNight");
 		}
 		[HttpPost]

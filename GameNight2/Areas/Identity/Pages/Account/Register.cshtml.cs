@@ -128,7 +128,6 @@ namespace GameNight2.Areas.Identity.Pages.Account
 	                    RealName = $"{Input.FirstName} {Input.LastName}",
 	                    Email = Input.Email,
 	                    Gender = Input.Gender,
-	                    BirthDate = Input.BirthDate,
 	                    Address = new Address
 	                    {
 		                    City = Input.City,
@@ -142,6 +141,7 @@ namespace GameNight2.Areas.Identity.Pages.Account
                         isVegan = Input.isVegan,
                         isVegatarian = Input.isVegatarian
                     };
+                    gameNightUser.SetBirthdate(Input.BirthDate);
 
                     //_controller.Register(gameNightUser);
                     _accountRepository.createAccount(gameNightUser);

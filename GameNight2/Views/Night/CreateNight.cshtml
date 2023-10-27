@@ -20,148 +20,154 @@
 		-webkit-overflow-scrolling: touch;
 	}
 </style>
-<partial name="_Validation" />
-<h2>@ViewBag.Title</h2>
-<div>
-	@* <div asp-validation-summary="All"></div> *@
-
+@if (_accountRepository.getAccount(User.Identity.Name).BirthDate > DateTime.Now.AddYears(-18))
+{
+	<h1>You can't create a night since you are not an adult.</h1>
+}
+else
+{
+	<partial name="_Validation"/>
+	<h2>@ViewBag.Title</h2>
 	<div>
-		<form asp-action="CreateNight" method="post" class="row">
-			<div class="col-8">
-				<div class="form-group">
-					<label asp-for="Title">Title:</label>
-					<input class="form-control" asp-for="Title" />
-					<span asp-validation-for="Title" class="text-danger"></span>
+		@* <div asp-validation-summary="All"></div> *@
+
+		<div>
+			<form asp-action="CreateNight" method="post" class="row">
+				<div class="col-8">
+					<div class="form-group">
+						<label asp-for="Title">Title:</label>
+						<input class="form-control" asp-for="Title"/>
+						<span asp-validation-for="Title" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Description">Description:</label>
+						<textarea class="form-control" asp-for="Description" rows="5"></textarea>
+						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="ThumbnailUrl">Thumbnail:</label>
+						<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput"/>
+						<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="DateTime">Date and Time:</label>
+						<input class="form-control" asp-for="DateTime"/>
+						<span asp-validation-for="DateTime" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="MaxPlayers">Max Players:</label>
+						<input class="form-control" asp-for="MaxPlayers"/>
+						<span asp-validation-for="MaxPlayers" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="AdultOnly">Adult Only:</label>
+						<input asp-for="AdultOnly" class="form-check-input"/>
+						<span asp-validation-for="AdultOnly" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="TakeOwnSnacks">Guests bring snacks:</label>
+						<input asp-for="TakeOwnSnacks" class="form-check-input" checked/>
+						<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-4">
+					<h4>Thumbnail Preview:</h4>
+					<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview"/>
 				</div>
 
-				<div class="form-group">
-					<label asp-for="Description">Description:</label>
-					<textarea class="form-control" asp-for="Description" rows="5"></textarea>
-					<span asp-validation-for="Description" class="text-danger"></span>
-				</div>
-				<div class="form-group">
-					<label asp-for="ThumbnailUrl">Thumbnail:</label>
-					<input class="form-control" asp-for="ThumbnailUrl" id="thumbnailInput" />
-					<span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
-				</div>
+				<div class="row mb-2">
+					@* Add Snacks list *@
+					<div class="col-6 position-relative">
+						<h4>Snacks:</h4>
 
-				<div class="form-group">
-					<label asp-for="DateTime">Date and Time:</label>
-					<input class="form-control" asp-for="DateTime" />
-					<span asp-validation-for="DateTime" class="text-danger"></span>
-				</div>
-
-				<div class="form-group">
-					<label asp-for="MaxPlayers">Max Players:</label>
-					<input class="form-control" asp-for="MaxPlayers" />
-					<span asp-validation-for="MaxPlayers" class="text-danger"></span>
-				</div>
-
-				<div class="form-group">
-					<label asp-for="AdultOnly">Adult Only:</label>
-					<input asp-for="AdultOnly" class="form-check-input" />
-					<span asp-validation-for="AdultOnly" class="text-danger"></span>
-				</div>
-
-				<div class="form-group">
-					<label asp-for="TakeOwnSnacks">Guests bring snacks:</label>
-					<input asp-for="TakeOwnSnacks" class="form-check-input" checked />
-					<span asp-validation-for="TakeOwnSnacks" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="col-4">
-				<h4>Thumbnail Preview:</h4>
-				<img id="thumbnailImg" class="img img-thumbnail ratio ratio-16x9" alt="Thumbnail Preview" />
-			</div>
-			
-			<div class="row mb-2">
-			@* Add Snacks list *@
-				<div class="col-6 position-relative">
-				<h4>Snacks:</h4>
-
-					<div class="pb-5">
-				<span asp-validation-for="SelectedSnacks" class="text-danger"></span>
-						<ul class="list-group" id="snackList">
-							@{
-								foreach (Snack snack in _snackRepository.getSnackByPerson(_accountRepository.getAccount(User.Identity.Name).Id))
-								{
-									<li class="list-group-item">
-										<div class="form-group">
-											<input class="form-check-input me-1" type="checkbox" name="SelectedSnacks" value="@snack.Id">
-											<label class="form-check-label" for="@snack.Id">@snack.Name</label>
-										</div>
-									</li>
+						<div class="pb-5">
+							<span asp-validation-for="SelectedSnacks" class="text-danger"></span>
+							<ul class="list-group" id="snackList">
+								@{
+									foreach (Snack snack in _snackRepository.getSnackByPerson(_accountRepository.getAccount(User.Identity.Name).Id))
+									{
+										<li class="list-group-item">
+											<div class="form-group">
+												<input class="form-check-input me-1" type="checkbox" name="SelectedSnacks" value="@snack.Id">
+												<label class="form-check-label" for="@snack.Id">@snack.Name</label>
+											</div>
+										</li>
+									}
 								}
-							}
-						</ul>
+							</ul>
 						</div>
-					<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addSnackModal">
-					<i class="fa-solid fa-plus pe-2"></i>Add Snack
-				</button>
-			</div>
-
-			@* Add Games List *@
-				<div class="col-6 position-relative">
-				<h4>Games:</h4>
-
-					<span asp-validation-for="SelectedGames" class="text-danger"></span>
-					<div class="pb-5">
-				<ul class="list-group" id="gameList">
-					@{
-						foreach (Game game in _gameRepository.getGames())
-						{
-							<li class="list-group-item">
-								<div class="form-group">
-									<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id">
-									<label class="form-check-label" for="@game.Id">@game.Name</label>
-								</div>
-							</li>
-							}
-					}
-						</ul>
+						<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addSnackModal">
+							<i class="fa-solid fa-plus pe-2"></i>Add Snack
+						</button>
 					</div>
-					<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addGameModal">
-					<i class="fa-solid fa-plus pe-2"></i>Add Game
-				</button>
-				</div>
-			</div>
 
+					@* Add Games List *@
+					<div class="col-6 position-relative">
+						<h4>Games:</h4>
 
-
-			<div class="form-group col-8">
-				<button class="btn btn-primary col-sm-4 text-center mt-3"><i class="fa-solid fa-floppy-disk pe-2"></i>Add Night</button>
-				<a class="btn btn-danger col-sm-4 text-center mt-3" href="javascript:history.go(-1)">Cancel</a>
-			</div>
-		</form>
-		<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-body">
-						@await Html.PartialAsync("~/Views/Game/CreateGame.cshtml", new NewGameModel())
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" id="saveGameBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+						<span asp-validation-for="SelectedGames" class="text-danger"></span>
+						<div class="pb-5">
+							<ul class="list-group" id="gameList">
+								@{
+									foreach (Game game in _gameRepository.getGames())
+									{
+										<li class="list-group-item">
+											<div class="form-group">
+												<input class="form-check-input me-1" type="checkbox" name="SelectedGames" value="@game.Id">
+												<label class="form-check-label" for="@game.Id">@game.Name</label>
+											</div>
+										</li>
+									}
+								}
+							</ul>
+						</div>
+						<button type="button" class="btn btn-success position-absolute bottom-0" data-bs-toggle="modal" data-bs-target="#addGameModal">
+							<i class="fa-solid fa-plus pe-2"></i>Add Game
+						</button>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="addSnackModal" tabindex="-1" aria-labelledby="addSnackModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-body">
-						@await Html.PartialAsync("~/Views/Snack/CreateSnack.cshtml", new NewSnackModel())
+
+
+
+				<div class="form-group col-8">
+					<button class="btn btn-primary col-sm-4 text-center mt-3"><i class="fa-solid fa-floppy-disk pe-2"></i>Add Night</button>
+					<a class="btn btn-danger col-sm-4 text-center mt-3" href="javascript:history.go(-1)">Cancel</a>
+				</div>
+			</form>
+			<div class="modal fade" id="addGameModal" tabindex="-1" aria-labelledby="addGameModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-body">
+							@await Html.PartialAsync("~/Views/Game/CreateGame.cshtml", new NewGameModel())
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" id="saveGameBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" id="saveSnackBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+				</div>
+			</div>
+			<div class="modal fade" id="addSnackModal" tabindex="-1" aria-labelledby="addSnackModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-body">
+							@await Html.PartialAsync("~/Views/Snack/CreateSnack.cshtml", new NewSnackModel())
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" id="saveSnackBtn"><i class="fa-solid fa-floppy-disk pe-2"></i>Save changes</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<script>
+	<script>
 	function saveFormData() {
 		const form = document.forms[0];
 		const formData = new FormData(form);
@@ -256,3 +262,4 @@
 	window.addEventListener('load', loadFormData);
 	updateThumbnail();
 </script>
+}

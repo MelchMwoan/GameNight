@@ -45,5 +45,78 @@ namespace Domain.Tests
 			Assert.Null(exception);
 			Assert.Contains(night, testPersonCopy.Nights);
 		}
+
+		[Fact]
+		public void SetBirthDateFarFuture()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddYears(5);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Equal("Your birthdate can't be in the future", exception?.Message);
+		}
+		[Fact]
+		public void SetBirthDateFutureClose()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddSeconds(5);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Equal("Your birthdate can't be in the future", exception?.Message);
+		}
+		[Fact]
+		public void SetBirthDateLessThan16()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddYears(-12);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Equal("You need to be at least 16 years to register", exception?.Message);
+		}
+		[Fact]
+		public void SetBirthDateLessThan16Close()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddSeconds(5).AddYears(-16);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Equal("You need to be at least 16 years to register", exception?.Message);
+		}
+		[Fact]
+		public void SetBirthDateNow()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now;
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Equal("You need to be at least 16 years to register", exception?.Message);
+		}
+		[Fact]
+		public void SetBirthDateExact16()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddYears(-16);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Null(exception);
+			Assert.Equal(testPersonCopy.BirthDate, birthdate);
+		}
+		[Fact]
+		public void SetBirthDateFar16()
+		{
+			Person testPersonCopy = testPerson;
+			DateTime birthdate = DateTime.Now.AddYears(-18);
+
+			var exception = Record.Exception(() => testPersonCopy.SetBirthdate(birthdate));
+
+			Assert.Null(exception);
+			Assert.Equal(testPersonCopy.BirthDate, birthdate);
+		}
 	}
 }

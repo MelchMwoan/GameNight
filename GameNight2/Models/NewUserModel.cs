@@ -25,7 +25,32 @@ namespace GameNight2.Models
 		public string UserName { get; set; }
 		public string PhoneNumber { get; set; }
 		public GenderEnum Gender { get; set; }
-		public DateTime BirthDate { get; set; }
+		private DateTime birthDate;
+		[Required(ErrorMessage = "Birthdate is required")]
+		public DateTime BirthDate
+		{
+			get { return birthDate; }
+			set
+			{
+				if (SetBirthdate(value))
+				{
+					birthDate = value;
+				}
+			}
+		}
+
+		public bool SetBirthdate(DateTime birthdate)
+		{
+			if (birthdate > DateTime.Now)
+			{
+				throw new Exception("Your birthdate can't be in the future");
+			}
+			if (birthdate > DateTime.Now.AddYears(-16))
+			{
+				throw new Exception("You need to be at least 16 years to register");
+			}
+			return true;
+		}
 
 		public string City { get; set; }
 		public string Street { get; set; }
