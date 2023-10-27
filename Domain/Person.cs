@@ -27,8 +27,5 @@ namespace Domain
 
 		public void addGame(Game game) { Games.Add(game); }
 		public void addNight(Night night) { Nights.Add(night); }
-
-		public bool isPlayer() => Games != null;
-		public bool isOrganisator() => Nights != null;
 	}
 }
