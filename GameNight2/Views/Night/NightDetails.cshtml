@@ -9,6 +9,7 @@
 @inject IGameRepository _gameRepository;
 @inject IAccountRepository _accountRepository;
 @inject IReviewRepository _reviewRepository;
+@inject INightRepository _nightRepository;
 
 @{
 	ViewBag.Title = "Night Details";
@@ -49,6 +50,7 @@
 					<br />
 					var person = _accountRepository.getAccount(User.Identity.Name);
 					List<Snack> snacks = Model.Night.Snacks;
+					List<Night> joinedNights = _nightRepository.getJoinedNights(person.Id);
 					if (@Model.Night.TakeOwnSnacks && !snacks.Any(x => x.personId == person.Id))
 					{
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
@@ -58,6 +60,23 @@
 					else if ((person.isAlcoholFree && !snacks.Any(x => x.isAlcoholFree)) || (person.isGlutenFree && !snacks.Any(x => x.isGlutenFree)) || (person.isLactoseFree && !snacks.Any(x => x.isLactoseFree)) || (person.isNutsFree && !snacks.Any(x => x.isNutsFree)) || (person.isVegan && !snacks.Any(x => x.isVegan)) || (person.isVegatarian && !snacks.Any(x => x.isVegatarian)))
 					{
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
+							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
+						</button>
+					} else if (@Model.Night.AdultOnly && person.BirthDate > @Model.Night.DateTime.AddYears(-18))
+					{
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#adultOnlyModal">
+							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
+						</button>
+					}
+					else if (joinedNights.Any(x => x.DateTime.Date == @Model.Night.DateTime.Date))
+					{
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#busyNightModal">
+							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
+						</button>
+					}
+					else if (@Model.Night.MaxPlayers <= @Model.Night.Players.Count)
+					{
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#fullNightModal">
 							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
 						</button>
 					}
@@ -71,6 +90,45 @@
 				}
 			}
 		}
+		<div class="modal fade" id="adultOnlyModal" tabindex="-1" aria-labelledby="adultOnlyModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="adultOnlyModalLabel">Adult Only</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>It looks like this night is only for adults and you aren't an adult yet.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="busyNightModal" tabindex="-1" aria-labelledby="busyNightModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="busyNightModalLabel">Busy Night</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>It looks like you already joined a night on this date and you can't be on two places at the same time.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="fullNightModal" tabindex="-1" aria-labelledby="fullNightModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="fullNightModalLabel">Full Night</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>It looks like this night is already full unfortunately.</p>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="modal fade" id="confirmJoinModal" tabindex="-1" aria-labelledby="confirmJoinModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
