@@ -630,6 +630,78 @@ namespace GameNightControllers.Tests
 			Assert.Equal("Night doesn't exist", exception?.Message);
 		}
 		[Fact]
+		public void JoinNightThrowErrorOnFullNight()
+		{
+			var urlHelper = Substitute.For<IUrlHelper>();
+			_sut.Url = urlHelper;
+			_sut.ControllerContext = new ControllerContext
+			{
+				HttpContext = new DefaultHttpContext
+				{
+					User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+					{
+						new Claim(ClaimTypes.Name, "TestUser")
+					}))
+				}
+			};
+			_accountRepository.getAccount("TestUser").Returns(new Person { Id = 1 });
+			_nightRepository.getJoinedNights(1).Returns(new List<Night>());
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, DateTime = DateTime.Now, MaxPlayers = 3, Players = new List<Person>{new Person(), new Person(), new Person()}}, Person = new Person() });
+
+			var exception = Assert.Throws<Exception>(() => _sut.JoinNight(1));
+
+			Assert.NotNull(exception);
+			Assert.Equal("This Night is already full", exception?.Message);
+		}
+		[Fact]
+		public void JoinNightThrowErrorOnAdult()
+		{
+			var urlHelper = Substitute.For<IUrlHelper>();
+			_sut.Url = urlHelper;
+			_sut.ControllerContext = new ControllerContext
+			{
+				HttpContext = new DefaultHttpContext
+				{
+					User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+					{
+						new Claim(ClaimTypes.Name, "TestUser")
+					}))
+				}
+			};
+			_accountRepository.getAccount("TestUser").Returns(new Person { Id = 1, BirthDate = DateTime.Now.AddYears(-15)});
+			_nightRepository.getJoinedNights(1).Returns(new List<Night>());
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, DateTime = DateTime.Now, MaxPlayers = 5, AdultOnly = true}, Person = new Person() });
+
+			var exception = Assert.Throws<Exception>(() => _sut.JoinNight(1));
+
+			Assert.NotNull(exception);
+			Assert.Equal("This Night is for adults only", exception?.Message);
+		}
+		[Fact]
+		public void JoinNightThrowErrorOnNoSnack()
+		{
+			var urlHelper = Substitute.For<IUrlHelper>();
+			_sut.Url = urlHelper;
+			_sut.ControllerContext = new ControllerContext
+			{
+				HttpContext = new DefaultHttpContext
+				{
+					User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+					{
+						new Claim(ClaimTypes.Name, "TestUser")
+					}))
+				}
+			};
+			_accountRepository.getAccount("TestUser").Returns(new Person { Id = 1 });
+			_nightRepository.getJoinedNights(1).Returns(new List<Night>());
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, DateTime = DateTime.Now, TakeOwnSnacks = true, MaxPlayers = 5}, Person = new Person() });
+
+			var exception = Assert.Throws<Exception>(() => _sut.JoinNight(1));
+
+			Assert.NotNull(exception);
+			Assert.Equal("The Organisator of this night wants every attendee to bring a snack and you haven't submitted a snack yet", exception?.Message);
+		}
+		[Fact]
 		public void JoinNightThrowErrorOnBusyNight()
 		{
 			var urlHelper = Substitute.For<IUrlHelper>();
@@ -646,7 +718,7 @@ namespace GameNightControllers.Tests
 			};
 			_accountRepository.getAccount("TestUser").Returns(new Person{ Id = 1});
 			_nightRepository.getJoinedNights(1).Returns(new List<Night> { new Night { DateTime = DateTime.Now } });
-			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult{Night = new Night{Id = 1, DateTime = DateTime.Now}, Person = new Person()});
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult{Night = new Night{Id = 1, DateTime = DateTime.Now, MaxPlayers = 5 }, Person = new Person()});
 
 			var exception = Assert.Throws<Exception>(() => _sut.JoinNight(1));
 
@@ -670,7 +742,7 @@ namespace GameNightControllers.Tests
 			};
 			_accountRepository.getAccount("TestUser").Returns(new Person{Id = 1});
 			_nightRepository.getJoinedNights(1).Returns(new List<Night>());
-			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1 }, Person = new Person() });
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, MaxPlayers = 5 }, Person = new Person() });
 
 			var result = _sut.JoinNight(1) as RedirectToActionResult;
 
@@ -719,7 +791,7 @@ namespace GameNightControllers.Tests
 			_accountRepository.getAccount("TestUser").Returns(new Person());
 			_nightRepository.getNightById(1).Returns((NightPersonJoinResult?)null);
 
-			var exception = Assert.Throws<Exception>(() => _sut.JoinNight(1));
+			var exception = Assert.Throws<Exception>(() => _sut.LeaveNight(1));
 
 			Assert.NotNull(exception);
 			Assert.Equal("Night doesn't exist", exception?.Message);

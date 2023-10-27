@@ -209,6 +209,12 @@ namespace GameNight2.Controllers
 				List<Night> joinedNights = _nightRepository.getJoinedNights(person.Id);
 				if (joinedNights.Any(x => x.DateTime.Date == night.DateTime.Date))
 					throw new Exception("Can't join 2 nights on the same day");
+				if (night.Players.Count >= night.MaxPlayers) 
+					throw new Exception("This Night is already full");
+				if (night.AdultOnly && (DateTime.Now.AddYears(-18) < person.BirthDate)) 
+					throw new Exception("This Night is for adults only");
+				if(night.TakeOwnSnacks && !night.Snacks.Any(x => x.personId == person.Id))
+					throw new Exception("The Organisator of this night wants every attendee to bring a snack and you haven't submitted a snack yet");
 				_nightRepository.joinNight(nightId, person);
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
