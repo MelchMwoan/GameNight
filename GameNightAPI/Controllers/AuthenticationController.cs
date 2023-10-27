@@ -55,12 +55,5 @@ namespace GameNightAPI.Controllers
 
 			return Ok(new { Succes = true, Token = handler.WriteToken(secToken), Expiration = secToken.ValidTo });
 		}
-
-		[HttpPost("Logout")]
-		public async Task<IActionResult> SignOut()
-		{
-			await _signInManager.SignOutAsync();
-			return Ok();
-		}
 	}
 }
