@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EF", "Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{85CA3933-D9C2-4BDC-8966-61FC7F7DECF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameNightAPI", "GameNightAPI\GameNightAPI.csproj", "{C3F0EFC9-40F3-49DF-BAE4-FA54D601F19C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameNightAPI", "GameNightAPI\GameNightAPI.csproj", "{C3F0EFC9-40F3-49DF-BAE4-FA54D601F19C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameNightControllers.Tests", "GameNightControllers.Tests\GameNightControllers.Tests.csproj", "{BC326739-1C2B-4A07-854A-4496CE82CAC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{C3F0EFC9-40F3-49DF-BAE4-FA54D601F19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3F0EFC9-40F3-49DF-BAE4-FA54D601F19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3F0EFC9-40F3-49DF-BAE4-FA54D601F19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC326739-1C2B-4A07-854A-4496CE82CAC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC326739-1C2B-4A07-854A-4496CE82CAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC326739-1C2B-4A07-854A-4496CE82CAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC326739-1C2B-4A07-854A-4496CE82CAC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

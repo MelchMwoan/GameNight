@@ -36,7 +36,7 @@ namespace Infrastructure.EF
 
 		public Person getAccount(string personEmail)
 		{
-			return _dbContext.Persons.FirstOrDefault(x => x.Email == personEmail);
+			return _dbContext.Persons.FirstOrDefault(x => x.Email == personEmail)!;
 		}
 	}
 }

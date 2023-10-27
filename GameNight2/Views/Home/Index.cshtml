@@ -8,7 +8,6 @@
 
 <section class="row mb-5">
 	<div class="col-7">
-		@{ Console.WriteLine(User.Identity.Name); }
 		@if (User.Identity.Name != null)
 		{
 			<h1>Welcome back @_accountRepository.getAccount(User.Identity.Name)?.RealName.Split(" ")[0]</h1>

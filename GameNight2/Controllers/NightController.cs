@@ -32,7 +32,7 @@ namespace GameNight2.Controllers
 
 		public IActionResult Nights()
 		{
-			return View(_nightRepository.getNights());
+			return View("Nights",_nightRepository.getNights());
 		}
 
 		public IActionResult NightDetails(int Id)
@@ -50,27 +50,27 @@ namespace GameNight2.Controllers
 			{
 				return RedirectToAction("Index", "Home");
 			}
-			return View(night);
+			return View("NightDetails", night);
 		}
 
 		[HttpGet]
 		public IActionResult CreateNight()
 		{
-			Person person = _accountRepository.getAccount(User.Identity.Name);
-			if (person == null)
+			if (User.Identity.Name == null)
 			{
-				return RedirectToPage("/Account/Login", new { area = "Identity" });
+				var returnUrl = Url.Action("CreateNight", "Night");
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
-			return View();
+			return View("CreateNight");
 		}
 		[HttpPost]
 		public IActionResult EditNight(int nightId)
 		{
 			Night night = _nightRepository.getNightById(nightId)?.Night;
-			Person person = _accountRepository.getAccount(User.Identity.Name);
-			if (person == null)
+			if (User.Identity.Name == null)
 			{
-				return RedirectToPage("/Account/Login", new { area = "Identity" });
+				var returnUrl = Url.Action("NightDetails", "Night", new { id = nightId});
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
 
 			EditNightModel editNightModel = new EditNightModel()
@@ -86,7 +86,7 @@ namespace GameNight2.Controllers
 				AdultOnly = night.AdultOnly,
 				TakeOwnSnacks = night.TakeOwnSnacks,
 			};
-			return View(editNightModel);
+			return View("EditNight", editNightModel);
 		}
 		[HttpPost]
 		public IActionResult UpdateNight(EditNightModel nightModel)
@@ -94,8 +94,9 @@ namespace GameNight2.Controllers
 			if (!ModelState.IsValid) return View("EditNight", nightModel);
 			Person person = _accountRepository.getAccount(User.Identity.Name);
 			if (person == null) return RedirectToPage("/Account/Login", new { area = "Identity" });
-			Night? night = _nightRepository.getNightById(nightModel.Id)?.Night;
-			if (night == null) throw new Exception("Night doesn't exist");
+			NightPersonJoinResult? nightPersonJoinResult = _nightRepository.getNightById(nightModel.Id);
+			if (nightPersonJoinResult == null) throw new Exception("Night doesn't exist");
+			Night? night = nightPersonJoinResult.Night;
 			if (night.Players.Count > 0) throw new Exception("Can't edit the night while there are attendees");
 
 			foreach (var propertyInfo in nightModel.GetType().GetProperties())
@@ -126,9 +127,9 @@ namespace GameNight2.Controllers
 
 		public IActionResult RemoveNight(int Id)
 		{
-			Night? night = _nightRepository.getNightById(Id).Night;
+			Night? night = _nightRepository.getNightById(Id)?.Night;
 			if (night == null) throw new Exception("Night doesn't exist");
-			if (night.Players.Count > 0) throw new Exception("Can't edit the night while there are attendees");
+			if (night.Players.Count > 0) throw new Exception("Can't remove the night while there are attendees");
 			_nightRepository.removeNight(night);
 			return RedirectToAction("Nights", "Night");
 		}
@@ -136,7 +137,7 @@ namespace GameNight2.Controllers
 		[HttpPost]
 		public IActionResult CreateNight(NewNightModel newNight)
 		{
-			if (!ModelState.IsValid) return View(newNight);
+			if (!ModelState.IsValid) return View("CreateNight", newNight);
 			var night = new Night
 			{
 				Title = newNight.Title,
@@ -161,7 +162,7 @@ namespace GameNight2.Controllers
 			{
 				_snackRepository.setSnackNight(snackId, night);
 			});
-			return RedirectToAction("NightDetails");
+			return RedirectToAction("NightDetails", new { id = night.Id});
 		}
 
 		[HttpPost]
@@ -179,20 +180,22 @@ namespace GameNight2.Controllers
 		public IActionResult GetHostedNights()
 		{
 			Person person = _accountRepository.getAccount(User.Identity.Name);
-			if (person == null)
+			if (User.Identity.Name == null)
 			{
-				return RedirectToPage("/Account/Login", new { area = "Identity" });
+				var returnUrl = Url.Action("GetHostedNights", "Night");
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
-			return View(_nightRepository.getHostedNights(person.Id));
+			return View("GetHostedNights", _nightRepository.getHostedNights(person.Id));
 		}
 		public IActionResult GetJoinedNights()
 		{
 			Person person = _accountRepository.getAccount(User.Identity.Name);
-			if (person == null)
+			if (User.Identity.Name == null)
 			{
-				return RedirectToPage("/Account/Login", new { area = "Identity" });
+				var returnUrl = Url.Action("GetJoinedNights", "Night");
+				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
-			return View(_nightRepository.getJoinedNights(person.Id));
+			return View("GetJoinedNights", _nightRepository.getJoinedNights(person.Id));
 		}
 
 		[HttpPost]
@@ -201,11 +204,11 @@ namespace GameNight2.Controllers
 			if (User.Identity.Name != null)
 			{
 				Person person = _accountRepository.getAccount(User.Identity.Name);
-				Night night = _nightRepository.getNightById(nightId).Night;
+				Night? night = _nightRepository.getNightById(nightId)?.Night;
+				if (night == null) throw new Exception("Night doesn't exist");
 				List<Night> joinedNights = _nightRepository.getJoinedNights(person.Id);
 				if (joinedNights.Any(x => x.DateTime.Date == night.DateTime.Date))
 					throw new Exception("Can't join 2 nights on the same day");
-				//TODO: error handling
 				_nightRepository.joinNight(nightId, person);
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
@@ -215,8 +218,6 @@ namespace GameNight2.Controllers
 				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 
 			}
-
-			return NotFound();
 		}
 
 		[HttpPost]
@@ -224,6 +225,8 @@ namespace GameNight2.Controllers
 		{
 			if (User.Identity.Name != null)
 			{
+				Night? night = _nightRepository.getNightById(nightId)?.Night;
+				if (night == null) throw new Exception("Night doesn't exist");
 				_nightRepository.leaveNight(nightId, _accountRepository.getAccount(User.Identity.Name));
 				return RedirectToAction("NightDetails", "Night", new { id = nightId });
 			}
@@ -232,8 +235,6 @@ namespace GameNight2.Controllers
 				var returnUrl = Url.Action("NightDetails", "Night", new { id = nightId });
 				return Redirect($"/Identity/Account/Login?ReturnUrl={returnUrl}");
 			}
-
-			return NotFound();
 		}
 	}
 }

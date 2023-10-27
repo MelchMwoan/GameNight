@@ -35,7 +35,7 @@ namespace GameNight2.Controllers
 		[HttpGet]
 		public IActionResult CreateReview()
 		{
-			return View();
+			return View("CreateReview");
 		}
 
 		[HttpPost]
@@ -54,7 +54,6 @@ namespace GameNight2.Controllers
 			review.setWriter(_accountRepository.getAccount(User.Identity.Name));
 			review.setNight(_nightRepository.getNightById(reviewModel.nightId).Night);
 			review.setOrganisator(review.night.Organisator);
-			Console.WriteLine(review.Rating);
 			_reviewRepository.AddReview(review);
 			return Ok();
 
@@ -63,6 +62,7 @@ namespace GameNight2.Controllers
 		public IActionResult RemoveReview(int reviewId)
 		{
 			Review review = _reviewRepository.GetReviewById(reviewId);
+			if (review == null) return NotFound();
 			_reviewRepository.RemoveReview(review);
 			return RedirectToAction("NightDetails", "Night", new { id = review.nightId});
 		}

@@ -35,7 +35,7 @@ namespace GameNight2.Controllers
 		[HttpGet]
 		public IActionResult CreateSnack()
 		{
-			return View();
+			return View("CreateSnack");
 		}
 
 		[HttpPost]
@@ -65,12 +65,13 @@ namespace GameNight2.Controllers
 		public IActionResult SnackDetails(int Id)
 		{
 			Snack snack = _snackRepository.getSnackById(Id);
-			if (snack != null) return View(snack);
+			if (snack != null) return View("SnackDetails", snack);
 			return RedirectToAction("Index", "Home");
 		}
 		public IActionResult RemoveSnack(int snackId)
 		{
 			Snack snack =_snackRepository.getSnackById(snackId);
+			if(snack == null) return NotFound();
 			_snackRepository.removeSnack(snack);
 			return RedirectToAction("NightDetails", "Night", new { id = snack.nightId});
 		}

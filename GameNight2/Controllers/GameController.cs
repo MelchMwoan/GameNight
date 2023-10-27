@@ -34,7 +34,7 @@ namespace GameNight2.Controllers
 		public IActionResult CreateGame()
 		{
 			NewGameModel model = new NewGameModel();
-			return View(model);
+			return View("CreateGame", model);
 		}
 
 		[HttpPost]
@@ -52,7 +52,7 @@ namespace GameNight2.Controllers
 		public IActionResult GameDetails(int Id)
 		{
 			Game game = _gameRepository.GetGameById(Id);
-			if(game != null) return View(game);
+			if(game != null) return View("GameDetails", game);
 			return RedirectToAction("Index", "Home");
 		}
 	}
