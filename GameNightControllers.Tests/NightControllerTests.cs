@@ -742,7 +742,7 @@ namespace GameNightControllers.Tests
 			};
 			_accountRepository.getAccount("TestUser").Returns(new Person{Id = 1});
 			_nightRepository.getJoinedNights(1).Returns(new List<Night>());
-			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, MaxPlayers = 5 }, Person = new Person() });
+			_nightRepository.getNightById(1).Returns(new NightPersonJoinResult { Night = new Night { Id = 1, MaxPlayers = 5, Snacks = new List<Snack>{new Snack{personId = 1}}}, Person = new Person() });
 
 			var result = _sut.JoinNight(1) as RedirectToActionResult;
 
