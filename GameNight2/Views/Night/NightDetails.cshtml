@@ -51,6 +51,8 @@
 					var person = _accountRepository.getAccount(User.Identity.Name);
 					List<Snack> snacks = Model.Night.Snacks;
 					List<Night> joinedNights = _nightRepository.getJoinedNights(person.Id);
+					Console.WriteLine(@Model.Night.DateTime.AddYears(-18).Date);
+					Console.WriteLine(person.BirthDate.Date);
 					if (@Model.Night.TakeOwnSnacks && !snacks.Any(x => x.personId == person.Id))
 					{
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMealJoinModal">
@@ -62,7 +64,7 @@
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmJoinModal">
 							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
 						</button>
-					} else if (@Model.Night.AdultOnly && person.BirthDate > @Model.Night.DateTime.AddYears(-18))
+					} else if (@Model.Night.AdultOnly && (person.BirthDate > DateTime.Now.AddYears(-18)))
 					{
 						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#adultOnlyModal">
 							<i class="fa-solid fa-user-plus pe-2"></i>Join Night
