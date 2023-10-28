@@ -23,7 +23,7 @@ namespace Infrastructure.EF
 
 		public List<Night> getNights()
 		{
-			return _dbContext.Nights.Include(night => night.Players).Include(night => night.Games).ToList();
+			return _dbContext.Nights.Include(night => night.Players).Include(night => night.Games).AsSplitQuery().ToList();
 		}
 
 		public List<Night> filterNights(NightFilter filter)
@@ -40,7 +40,7 @@ namespace Infrastructure.EF
 				.Include(night => night.Reviews)
 				.Include(night => night.Organisator)
 				.ThenInclude(person => person.Address)
-				.Join(
+				.AsSplitQuery().Join(
 					_dbContext.Persons,
 					night => night.PersonId,
 					person => person.Id,
@@ -54,12 +54,12 @@ namespace Infrastructure.EF
 
 		public List<Night> getHostedNights(int userId)
 		{
-			return _dbContext.Nights.Where(night => night.PersonId == userId).Include(night => night.Players).ToList();
+			return _dbContext.Nights.Where(night => night.PersonId == userId).Include(night => night.Players).AsSplitQuery().ToList();
 		}
 
 		public List<Night> getJoinedNights(int userId)
 		{
-			return _dbContext.Nights.Include(night => night.Players).Where(night => night.Players.Any(x => x.Id == userId)).ToList();
+			return _dbContext.Nights.Include(night => night.Players).Where(night => night.Players.Any(x => x.Id == userId)).AsSplitQuery().ToList();
 		}
 
 		public void addNight(Night night)

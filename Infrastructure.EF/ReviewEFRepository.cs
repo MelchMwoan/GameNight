@@ -31,7 +31,7 @@ namespace Infrastructure.EF
 
 		public List<Review> GetReviewByNight(int nightId)
 		{
-			return _dbContext.Reviews.Where(r => r.nightId == nightId).Include(r => r.Writer).Include(r=>r.Organisator).ToList();
+			return _dbContext.Reviews.Where(r => r.nightId == nightId).Include(r => r.Writer).Include(r=>r.Organisator).AsSplitQuery().ToList();
 		}
 
 		public List<Review> GetReviewByOrganisator(int organisatorId)
